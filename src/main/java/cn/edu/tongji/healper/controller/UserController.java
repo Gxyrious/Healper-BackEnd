@@ -2,6 +2,7 @@ package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
 import cn.edu.tongji.healper.model.ClientEntity;
+import cn.edu.tongji.healper.service.ConsultService;
 import cn.edu.tongji.healper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,12 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "api/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ConsultService consultService;
 
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
@@ -28,5 +34,11 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
         }
+    }
+
+    @PostMapping(value = "/history")
+    public ResponseEntity addHistory() {
+        consultService.addConsultHistory(1, 1, 100);
+        return ResponseEntity.ok("ok");
     }
 }
