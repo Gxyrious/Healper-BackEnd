@@ -19,8 +19,8 @@ public class ClientEntity {
     @Column(name = "userphone", nullable = false, length = 11)
     private String userphone;
     @Basic
-    @Column(name = "sex", nullable = true)
-    private Sex sex;
+    @Column(name = "sex", nullable = true, length = 1)
+    private String sex;
 
     public int getId() {
         return id;
@@ -54,11 +54,11 @@ public class ClientEntity {
         this.userphone = userphone;
     }
 
-    public Sex getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -67,13 +67,13 @@ public class ClientEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ClientEntity that = (ClientEntity) o;
+        ClientEntity client = (ClientEntity) o;
 
-        if (id != that.id) return false;
-        if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (userphone != null ? !userphone.equals(that.userphone) : that.userphone != null) return false;
-        if (sex != null ? !sex.equals(that.sex) : that.sex != null) return false;
+        if (id != client.id) return false;
+        if (nickname != null ? !nickname.equals(client.nickname) : client.nickname != null) return false;
+        if (password != null ? !password.equals(client.password) : client.password != null) return false;
+        if (userphone != null ? !userphone.equals(client.userphone) : client.userphone != null) return false;
+        if (sex != null ? !sex.equals(client.sex) : client.sex != null) return false;
 
         return true;
     }

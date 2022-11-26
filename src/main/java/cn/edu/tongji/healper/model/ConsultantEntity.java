@@ -22,8 +22,8 @@ public class ConsultantEntity {
     @Column(name = "qr_code_link", nullable = true, length = 128)
     private String qrCodeLink;
     @Basic
-    @Column(name = "sex", nullable = true)
-    private Sex sex;
+    @Column(name = "sex", nullable = true, length = 1)
+    private String sex;
 
     public int getId() {
         return id;
@@ -65,11 +65,11 @@ public class ConsultantEntity {
         this.qrCodeLink = qrCodeLink;
     }
 
-    public Sex getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

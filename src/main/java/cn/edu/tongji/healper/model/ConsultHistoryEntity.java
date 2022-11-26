@@ -19,8 +19,8 @@ public class ConsultHistoryEntity {
     @Column(name = "archive_id", nullable = true)
     private Integer archiveId;
     @Basic
-    @Column(name = "status", nullable = false)
-    private Status status;
+    @Column(name = "status", nullable = false, length = 1)
+    private String status;
     @Basic
     @Column(name = "start_time", nullable = true)
     private Integer startTime;
@@ -63,11 +63,11 @@ public class ConsultHistoryEntity {
         this.archiveId = archiveId;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -100,16 +100,16 @@ public class ConsultHistoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ConsultHistoryEntity that = (ConsultHistoryEntity) o;
+        ConsultHistoryEntity history = (ConsultHistoryEntity) o;
 
-        if (id != that.id) return false;
-        if (clientId != that.clientId) return false;
-        if (consultantId != that.consultantId) return false;
-        if (expense != that.expense) return false;
-        if (archiveId != null ? !archiveId.equals(that.archiveId) : that.archiveId != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;
-        if (endTime != null ? !endTime.equals(that.endTime) : that.endTime != null) return false;
+        if (id != history.id) return false;
+        if (clientId != history.clientId) return false;
+        if (consultantId != history.consultantId) return false;
+        if (expense != history.expense) return false;
+        if (archiveId != null ? !archiveId.equals(history.archiveId) : history.archiveId != null) return false;
+        if (status != null ? !status.equals(history.status) : history.status != null) return false;
+        if (startTime != null ? !startTime.equals(history.startTime) : history.startTime != null) return false;
+        if (endTime != null ? !endTime.equals(history.endTime) : history.endTime != null) return false;
 
         return true;
     }

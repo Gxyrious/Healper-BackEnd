@@ -1,7 +1,6 @@
 package cn.edu.tongji.healper.service.Impl;
 
 import cn.edu.tongji.healper.model.ConsultHistoryEntity;
-import cn.edu.tongji.healper.model.Status;
 import cn.edu.tongji.healper.repository.ConsultHistoryRepository;
 import cn.edu.tongji.healper.service.ConsultService;
 import org.springframework.stereotype.Service;
@@ -10,18 +9,4 @@ import javax.annotation.Resource;
 
 @Service
 public class ConsultServiceImpl implements ConsultService {
-
-    @Resource
-    ConsultHistoryRepository historyRepository;
-
-    @Override
-    public boolean addConsultHistory(int clientId, int consultantId, int expense) {
-        ConsultHistoryEntity history = new ConsultHistoryEntity();
-        history.setClientId(clientId);
-        history.setConsultantId(consultantId);
-        history.setExpense(expense);
-        history.setStatus(Status.waiting);
-        historyRepository.save(history);
-        return true;
-    }
 }

@@ -2,17 +2,13 @@ package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
 import cn.edu.tongji.healper.model.ClientEntity;
+import cn.edu.tongji.healper.model.ConsultantEntity;
 import cn.edu.tongji.healper.service.ConsultService;
 import cn.edu.tongji.healper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "api/user")
@@ -21,12 +17,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ConsultService consultService;
-
+    // 示例1，一个不完善的登陆，只包含了来访者Client手机号的查询
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
-        ClientEntity client = userService.findUserEntityByUserPhone(loginInfoInDto.getUserPhone());
+        ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
         if(client == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Client doesn't exist!");
         } else if(client.getPassword().equals(loginInfoInDto.getUserPassword())) {
@@ -36,9 +30,19 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/history")
-    public ResponseEntity addHistory() {
-        consultService.addConsultHistory(1, 1, 100);
-        return ResponseEntity.ok("ok");
+    // 示例2，根据手机号查找个人信息
+    @GetMapping(value = "/info")
+    public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
+        ClientEntity client = userService.findClientEntityByUserPhone(userphone);
+        if(client != null) {
+            return ResponseEntity.ok(client);
+        } else {
+            ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
+            if(consultant != null) {
+                return ResponseEntity.ok(consultant);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone not found!");
+            }
+        }
     }
 }
