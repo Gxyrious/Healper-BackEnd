@@ -1,20 +1,21 @@
 package cn.edu.tongji.healper.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "psychology_scale", schema = "healper", catalog = "")
 public class PsychologyScaleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "ques_num", nullable = false)
+    @Column(name = "ques_num")
     private int quesNum;
     @Basic
-    @Column(name = "content_link", nullable = false, length = 128)
-    private String contentLink;
+    @Column(name = "content")
+    private String content;
 
     public int getId() {
         return id;
@@ -32,33 +33,24 @@ public class PsychologyScaleEntity {
         this.quesNum = quesNum;
     }
 
-    public String getContentLink() {
-        return contentLink;
+    public String getContent() {
+        return content;
     }
 
-    public void setContentLink(String contentLink) {
-        this.contentLink = contentLink;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         PsychologyScaleEntity that = (PsychologyScaleEntity) o;
-
-        if (id != that.id) return false;
-        if (quesNum != that.quesNum) return false;
-        if (contentLink != null ? !contentLink.equals(that.contentLink) : that.contentLink != null) return false;
-
-        return true;
+        return id == that.id && quesNum == that.quesNum && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + quesNum;
-        result = 31 * result + (contentLink != null ? contentLink.hashCode() : 0);
-        return result;
+        return Objects.hash(id, quesNum, content);
     }
 }

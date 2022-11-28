@@ -26,17 +26,17 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
         ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
-        if(client == null) {
+        if (client == null) {
             ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(loginInfoInDto.getUserPhone());
-            if(consultant != null) {
-                LoginInfoOutDto loginInfoOutDto=new LoginInfoOutDto();
+            if (consultant != null) {
+                LoginInfoOutDto loginInfoOutDto = new LoginInfoOutDto();
                 loginInfoOutDto.setUser(consultant);
                 loginInfoOutDto.setUserType(UserType.consultant);
                 return ResponseEntity.ok(loginInfoOutDto);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User doesn't exist!");
-        } else if(client.getPassword().equals(loginInfoInDto.getUserPassword())) {
-            LoginInfoOutDto loginInfoOutDto=new LoginInfoOutDto();
+        } else if (client.getPassword().equals(loginInfoInDto.getUserPassword())) {
+            LoginInfoOutDto loginInfoOutDto = new LoginInfoOutDto();
             loginInfoOutDto.setUser(client);
             loginInfoOutDto.setUserType(UserType.client);
             return ResponseEntity.ok(loginInfoOutDto);
@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping(value = "/info")
     public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
         ClientEntity client = userService.findClientEntityByUserPhone(userphone);
-        if(client != null) { //先查询是否为来访者
+        if (client != null) { //先查询是否为来访者
             return ResponseEntity.ok(client);
         } else { //再查询是否为咨询师
             ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
