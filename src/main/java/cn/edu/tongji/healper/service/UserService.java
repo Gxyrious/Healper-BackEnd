@@ -8,4 +8,7 @@ public interface UserService {
     ClientEntity findClientEntityByUserPhone(String userPhone);
 
     ConsultantEntity findConsultantEntityByUserPhone(String userPhone);
+
+
+    boolean addClientInfo(String nickname, String password, String userPhone, String sex);
 }

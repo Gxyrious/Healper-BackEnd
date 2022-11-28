@@ -27,4 +27,15 @@ public class UserServiceImpl implements UserService {
     public ConsultantEntity findConsultantEntityByUserPhone(String userPhone) {
         return consultantRepository.findConsultantEntityByUserphone(userPhone);
     }
+
+    @Override
+    public boolean addClientInfo(String nickname, String password, String userPhone, String sex) {
+        ClientEntity client = new ClientEntity();
+        client.setNickname(nickname);
+        client.setPassword(password);
+        client.setSex(sex);
+        client.setUserphone(userPhone);
+        clientRepository.save(client);
+        return true;
+    }
 }

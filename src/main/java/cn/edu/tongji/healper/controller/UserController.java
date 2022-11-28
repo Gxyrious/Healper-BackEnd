@@ -1,9 +1,9 @@
 package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
+import cn.edu.tongji.healper.indto.RegisterInfoInDto;
 import cn.edu.tongji.healper.model.ClientEntity;
 import cn.edu.tongji.healper.model.ConsultantEntity;
-import cn.edu.tongji.healper.service.ConsultService;
 import cn.edu.tongji.healper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +21,9 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
         ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
-        if(client == null) {
+        if (client == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Client doesn't exist!");
-        } else if(client.getPassword().equals(loginInfoInDto.getUserPassword())) {
+        } else if (client.getPassword().equals(loginInfoInDto.getUserPassword())) {
             return ResponseEntity.ok(client);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
@@ -34,15 +34,26 @@ public class UserController {
     @GetMapping(value = "/info")
     public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
         ClientEntity client = userService.findClientEntityByUserPhone(userphone);
-        if(client != null) {
+        if (client != null) {
             return ResponseEntity.ok(client);
         } else {
             ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
-            if(consultant != null) {
+            if (consultant != null) {
                 return ResponseEntity.ok(consultant);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone not found!");
             }
         }
+    }
+
+    //注册功能，存储用户信息
+    @PostMapping(value = "/register")
+    public ResponseEntity register(@RequestBody RegisterInfoInDto registerInfoInDto) {
+        if (userService.addClientInfo(registerInfoInDto.getNickname(), registerInfoInDto.getPassword(), registerInfoInDto.getUserPhone(), registerInfoInDto.getSex())) {
+            return ResponseEntity.ok("");
+        } else {
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+        }
+
     }
 }
