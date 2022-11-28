@@ -25,7 +25,7 @@ public class HistoryController {
         Integer consultantId = Integer.parseInt(map.get("consultantId").toString());
         Integer expense = Integer.parseInt(map.get("expense").toString());
         if(historyService.addConsultHistory(clientId, consultantId, expense)) {
-            return ResponseEntity.ok("");
+            return ResponseEntity.ok("添加成功！");
         } else {
             return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
         }
