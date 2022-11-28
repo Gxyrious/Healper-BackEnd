@@ -3,6 +3,8 @@ package cn.edu.tongji.healper.controller;
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
 import cn.edu.tongji.healper.model.ClientEntity;
 import cn.edu.tongji.healper.model.ConsultantEntity;
+import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
+import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.service.ConsultService;
 import cn.edu.tongji.healper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,19 @@ public class UserController {
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
         ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
         if(client == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Client doesn't exist!");
+            ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(loginInfoInDto.getUserPhone());
+            if(consultant != null) {
+                LoginInfoOutDto loginInfoOutDto=new LoginInfoOutDto();
+                loginInfoOutDto.setUser(consultant);
+                loginInfoOutDto.setUserType(UserType.consultant);
+                return ResponseEntity.ok(loginInfoOutDto);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User doesn't exist!");
         } else if(client.getPassword().equals(loginInfoInDto.getUserPassword())) {
-            return ResponseEntity.ok(client);
+            LoginInfoOutDto loginInfoOutDto=new LoginInfoOutDto();
+            loginInfoOutDto.setUser(client);
+            loginInfoOutDto.setUserType(UserType.client);
+            return ResponseEntity.ok(loginInfoOutDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
         }
@@ -34,9 +46,9 @@ public class UserController {
     @GetMapping(value = "/info")
     public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
         ClientEntity client = userService.findClientEntityByUserPhone(userphone);
-        if(client != null) {
+        if(client != null) { //先查询是否为来访者
             return ResponseEntity.ok(client);
-        } else {
+        } else { //再查询是否为咨询师
             ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
             if(consultant != null) {
                 return ResponseEntity.ok(consultant);
