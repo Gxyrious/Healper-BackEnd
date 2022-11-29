@@ -17,23 +17,23 @@ public class ConsultHistoryEntity {
     @Column(name = "consultant_id")
     private int consultantId;
     @Basic
-    @Column(name = "status")
-    private String status;
-    @Basic
-    @Column(name = "start_time")
-    private Integer startTime;
-    @Basic
     @Column(name = "end_time")
     private Integer endTime;
     @Basic
     @Column(name = "expense")
     private int expense;
     @Basic
-    @Column(name = "summary")
-    private String summary;
+    @Column(name = "start_time")
+    private Integer startTime;
+    @Basic
+    @Column(name = "status")
+    private String status;
     @Basic
     @Column(name = "advice")
     private String advice;
+    @Basic
+    @Column(name = "summary")
+    private String summary;
 
     public int getId() {
         return id;
@@ -59,22 +59,6 @@ public class ConsultHistoryEntity {
         this.consultantId = consultantId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Integer startTime) {
-        this.startTime = startTime;
-    }
-
     public Integer getEndTime() {
         return endTime;
     }
@@ -91,12 +75,20 @@ public class ConsultHistoryEntity {
         this.expense = expense;
     }
 
-    public String getSummary() {
-        return summary;
+    public Integer getStartTime() {
+        return startTime;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setStartTime(Integer startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getAdvice() {
@@ -107,16 +99,24 @@ public class ConsultHistoryEntity {
         this.advice = advice;
     }
 
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsultHistoryEntity that = (ConsultHistoryEntity) o;
-        return id == that.id && clientId == that.clientId && consultantId == that.consultantId && expense == that.expense && Objects.equals(status, that.status) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(summary, that.summary) && Objects.equals(advice, that.advice);
+        return id == that.id && clientId == that.clientId && consultantId == that.consultantId && expense == that.expense && Objects.equals(endTime, that.endTime) && Objects.equals(startTime, that.startTime) && Objects.equals(status, that.status) && Objects.equals(advice, that.advice) && Objects.equals(summary, that.summary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, clientId, consultantId, status, startTime, endTime, expense, summary, advice);
+        return Objects.hash(id, clientId, consultantId, endTime, expense, startTime, status, advice, summary);
     }
 }

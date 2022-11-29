@@ -16,6 +16,9 @@ public class PsychologyScaleEntity {
     @Basic
     @Column(name = "content")
     private String content;
+    @Basic
+    @Column(name = "name")
+    private String name;
 
     public int getId() {
         return id;
@@ -41,16 +44,24 @@ public class PsychologyScaleEntity {
         this.content = content;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PsychologyScaleEntity that = (PsychologyScaleEntity) o;
-        return id == that.id && quesNum == that.quesNum && Objects.equals(content, that.content);
+        return id == that.id && quesNum == that.quesNum && Objects.equals(content, that.content) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, quesNum, content);
+        return Objects.hash(id, quesNum, content, name);
     }
 }

@@ -73,7 +73,7 @@ public class UserController {
     public ResponseEntity register(@RequestBody RegisterInfoInDto registerInfoInDto) {
         if (userService.findConsultantEntityByUserPhone(registerInfoInDto.getUserPhone()) == null) {//先判断手机号是否已经存在
             if (userService.addClientInfo(registerInfoInDto.getNickname(), registerInfoInDto.getPassword(), registerInfoInDto.getUserPhone(), registerInfoInDto.getSex())) {
-                return ResponseEntity.ok("");
+                return ResponseEntity.ok("ok");
             } else {
                 return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
             }

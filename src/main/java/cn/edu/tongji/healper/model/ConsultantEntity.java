@@ -11,20 +11,20 @@ public class ConsultantEntity {
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "userphone")
-    private String userphone;
-    @Basic
-    @Column(name = "realname")
-    private String realname;
-    @Basic
     @Column(name = "password")
     private String password;
     @Basic
     @Column(name = "qr_code_link")
     private String qrCodeLink;
     @Basic
+    @Column(name = "realname")
+    private String realname;
+    @Basic
     @Column(name = "sex")
     private String sex;
+    @Basic
+    @Column(name = "userphone")
+    private String userphone;
 
     public int getId() {
         return id;
@@ -32,22 +32,6 @@ public class ConsultantEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUserphone() {
-        return userphone;
-    }
-
-    public void setUserphone(String userphone) {
-        this.userphone = userphone;
-    }
-
-    public String getRealname() {
-        return realname;
-    }
-
-    public void setRealname(String realname) {
-        this.realname = realname;
     }
 
     public String getPassword() {
@@ -66,6 +50,14 @@ public class ConsultantEntity {
         this.qrCodeLink = qrCodeLink;
     }
 
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
     public String getSex() {
         return sex;
     }
@@ -74,16 +66,24 @@ public class ConsultantEntity {
         this.sex = sex;
     }
 
+    public String getUserphone() {
+        return userphone;
+    }
+
+    public void setUserphone(String userphone) {
+        this.userphone = userphone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsultantEntity that = (ConsultantEntity) o;
-        return id == that.id && Objects.equals(userphone, that.userphone) && Objects.equals(realname, that.realname) && Objects.equals(password, that.password) && Objects.equals(qrCodeLink, that.qrCodeLink) && Objects.equals(sex, that.sex);
+        return id == that.id && Objects.equals(password, that.password) && Objects.equals(qrCodeLink, that.qrCodeLink) && Objects.equals(realname, that.realname) && Objects.equals(sex, that.sex) && Objects.equals(userphone, that.userphone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userphone, realname, password, qrCodeLink, sex);
+        return Objects.hash(id, password, qrCodeLink, realname, sex, userphone);
     }
 }

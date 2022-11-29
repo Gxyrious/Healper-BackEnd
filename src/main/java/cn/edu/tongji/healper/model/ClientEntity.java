@@ -17,11 +17,11 @@ public class ClientEntity {
     @Column(name = "password")
     private String password;
     @Basic
-    @Column(name = "userphone")
-    private String userphone;
-    @Basic
     @Column(name = "sex")
     private String sex;
+    @Basic
+    @Column(name = "userphone")
+    private String userphone;
     @Basic
     @Column(name = "ex_consultant_id")
     private Integer exConsultantId;
@@ -50,20 +50,20 @@ public class ClientEntity {
         this.password = password;
     }
 
-    public String getUserphone() {
-        return userphone;
-    }
-
-    public void setUserphone(String userphone) {
-        this.userphone = userphone;
-    }
-
     public String getSex() {
         return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getUserphone() {
+        return userphone;
+    }
+
+    public void setUserphone(String userphone) {
+        this.userphone = userphone;
     }
 
     public Integer getExConsultantId() {
@@ -79,11 +79,11 @@ public class ClientEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientEntity that = (ClientEntity) o;
-        return id == that.id && Objects.equals(nickname, that.nickname) && Objects.equals(password, that.password) && Objects.equals(userphone, that.userphone) && Objects.equals(sex, that.sex) && Objects.equals(exConsultantId, that.exConsultantId);
+        return id == that.id && Objects.equals(nickname, that.nickname) && Objects.equals(password, that.password) && Objects.equals(sex, that.sex) && Objects.equals(userphone, that.userphone) && Objects.equals(exConsultantId, that.exConsultantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nickname, password, userphone, sex, exConsultantId);
+        return Objects.hash(id, nickname, password, sex, userphone, exConsultantId);
     }
 }
