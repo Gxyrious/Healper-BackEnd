@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public boolean addClientInfo(String nickname, String password, String userPhone, String sex) {
         ClientEntity client = new ClientEntity();
         client.setNickname(nickname);
-        client.setPassword(password);
+        client.setPassword(stringToMD5(password));//密码进行md5加密
         client.setSex(sex);
         client.setUserphone(userPhone);
         clientRepository.save(client);
