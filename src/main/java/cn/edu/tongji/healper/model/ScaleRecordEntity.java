@@ -1,25 +1,26 @@
 package cn.edu.tongji.healper.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "scale_record", schema = "healper", catalog = "")
 public class ScaleRecordEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "client_id", nullable = false)
+    @Column(name = "client_id")
     private int clientId;
     @Basic
-    @Column(name = "scale_id", nullable = false)
+    @Column(name = "scale_id")
     private int scaleId;
     @Basic
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     private int endTime;
     @Basic
-    @Column(name = "is_hidden", nullable = false)
+    @Column(name = "is_hidden")
     private byte isHidden;
 
     public int getId() {
@@ -66,25 +67,12 @@ public class ScaleRecordEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ScaleRecordEntity that = (ScaleRecordEntity) o;
-
-        if (id != that.id) return false;
-        if (clientId != that.clientId) return false;
-        if (scaleId != that.scaleId) return false;
-        if (endTime != that.endTime) return false;
-        if (isHidden != that.isHidden) return false;
-
-        return true;
+        return id == that.id && clientId == that.clientId && scaleId == that.scaleId && endTime == that.endTime && isHidden == that.isHidden;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + clientId;
-        result = 31 * result + scaleId;
-        result = 31 * result + endTime;
-        result = 31 * result + (int) isHidden;
-        return result;
+        return Objects.hash(id, clientId, scaleId, endTime, isHidden);
     }
 }

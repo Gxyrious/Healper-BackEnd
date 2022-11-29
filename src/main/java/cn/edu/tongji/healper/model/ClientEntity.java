@@ -1,26 +1,30 @@
 package cn.edu.tongji.healper.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "client", schema = "healper", catalog = "")
 public class ClientEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "nickname", nullable = false, length = 64)
+    @Column(name = "nickname")
     private String nickname;
     @Basic
-    @Column(name = "password", nullable = false, length = 32)
+    @Column(name = "password")
     private String password;
     @Basic
-    @Column(name = "userphone", nullable = false, length = 11)
+    @Column(name = "userphone")
     private String userphone;
     @Basic
-    @Column(name = "sex", nullable = true, length = 1)
+    @Column(name = "sex")
     private String sex;
+    @Basic
+    @Column(name = "ex_consultant_id")
+    private Integer exConsultantId;
 
     public int getId() {
         return id;
@@ -62,29 +66,24 @@ public class ClientEntity {
         this.sex = sex;
     }
 
+    public Integer getExConsultantId() {
+        return exConsultantId;
+    }
+
+    public void setExConsultantId(Integer exConsultantId) {
+        this.exConsultantId = exConsultantId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        ClientEntity client = (ClientEntity) o;
-
-        if (id != client.id) return false;
-        if (nickname != null ? !nickname.equals(client.nickname) : client.nickname != null) return false;
-        if (password != null ? !password.equals(client.password) : client.password != null) return false;
-        if (userphone != null ? !userphone.equals(client.userphone) : client.userphone != null) return false;
-        if (sex != null ? !sex.equals(client.sex) : client.sex != null) return false;
-
-        return true;
+        ClientEntity that = (ClientEntity) o;
+        return id == that.id && Objects.equals(nickname, that.nickname) && Objects.equals(password, that.password) && Objects.equals(userphone, that.userphone) && Objects.equals(sex, that.sex) && Objects.equals(exConsultantId, that.exConsultantId);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (userphone != null ? userphone.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        return result;
+        return Objects.hash(id, nickname, password, userphone, sex, exConsultantId);
     }
 }

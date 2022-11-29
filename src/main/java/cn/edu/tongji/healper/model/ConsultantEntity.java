@@ -1,28 +1,29 @@
 package cn.edu.tongji.healper.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "consultant", schema = "healper", catalog = "")
 public class ConsultantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "userphone", nullable = false, length = 11)
+    @Column(name = "userphone")
     private String userphone;
     @Basic
-    @Column(name = "realname", nullable = false, length = 16)
+    @Column(name = "realname")
     private String realname;
     @Basic
-    @Column(name = "password", nullable = false, length = 32)
+    @Column(name = "password")
     private String password;
     @Basic
-    @Column(name = "qr_code_link", nullable = true, length = 128)
+    @Column(name = "qr_code_link")
     private String qrCodeLink;
     @Basic
-    @Column(name = "sex", nullable = true, length = 1)
+    @Column(name = "sex")
     private String sex;
 
     public int getId() {
@@ -77,27 +78,12 @@ public class ConsultantEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ConsultantEntity that = (ConsultantEntity) o;
-
-        if (id != that.id) return false;
-        if (userphone != null ? !userphone.equals(that.userphone) : that.userphone != null) return false;
-        if (realname != null ? !realname.equals(that.realname) : that.realname != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (qrCodeLink != null ? !qrCodeLink.equals(that.qrCodeLink) : that.qrCodeLink != null) return false;
-        if (sex != null ? !sex.equals(that.sex) : that.sex != null) return false;
-
-        return true;
+        return id == that.id && Objects.equals(userphone, that.userphone) && Objects.equals(realname, that.realname) && Objects.equals(password, that.password) && Objects.equals(qrCodeLink, that.qrCodeLink) && Objects.equals(sex, that.sex);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (userphone != null ? userphone.hashCode() : 0);
-        result = 31 * result + (realname != null ? realname.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (qrCodeLink != null ? qrCodeLink.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        return result;
+        return Objects.hash(id, userphone, realname, password, qrCodeLink, sex);
     }
 }

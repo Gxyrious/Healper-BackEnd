@@ -1,23 +1,27 @@
 package cn.edu.tongji.healper.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "chat_message", schema = "healper", catalog = "")
 public class ChatMessageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "client_id", nullable = false)
+    @Column(name = "client_id")
     private int clientId;
     @Basic
-    @Column(name = "consultant_id", nullable = false)
+    @Column(name = "consultant_id")
     private int consultantId;
     @Basic
-    @Column(name = "create_time", nullable = false)
+    @Column(name = "create_time")
     private int createTime;
+    @Basic
+    @Column(name = "content")
+    private String content;
 
     public int getId() {
         return id;
@@ -51,27 +55,24 @@ public class ChatMessageEntity {
         this.createTime = createTime;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ChatMessageEntity that = (ChatMessageEntity) o;
-
-        if (id != that.id) return false;
-        if (clientId != that.clientId) return false;
-        if (consultantId != that.consultantId) return false;
-        if (createTime != that.createTime) return false;
-
-        return true;
+        return id == that.id && clientId == that.clientId && consultantId == that.consultantId && createTime == that.createTime && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + clientId;
-        result = 31 * result + consultantId;
-        result = 31 * result + createTime;
-        return result;
+        return Objects.hash(id, clientId, consultantId, createTime, content);
     }
 }
