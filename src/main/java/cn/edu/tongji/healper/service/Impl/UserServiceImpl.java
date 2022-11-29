@@ -38,4 +38,9 @@ public class UserServiceImpl implements UserService {
         clientRepository.save(client);
         return true;
     }
+
+    @Override
+    public ClientEntity updateClientInfo(ClientEntity client) {
+        return clientRepository.save(client);
+    }
 }

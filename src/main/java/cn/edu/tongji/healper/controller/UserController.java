@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // 示例1，一个不完善的登陆，只包含了来访者Client手机号的查询
+    // 登录
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
         ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
@@ -45,7 +45,7 @@ public class UserController {
         }
     }
 
-    // 示例2，根据手机号查找个人信息
+    // 根据手机号查找个人信息
     @GetMapping(value = "/info")
     public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
         ClientEntity client = userService.findClientEntityByUserPhone(userphone);
@@ -69,6 +69,12 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
         }
+    }
 
+    //修改用户信息
+    @PostMapping(value = "/change")
+    public ResponseEntity change(@RequestBody ClientEntity client) {
+        userService.updateClientInfo(client);
+        return ResponseEntity.ok("change success!");
     }
 }
