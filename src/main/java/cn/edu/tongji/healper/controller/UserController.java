@@ -10,12 +10,17 @@ import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.service.ConsultService;
 
 import cn.edu.tongji.healper.service.UserService;
+import cn.edu.tongji.healper.util.SMSUtils;
+import cn.edu.tongji.healper.util.ValidateCodeUtils;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.util.ByteUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -80,9 +85,29 @@ public class UserController {
 
         } else {
             System.out.println("手机号重复");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone already exist!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone already exists!");
         }
 
+    }
+
+    // 发送手机短信验证码
+    @PostMapping("/sendMsg")
+    public ResponseEntity sendMsg(@RequestBody LoginInfoInDto loginInfoInDto, HttpSession session) {
+        //获取手机号
+        String phone = loginInfoInDto.getUserPhone();
+        if (phone != null && phone.length() > 0) {
+            //看个人需求自行编写，已生成随机的4位验证码为例
+            String code = ValidateCodeUtils.generateValidateCode(4).toString();
+//            log.info("code={}", code);
+
+            //调用阿里云提供的短信服务API完成发送短信
+            SMSUtils.sendMessage("阿里云短信测试","SMS_154950909",phone,code);
+
+            //需要将生成的验证码保存到Session
+            session.setAttribute(phone, code);
+            return ResponseEntity.ok("短信发送成功");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("短信发送失败");
     }
 
 }
