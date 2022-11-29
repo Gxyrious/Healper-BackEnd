@@ -11,9 +11,16 @@ import cn.edu.tongji.healper.service.ConsultService;
 
 import cn.edu.tongji.healper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.util.ByteUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
 @RestController
 @RequestMapping(value = "api/user")
@@ -26,17 +33,17 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
         ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
-        if(client == null) {
+        if (client == null) {
             ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(loginInfoInDto.getUserPhone());
-            if(consultant != null) {
-                LoginInfoOutDto loginInfoOutDto=new LoginInfoOutDto();
+            if (consultant != null) {
+                LoginInfoOutDto loginInfoOutDto = new LoginInfoOutDto();
                 loginInfoOutDto.setUser(consultant);
                 loginInfoOutDto.setUserType(UserType.consultant);
                 return ResponseEntity.ok(loginInfoOutDto);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User doesn't exist!");
-        } else if(client.getPassword().equals(loginInfoInDto.getUserPassword())) {
-            LoginInfoOutDto loginInfoOutDto=new LoginInfoOutDto();
+        } else if (client.getPassword().equals(stringToMD5(loginInfoInDto.getUserPassword()))) {
+            LoginInfoOutDto loginInfoOutDto = new LoginInfoOutDto();
             loginInfoOutDto.setUser(client);
             loginInfoOutDto.setUserType(UserType.client);
             return ResponseEntity.ok(loginInfoOutDto);
@@ -49,7 +56,7 @@ public class UserController {
     @GetMapping(value = "/info")
     public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
         ClientEntity client = userService.findClientEntityByUserPhone(userphone);
-        if(client != null) { //先查询是否为来访者
+        if (client != null) { //先查询是否为来访者
             return ResponseEntity.ok(client);
         } else { //再查询是否为咨询师
             ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
@@ -61,14 +68,22 @@ public class UserController {
         }
     }
 
-    //注册功能，存储用户信息
+    //注册功能，判断手机号是否重复，并将密码md5加密后存储用户信息
     @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody RegisterInfoInDto registerInfoInDto) {
-        if (userService.addClientInfo(registerInfoInDto.getNickname(), registerInfoInDto.getPassword(), registerInfoInDto.getUserPhone(), registerInfoInDto.getSex())) {
-            return ResponseEntity.ok("");
+        if (userService.findConsultantEntityByUserPhone(registerInfoInDto.getUserPhone()) == null) {//先判断手机号是否已经存在
+            if (userService.addClientInfo(registerInfoInDto.getNickname(), registerInfoInDto.getPassword(), registerInfoInDto.getUserPhone(), registerInfoInDto.getSex())) {
+                return ResponseEntity.ok("");
+            } else {
+                return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+            }
+
         } else {
-            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+            System.out.println("手机号重复");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone already exist!");
         }
 
     }
+
 }
+
