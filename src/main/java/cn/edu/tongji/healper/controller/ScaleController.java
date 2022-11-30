@@ -47,12 +47,18 @@ public class ScaleController {
 
     @GetMapping(value = "/names")
     public ResponseEntity getPsychologyScales(@RequestParam Integer page, @RequestParam Integer size) {
-        List<PsychologyScaleEntity> names = scaleService.findPsychologyScaleName(page, size);
+        List<PsychologyScaleEntity> names = scaleService.findScaleNames(page, size);
         if (names != null) {
             return ResponseEntity.ok(names);
         } else {
             return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
         }
+    }
+
+    @GetMapping(value = "/single")
+    public ResponseEntity getSingleScaleById(@RequestParam Integer scaleId) {
+        PsychologyScaleEntity scale = scaleService.findSingleScale(scaleId);
+        return scale != null ? ResponseEntity.ok(scale) : ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Index doesn't exist!");
     }
 
 }

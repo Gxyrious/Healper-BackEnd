@@ -32,9 +32,14 @@ public class ScaleServiceImpl implements ScaleService {
     }
 
     @Override
-    public List<PsychologyScaleEntity> findPsychologyScaleName(Integer page, Integer size) {
+    public List<PsychologyScaleEntity> findScaleNames(Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
         return psychologyScaleRepository.findScales(pageRequest);
+    }
+
+    @Override
+    public PsychologyScaleEntity findSingleScale(Integer scaleId) {
+        return psychologyScaleRepository.findPsychologyScaleEntityById(scaleId);
     }
 
 }

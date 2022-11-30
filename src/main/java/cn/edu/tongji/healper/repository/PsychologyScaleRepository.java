@@ -15,4 +15,6 @@ public interface PsychologyScaleRepository extends
     @Query("select scale from PsychologyScaleEntity scale")
     List<PsychologyScaleEntity> findScales(Pageable pageable);
 
+    PsychologyScaleEntity findPsychologyScaleEntityById(Integer scaleId);
+
 }

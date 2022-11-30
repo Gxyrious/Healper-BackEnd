@@ -1,6 +1,5 @@
 package cn.edu.tongji.healper.service;
 
-import cn.edu.tongji.healper.model.ClientEntity;
 import cn.edu.tongji.healper.model.PsychologyScaleEntity;
 import cn.edu.tongji.healper.model.ScaleRecordEntity;
 
@@ -11,6 +10,8 @@ public interface ScaleService {
 
     void deleteScaleRecord(Integer id);
 
-    List<PsychologyScaleEntity> findPsychologyScaleName(Integer page, Integer size);
+    List<PsychologyScaleEntity> findScaleNames(Integer page, Integer size);
+
+    PsychologyScaleEntity findSingleScale(Integer scaleId);
 
 }
