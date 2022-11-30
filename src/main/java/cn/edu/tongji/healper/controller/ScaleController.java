@@ -1,6 +1,7 @@
 package cn.edu.tongji.healper.controller;
 
-import cn.edu.tongji.healper.indto.UserInDto;
+
+import cn.edu.tongji.healper.model.PsychologyScaleEntity;
 import cn.edu.tongji.healper.model.ScaleRecordEntity;
 import cn.edu.tongji.healper.outdto.ScaleRecordDto;
 import cn.edu.tongji.healper.service.ScaleService;
@@ -41,6 +42,16 @@ public class ScaleController {
         }
         catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/names")
+    public ResponseEntity getPsychologyScales(@RequestParam Integer page, @RequestParam Integer size) {
+        List<PsychologyScaleEntity> names = scaleService.findPsychologyScaleName(page, size);
+        if (names != null) {
+            return ResponseEntity.ok(names);
+        } else {
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
         }
     }
 
