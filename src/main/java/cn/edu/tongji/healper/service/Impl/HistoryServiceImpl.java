@@ -1,6 +1,6 @@
 package cn.edu.tongji.healper.service.Impl;
 
-import cn.edu.tongji.healper.model.ConsultHistoryEntity;
+import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.repository.ConsultHistoryRepository;
 import cn.edu.tongji.healper.service.HistoryService;
 import org.springframework.stereotype.Service;

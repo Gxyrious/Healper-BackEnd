@@ -1,4 +1,4 @@
-package cn.edu.tongji.healper.model;
+package cn.edu.tongji.healper.entity;
 
 import javax.persistence.*;
 import java.util.Objects;

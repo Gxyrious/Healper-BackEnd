@@ -1,7 +1,7 @@
 package cn.edu.tongji.healper.service;
 
-import cn.edu.tongji.healper.model.ClientEntity;
-import cn.edu.tongji.healper.model.ConsultantEntity;
+import cn.edu.tongji.healper.entity.ClientEntity;
+import cn.edu.tongji.healper.entity.ConsultantEntity;
 
 public interface UserService {
 

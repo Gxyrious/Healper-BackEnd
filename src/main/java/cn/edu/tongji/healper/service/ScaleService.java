@@ -1,12 +1,12 @@
 package cn.edu.tongji.healper.service;
 
-import cn.edu.tongji.healper.model.PsychologyScaleEntity;
-import cn.edu.tongji.healper.model.ScaleRecordEntity;
+import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
+import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 
 import java.util.List;
 
 public interface ScaleService {
-    List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer client_id);
+    List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId);
 
     void deleteScaleRecord(Integer id);
 

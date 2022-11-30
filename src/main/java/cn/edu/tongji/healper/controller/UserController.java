@@ -2,28 +2,22 @@ package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
 import cn.edu.tongji.healper.indto.RegisterInfoInDto;
-import cn.edu.tongji.healper.model.ClientEntity;
-import cn.edu.tongji.healper.model.ConsultantEntity;
+import cn.edu.tongji.healper.entity.ClientEntity;
+import cn.edu.tongji.healper.entity.ConsultantEntity;
 
+import cn.edu.tongji.healper.indto.UserInDto;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
-import cn.edu.tongji.healper.service.ConsultService;
 
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.SMSUtils;
 import cn.edu.tongji.healper.util.ValidateCodeUtils;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.util.ByteUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
@@ -90,7 +84,7 @@ public class UserController {
     }
 
     //修改用户信息
-    @PostMapping(value = "/change")
+    @PostMapping(value = "/info")
     public ResponseEntity change(@RequestBody ClientEntity client) {
         userService.updateClientInfo(client);
         return ResponseEntity.ok("change success!");

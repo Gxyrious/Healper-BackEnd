@@ -1,6 +1,6 @@
 package cn.edu.tongji.healper.repository;
 
-import cn.edu.tongji.healper.model.PsychologyScaleEntity;
+import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

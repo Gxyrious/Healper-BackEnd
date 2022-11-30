@@ -1,6 +1,6 @@
 package cn.edu.tongji.healper.repository;
 
-import cn.edu.tongji.healper.model.ConsultHistoryEntity;
+import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ConsultHistoryRepository extends JpaRepository<ConsultHistoryEntity, Integer> {

@@ -1,6 +1,6 @@
 package cn.edu.tongji.healper.outdto;
 
-import cn.edu.tongji.healper.model.ScaleRecordEntity;
+import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import lombok.Data;
 
 import java.util.List;

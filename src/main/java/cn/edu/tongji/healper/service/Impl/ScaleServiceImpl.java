@@ -1,7 +1,7 @@
 package cn.edu.tongji.healper.service.Impl;
 
-import cn.edu.tongji.healper.model.PsychologyScaleEntity;
-import cn.edu.tongji.healper.model.ScaleRecordEntity;
+import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
+import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import cn.edu.tongji.healper.repository.PsychologyScaleRepository;
 import cn.edu.tongji.healper.repository.ScaleRecordRepository;
 import cn.edu.tongji.healper.service.ScaleService;
@@ -22,8 +22,8 @@ public class ScaleServiceImpl implements ScaleService {
     private PsychologyScaleRepository psychologyScaleRepository;
 
     @Override
-    public List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer client_id) {
-        return scaleRecordRepository.findScaleRecordEntitiesByClientId(client_id);
+    public List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId) {
+        return scaleRecordRepository.findScaleRecordEntitiesByClientId(clientId);
     }
 
     @Override
