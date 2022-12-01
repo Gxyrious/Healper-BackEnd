@@ -1,11 +1,14 @@
 package cn.edu.tongji.healper.po;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
 public class ConsultOrder implements Serializable {
+
+    private int id;
 
     private Integer startTime;
 
@@ -19,9 +22,11 @@ public class ConsultOrder implements Serializable {
 
     private String status;
 
-    public ConsultOrder(Integer startTime, Integer endTime,
+    public ConsultOrder(int id,
+                        Integer startTime, Integer endTime,
                         int consultantId, String realname,
                         int expense, String status) {
+        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.consultantId = consultantId;

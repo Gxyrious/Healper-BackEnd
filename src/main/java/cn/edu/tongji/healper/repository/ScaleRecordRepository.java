@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface ScaleRecordRepository extends JpaRepository<ScaleRecordEntity, Integer> {
     List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId);
-
-    void deleteById(Integer id);
 }

@@ -32,4 +32,15 @@ public class HistoryServiceImpl implements HistoryService {
         Pageable pageRequest = PageRequest.of(page, size);
         return historyRepository.findConsultOrder(clientId, pageRequest);
     }
+
+    @Override
+    public String findQrCodeByHistoryId(Integer historyId) {
+        return historyRepository.findQrCodeByHistoryId(historyId);
+    }
+
+    @Override
+    public Boolean updateHistoryStatusById(Integer historyId, char status) {
+        Integer updatedNumber = historyRepository.updateHistoryStatusById(historyId, String.valueOf(status));
+        return updatedNumber == 1;
+    }
 }
