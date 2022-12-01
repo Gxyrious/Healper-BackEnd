@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "consultant", schema = "healper", catalog = "")
-public class ConsultantEntity {
+public class ConsultantEntity implements User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -37,6 +37,7 @@ public class ConsultantEntity {
     @Column(name = "profile", nullable = true, length = 128)
     private String profile;
 
+    @Override
     public int getId() {
         return id;
     }
@@ -45,6 +46,7 @@ public class ConsultantEntity {
         this.id = id;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -77,6 +79,7 @@ public class ConsultantEntity {
         this.sex = sex;
     }
 
+    @Override
     public String getUserphone() {
         return userphone;
     }
