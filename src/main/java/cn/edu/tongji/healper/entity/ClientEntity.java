@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "client", schema = "healper", catalog = "")
-public class ClientEntity implements User{
+public class ClientEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -25,8 +25,10 @@ public class ClientEntity implements User{
     @Basic
     @Column(name = "ex_consultant_id")
     private Integer exConsultantId;
+    @Basic
+    @Column(name = "age")
+    private Integer age;
 
-    @Override
     public int getId() {
         return id;
     }
@@ -43,7 +45,6 @@ public class ClientEntity implements User{
         this.nickname = nickname;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -60,7 +61,6 @@ public class ClientEntity implements User{
         this.sex = sex;
     }
 
-    @Override
     public String getUserphone() {
         return userphone;
     }
@@ -77,16 +77,24 @@ public class ClientEntity implements User{
         this.exConsultantId = exConsultantId;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientEntity that = (ClientEntity) o;
-        return id == that.id && Objects.equals(nickname, that.nickname) && Objects.equals(password, that.password) && Objects.equals(sex, that.sex) && Objects.equals(userphone, that.userphone) && Objects.equals(exConsultantId, that.exConsultantId);
+        return id == that.id && Objects.equals(nickname, that.nickname) && Objects.equals(password, that.password) && Objects.equals(sex, that.sex) && Objects.equals(userphone, that.userphone) && Objects.equals(exConsultantId, that.exConsultantId) && Objects.equals(age, that.age);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nickname, password, sex, userphone, exConsultantId);
+        return Objects.hash(id, nickname, password, sex, userphone, exConsultantId, age);
     }
 }

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "consultant", schema = "healper", catalog = "")
-public class ConsultantEntity implements User{
+public class ConsultantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -25,8 +25,10 @@ public class ConsultantEntity implements User{
     @Basic
     @Column(name = "userphone")
     private String userphone;
+    @Basic
+    @Column(name = "age")
+    private Integer age;
 
-    @Override
     public int getId() {
         return id;
     }
@@ -35,7 +37,6 @@ public class ConsultantEntity implements User{
         this.id = id;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -68,7 +69,6 @@ public class ConsultantEntity implements User{
         this.sex = sex;
     }
 
-    @Override
     public String getUserphone() {
         return userphone;
     }
@@ -77,16 +77,24 @@ public class ConsultantEntity implements User{
         this.userphone = userphone;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsultantEntity that = (ConsultantEntity) o;
-        return id == that.id && Objects.equals(password, that.password) && Objects.equals(qrCodeLink, that.qrCodeLink) && Objects.equals(realname, that.realname) && Objects.equals(sex, that.sex) && Objects.equals(userphone, that.userphone);
+        return id == that.id && Objects.equals(password, that.password) && Objects.equals(qrCodeLink, that.qrCodeLink) && Objects.equals(realname, that.realname) && Objects.equals(sex, that.sex) && Objects.equals(userphone, that.userphone) && Objects.equals(age, that.age);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, qrCodeLink, realname, sex, userphone);
+        return Objects.hash(id, password, qrCodeLink, realname, sex, userphone, age);
     }
 }
