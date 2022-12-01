@@ -3,6 +3,9 @@ package cn.edu.tongji.healper.service.Impl;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
+import cn.edu.tongji.healper.outdto.UserType;
+import cn.edu.tongji.healper.po.ClientInfo;
+import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
 import cn.edu.tongji.healper.repository.ConsultantRepository;
 import cn.edu.tongji.healper.service.UserService;
@@ -69,4 +72,15 @@ public class UserServiceImpl implements UserService {
     public ClientEntity updateClientInfo(ClientEntity client) {
         return clientRepository.save(client);
     }
+
+    @Override
+    public ClientInfo findClientInfoById(Integer id) {
+        return clientRepository.findClientInfoById(id);
+    }
+
+    @Override
+    public ConsultantInfo findConsultantInfoById(Integer id) {
+        return consultantRepository.findConsultantInfoById(id);
+    }
+
 }
