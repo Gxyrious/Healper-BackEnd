@@ -4,6 +4,8 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
 
+import java.util.List;
+
 public interface UserService {
 
     //client相关接口
@@ -18,4 +20,5 @@ public interface UserService {
 
     User findUserByPhone(String phone);
 
+    List<ConsultantEntity> findConsultantsByLabel(String label, Integer page, Integer size);
 }

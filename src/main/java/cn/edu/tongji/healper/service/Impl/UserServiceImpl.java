@@ -6,9 +6,14 @@ import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.repository.ClientRepository;
 import cn.edu.tongji.healper.repository.ConsultantRepository;
 import cn.edu.tongji.healper.service.UserService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.List;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
@@ -41,6 +46,12 @@ public class UserServiceImpl implements UserService {
         } else {
             return client;
         }
+    }
+
+    @Override
+    public List<ConsultantEntity> findConsultantsByLabel(String label, Integer page, Integer size) {
+        Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
+        return consultantRepository.findConsultantEntitiesByLabel(label, pageRequest);
     }
 
 

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
+
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
 @RestController
@@ -47,8 +49,6 @@ public class UserController {
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
             }
-
-
         }
     }
 
@@ -116,5 +116,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("短信发送失败");
     }
 
+    @GetMapping("/consultants")
+    public ResponseEntity getConsultants(
+            @RequestParam Integer page,
+            @RequestParam Integer size,
+            @RequestParam String label
+    ) {
+        List<ConsultantEntity> consultants = userService.findConsultantsByLabel(label, page, size);
+        if (consultants.size() != 0) {
+            return ResponseEntity.ok(consultants);
+        } else {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("No %s consultants found!".formatted(label));
+        }
+    }
 }
 
