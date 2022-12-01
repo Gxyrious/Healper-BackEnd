@@ -24,7 +24,7 @@ public class HistoryServiceImpl implements HistoryService {
         history.setClientId(clientId);
         history.setConsultantId(consultantId);
         history.setExpense(expense);
-        history.setStatus("w");
+        history.setStatus("w"); // 状态：等待中
         historyRepository.save(history);
         return true;
     }
@@ -41,9 +41,9 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Boolean updateHistoryStatusById(Integer historyId, char status) {
+    public Boolean updateHistoryStatusById(Integer historyId, String status) {
         Integer updatedNumber = historyRepository.updateHistoryStatusById(historyId, String.valueOf(status));
-        return updatedNumber == 1;
+        return updatedNumber.equals(1);
     }
 
     @Override

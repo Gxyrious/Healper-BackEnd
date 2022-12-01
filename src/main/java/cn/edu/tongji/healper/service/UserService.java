@@ -3,13 +3,16 @@ package cn.edu.tongji.healper.service;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.outdto.UserType;
+import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 
 import java.util.List;
 
 public interface UserService {
+
+    //公共接口------------------------------
+    User findUserByPhone(String phone);
 
     //client相关接口------------------------------
     ClientEntity findClientEntityByUserPhone(String userPhone);
@@ -25,9 +28,7 @@ public interface UserService {
 
     ConsultantInfo findConsultantInfoById(Integer id);
 
-    User findUserByPhone(String phone);
-
-    List<ConsultantEntity> findConsultantsByLabel(String label, Integer page, Integer size);
+    List<ConsultantBasicInfo> findConsultantsByLabel(String label, Integer page, Integer size);
 
 
     //其它类相关接口------------------------------

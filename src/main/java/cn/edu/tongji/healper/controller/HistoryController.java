@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "api/history")
@@ -23,7 +22,7 @@ public class HistoryController {
 
     // 示例3，添加一条咨询记录，包含clientId, consultantId和花费
     @PostMapping(value = "add")
-    public ResponseEntity addHistory(@RequestBody Map<String, Object> map) {
+    public ResponseEntity<String> addHistory(@RequestBody Map<String, Object> map) {
         Integer clientId = Integer.parseInt(map.get("clientId").toString());
         Integer consultantId = Integer.parseInt(map.get("consultantId").toString());
         Integer expense = Integer.parseInt(map.get("expense").toString());
@@ -49,7 +48,7 @@ public class HistoryController {
     }
 
     @GetMapping(value = "pay")
-    public ResponseEntity getQrCodeByHistoryId(@RequestParam Integer historyId) {
+    public ResponseEntity<String> getQrCodeByHistoryId(@RequestParam Integer historyId) {
         String qrCode = historyService.findQrCodeByHistoryId(historyId);
         if (qrCode != null) {
             return ResponseEntity.ok(qrCode);
@@ -61,26 +60,26 @@ public class HistoryController {
     @PutMapping(value = "status")
     public ResponseEntity updateHistoryStatusById(@RequestBody HistoryStatusInDto inDto) {
         String status = inDto.getStatus();
-        Set statusSet = new HashSet<Character>();
+        HashSet<Character> statusSet = new HashSet<>();
         statusSet.add('w'); // 等候中
         statusSet.add('p'); // 待付款
         statusSet.add('f'); // 已完成
+        statusSet.add('c'); // 已取消
         if (status.length() == 1 && statusSet.contains(status.charAt(0))) {
             // 数据无误
-            Character c = status.charAt(0);
-            Boolean result = historyService.updateHistoryStatusById(inDto.getHistoryId(), c);
+            Boolean result = historyService.updateHistoryStatusById(inDto.getHistoryId(), status);
             if (result) {
-                return ResponseEntity.ok(c);
+                return ResponseEntity.ok(status);
             } else {
                 return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("HistoryId not found!");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f')");
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f', 'c)");
         }
     }
 
     @GetMapping(value = "/archive/sum")
-    public ResponseEntity getAllArchiveNumByClientId(@RequestParam Integer clientId) {
+    public ResponseEntity<Integer> getAllArchiveNumByClientId(@RequestParam Integer clientId) {
         Integer archivesNum = historyService.getAllArchive(clientId).size();
         return ResponseEntity.ok(archivesNum);
     }

@@ -3,7 +3,7 @@ package cn.edu.tongji.healper.service.Impl;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.outdto.UserType;
+import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ConsultantEntity> findConsultantsByLabel(String label, Integer page, Integer size) {
+    public List<ConsultantBasicInfo> findConsultantsByLabel(String label, Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
         return consultantRepository.findConsultantEntitiesByLabel(label, pageRequest);
     }

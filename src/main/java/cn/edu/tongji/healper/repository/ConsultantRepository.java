@@ -1,7 +1,7 @@
 package cn.edu.tongji.healper.repository;
 
 import cn.edu.tongji.healper.entity.ConsultantEntity;
-import cn.edu.tongji.healper.po.ClientInfo;
+import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +17,15 @@ public interface ConsultantRepository extends
 
     ConsultantEntity findConsultantEntityByUserphone(String userPhone);
 
-    List<ConsultantEntity> findConsultantEntitiesByLabel(String label, Pageable pageable);
+    @Query(value = "select new cn.edu.tongji.healper.po.ConsultantBasicInfo(" +
+                "consultant.id, consultant.qrCodeLink, consultant.realname, consultant.sex," +
+                "consultant.age, consultant.expense, consultant.label, consultant.profile)" +
+            " from ConsultantEntity consultant where consultant.label like %?1%")
+    List<ConsultantBasicInfo> findConsultantEntitiesByLabel(String label, Pageable pageable);
 
     @Query(value = "select new cn.edu.tongji.healper.po.ConsultantInfo" +
-            "(consultant.id,consultant.qrCodeLink,consultant.realname,consultant.sex,consultant.userphone,consultant.age,consultant.expense,consultant.label,consultant.profile)" +
+                "(consultant.id, consultant.qrCodeLink, consultant.realname, consultant.sex," +
+                "consultant.userphone, consultant.age, consultant.expense, consultant.label, consultant.profile)" +
             " from ConsultantEntity consultant where consultant.id=?1")
     ConsultantInfo findConsultantInfoById(@Param("id") Integer id);
 }

@@ -1,6 +1,5 @@
 package cn.edu.tongji.healper.service;
 
-import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.po.ConsultOrder;
 
@@ -14,7 +13,7 @@ public interface HistoryService {
 
     String findQrCodeByHistoryId(Integer historyId);
 
-    Boolean updateHistoryStatusById(Integer historyId, char status);
+    Boolean updateHistoryStatusById(Integer historyId, String status);
 
     List<Archive> getAllArchive(Integer clientId);
 

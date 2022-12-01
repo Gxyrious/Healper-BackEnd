@@ -11,6 +11,7 @@ import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
 import cn.edu.tongji.healper.po.ClientInfo;
+import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.SMSUtils;
@@ -138,7 +139,7 @@ public class UserController {
             @RequestParam Integer size,
             @RequestParam String label
     ) {
-        List<ConsultantEntity> consultants = userService.findConsultantsByLabel(label, page, size);
+        List<ConsultantBasicInfo> consultants = userService.findConsultantsByLabel(label, page, size);
         if (consultants.size() != 0) {
             return ResponseEntity.ok(consultants);
         } else {

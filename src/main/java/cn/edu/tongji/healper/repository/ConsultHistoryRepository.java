@@ -4,8 +4,6 @@ import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.po.ConsultOrder;
 import io.lettuce.core.dynamic.annotation.Param;
-import org.apache.el.ValueExpressionImpl;
-import org.apache.el.util.Validation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,7 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Vector;
 
 public interface ConsultHistoryRepository extends
         JpaRepository<ConsultHistoryEntity, Integer>,
