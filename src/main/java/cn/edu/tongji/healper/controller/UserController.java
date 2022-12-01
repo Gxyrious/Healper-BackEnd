@@ -1,11 +1,11 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
 import cn.edu.tongji.healper.indto.RegisterInfoInDto;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 
-import cn.edu.tongji.healper.indto.UserInDto;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
@@ -31,23 +31,24 @@ public class UserController {
     // 登录
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
-        ClientEntity client = userService.findClientEntityByUserPhone(loginInfoInDto.getUserPhone());
-        if (client == null) {
-            ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(loginInfoInDto.getUserPhone());
-            if (consultant != null) {
-                LoginInfoOutDto loginInfoOutDto = new LoginInfoOutDto();
-                loginInfoOutDto.setUser(consultant);
-                loginInfoOutDto.setUserType(UserType.consultant);
-                return ResponseEntity.ok(loginInfoOutDto);
-            }
+        User user = userService.findUserByPhone(loginInfoInDto.getUserPhone());
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User doesn't exist!");
-        } else if (client.getPassword().equals(stringToMD5(loginInfoInDto.getUserPassword()))) {
-            LoginInfoOutDto loginInfoOutDto = new LoginInfoOutDto();
-            loginInfoOutDto.setUser(client);
-            loginInfoOutDto.setUserType(UserType.client);
-            return ResponseEntity.ok(loginInfoOutDto);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
+            if (user.getPassword().equals(stringToMD5(loginInfoInDto.getUserPassword()))) {
+                LoginInfoOutDto outDto = new LoginInfoOutDto();
+                outDto.setUser(user);
+                if (user.getClass() == ClientEntity.class) {
+                    outDto.setUserType(UserType.client);
+                } else if (user.getClass() == ConsultantEntity.class) {
+                    outDto.setUserType(UserType.consultant);
+                }
+                return ResponseEntity.ok(outDto);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
+            }
+
+
         }
     }
 
@@ -70,16 +71,21 @@ public class UserController {
     //注册功能，判断手机号是否重复，并将密码md5加密后存储用户信息
     @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody RegisterInfoInDto registerInfoInDto) {
-        if (userService.findConsultantEntityByUserPhone(registerInfoInDto.getUserPhone()) == null) {//先判断手机号是否已经存在
-            if (userService.addClientInfo(registerInfoInDto.getNickname(), registerInfoInDto.getPassword(), registerInfoInDto.getUserPhone(), registerInfoInDto.getSex())) {
-                return ResponseEntity.ok("ok");
+        User user = userService.findUserByPhone(registerInfoInDto.getUserPhone());
+        if (user != null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone already exists!");
+        } else {
+            ClientEntity newClient = userService.addClientInfo(
+                    registerInfoInDto.getNickname(),
+                    registerInfoInDto.getPassword(),
+                    registerInfoInDto.getUserPhone(),
+                    registerInfoInDto.getSex()
+            );
+            if (newClient != null) {
+                return ResponseEntity.ok(newClient.getId());
             } else {
                 return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
             }
-
-        } else {
-            System.out.println("手机号重复");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone already exists!");
         }
     }
 

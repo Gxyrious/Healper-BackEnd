@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "client", schema = "healper", catalog = "")
-public class ClientEntity {
+public class ClientEntity implements User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -26,6 +26,7 @@ public class ClientEntity {
     @Column(name = "ex_consultant_id")
     private Integer exConsultantId;
 
+    @Override
     public int getId() {
         return id;
     }
@@ -42,6 +43,7 @@ public class ClientEntity {
         this.nickname = nickname;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -58,6 +60,7 @@ public class ClientEntity {
         this.sex = sex;
     }
 
+    @Override
     public String getUserphone() {
         return userphone;
     }
