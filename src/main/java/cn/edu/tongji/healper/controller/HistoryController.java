@@ -1,6 +1,7 @@
 package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.outdto.HistoryStatusInDto;
+import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.po.ConsultOrder;
 import cn.edu.tongji.healper.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,4 +78,23 @@ public class HistoryController {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f')");
         }
     }
+
+    @GetMapping(value = "/archive/sum")
+    public ResponseEntity getAllArchiveNumByClientId(@RequestParam Integer clientId) {
+        Integer archivesNum = historyService.getAllArchive(clientId).size();
+        return ResponseEntity.ok(archivesNum);
+    }
+
+    @GetMapping(value = "/archive/getSome")
+    public ResponseEntity getSomeArchiveByClientId(
+            @RequestParam Integer clientId,
+            @RequestParam Integer page,
+            @RequestParam Integer size) {
+        List<Archive> archives = historyService.getSomeArchive(clientId, page - 1, size);
+        if (archives != null && archives.size() > 0) {
+            return ResponseEntity.ok(archives);
+        }
+        return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("No Archives found!");
+    }
+
 }

@@ -6,9 +6,12 @@ import cn.edu.tongji.healper.indto.RegisterInfoInDto;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 
+import cn.edu.tongji.healper.indto.UserInDto;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
+import cn.edu.tongji.healper.po.ClientInfo;
+import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.SMSUtils;
 import cn.edu.tongji.healper.util.ValidateCodeUtils;
@@ -53,20 +56,33 @@ public class UserController {
     }
 
     // 根据手机号查找个人信息
+//    @GetMapping(value = "/info")
+//    public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
+//        ClientEntity client = userService.findClientEntityByUserPhone(userphone);
+//        if (client != null) { //先查询是否为来访者
+//            return ResponseEntity.ok(client);
+//        } else { //再查询是否为咨询师
+//            ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
+//            if (consultant != null) {
+//                return ResponseEntity.ok(consultant);
+//            } else {
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone not found!");
+//            }
+//        }
+//    }
+
     @GetMapping(value = "/info")
-    public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
-        ClientEntity client = userService.findClientEntityByUserPhone(userphone);
-        if (client != null) { //先查询是否为来访者
-            return ResponseEntity.ok(client);
-        } else { //再查询是否为咨询师
-            ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
-            if (consultant != null) {
-                return ResponseEntity.ok(consultant);
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone not found!");
-            }
+    public ResponseEntity getInfoByUserId(@RequestParam Integer id, @RequestParam UserType userType) {
+        if (userType == UserType.client) {
+            ClientInfo clientInfo = userService.findClientInfoById(id);
+            if (clientInfo != null) return ResponseEntity.ok(clientInfo);
+        } else if (userType == UserType.consultant) {
+            ConsultantInfo consultantInfo = userService.findConsultantInfoById(id);
+            if (consultantInfo != null) return ResponseEntity.ok(consultantInfo);
         }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Person does not exist");
     }
+
 
     //注册功能，判断手机号是否重复，并将密码md5加密后存储用户信息
     @PostMapping(value = "/register")
@@ -107,7 +123,7 @@ public class UserController {
 //            log.info("code={}", code);
 
             //调用阿里云提供的短信服务API完成发送短信
-            SMSUtils.sendMessage("阿里云短信测试","SMS_154950909",phone,code);
+            SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", phone, code);
 
             //需要将生成的验证码保存到Session
             session.setAttribute(phone, code);
