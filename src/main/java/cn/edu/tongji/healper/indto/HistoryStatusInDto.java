@@ -1,4 +1,4 @@
-package cn.edu.tongji.healper.outdto;
+package cn.edu.tongji.healper.indto;
 
 import lombok.Data;
 

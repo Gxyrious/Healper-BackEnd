@@ -1,6 +1,6 @@
 package cn.edu.tongji.healper.controller;
 
-import cn.edu.tongji.healper.outdto.HistoryStatusInDto;
+import cn.edu.tongji.healper.indto.HistoryStatusInDto;
 import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.po.ConsultOrder;
 import cn.edu.tongji.healper.service.HistoryService;

@@ -52,8 +52,13 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<Archive> getSomeArchive(Integer id, Integer page, Integer size) {
+    public List<Archive> getSomeArchive(Integer clientId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return historyRepository.getSomeArchive(id, pageable);
+        return historyRepository.getSomeArchive(clientId, pageable);
+    }
+
+    @Override
+    public Boolean endConsultation(Integer orderId, Integer endTime) {
+        return null;
     }
 }

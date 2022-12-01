@@ -41,6 +41,8 @@ public interface ConsultHistoryRepository extends
             "update consult_history as ch set ch.status = ?2 where ch.id = ?1"
     )
     Integer updateHistoryStatusById(Integer historyId, String status);
+
+
     @Query(value = "select new cn.edu.tongji.healper.outdto.Archive" +
             "(a.consultantId,a.endTime,a.expense,a.startTime,a.advice,a.summary,s.realname) " +
             "from ConsultHistoryEntity a inner join ConsultantEntity s " +
@@ -53,4 +55,5 @@ public interface ConsultHistoryRepository extends
             "on a.consultantId=s.id where a.clientId=?1 order by a.endTime desc")
     List<Archive> getSomeArchive(@Param("id") Integer id, Pageable pageable);
 
+    ConsultHistoryEntity getConsultHistoryEntityById(Integer historyId);
 }
