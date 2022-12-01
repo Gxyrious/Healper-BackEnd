@@ -1,14 +1,13 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.edu.tongji.healper.po.ConsultOrder;
 import cn.edu.tongji.healper.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,6 +27,20 @@ public class HistoryController {
             return ResponseEntity.ok("添加成功！");
         } else {
             return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+        }
+    }
+
+    @GetMapping(value = "orders")
+    public ResponseEntity getConsultOrdersByClientId(
+            @RequestParam Integer clientId,
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
+        List<ConsultOrder> orders = historyService.findConsultOrdersByClientId(clientId, page, size);
+        if (orders.size() != 0) {
+            return ResponseEntity.ok(orders);
+        } else {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("No Order found!");
         }
     }
 }

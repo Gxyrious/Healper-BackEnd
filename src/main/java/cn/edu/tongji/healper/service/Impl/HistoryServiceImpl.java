@@ -1,11 +1,15 @@
 package cn.edu.tongji.healper.service.Impl;
 
 import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
+import cn.edu.tongji.healper.po.ConsultOrder;
 import cn.edu.tongji.healper.repository.ConsultHistoryRepository;
 import cn.edu.tongji.healper.service.HistoryService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
@@ -21,5 +25,11 @@ public class HistoryServiceImpl implements HistoryService {
         history.setStatus("w");
         historyRepository.save(history);
         return true;
+    }
+
+    @Override
+    public List<ConsultOrder> findConsultOrdersByClientId(Integer clientId, Integer page, Integer size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        return historyRepository.findConsultOrder(clientId, pageRequest);
     }
 }
