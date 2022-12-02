@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -17,13 +18,20 @@ public class ScaleController {
     @Autowired
     private ScaleService scaleService;
 
-    //查询测评记录
+    //分页查询测评记录
     @GetMapping(value = "/getRecord")
     public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
                                          @RequestParam Integer page,
                                          @RequestParam Integer size) {
         List<ScaleRecordEntity> scaleRecordEntities = scaleService.findScaleRecordEntitiesByClientId(clientId, page - 1, size);
         return ResponseEntity.ok(scaleRecordEntities);
+    }
+
+    //查询测评记录总数
+    @GetMapping(value = "/sum")
+    public ResponseEntity getScaleRecordNum(@RequestParam Integer clientId) {
+        Integer sum = scaleService.countScaleRecordEntitiesByClientId(clientId);
+        return sum != null ? ResponseEntity.ok(sum) : ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Id doesn't exist!");
     }
 
     //增加/修改测评记录

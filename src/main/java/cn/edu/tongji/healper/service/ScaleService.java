@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ScaleService {
     List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId, Integer page, Integer size);
+    Integer countScaleRecordEntitiesByClientId(Integer clientId);
 
     void deleteScaleRecord(Integer id);
 

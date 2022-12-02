@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ScaleRecordRepository extends JpaRepository<ScaleRecordEntity, Integer> {
     List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId, Pageable pageable);
+
+    Integer countScaleRecordEntitiesByClientId(Integer clientId);
 }
