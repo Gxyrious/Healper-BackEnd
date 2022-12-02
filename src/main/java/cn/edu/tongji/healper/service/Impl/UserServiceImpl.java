@@ -3,7 +3,6 @@ package cn.edu.tongji.healper.service.Impl;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ConsultantBasicInfo> findConsultantsByLabel(String label, Integer page, Integer size) {
+    public List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
         return consultantRepository.findConsultantEntitiesByLabel(label, pageRequest);
     }
@@ -69,8 +68,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ClientEntity updateClientInfo(ClientEntity client) {
-        return clientRepository.save(client);
+    public Boolean updateClientInfo(ClientInfo client) {
+        try {
+            ClientEntity updatedClient = clientRepository.findById(client.getId()).get();
+            updatedClient.setBasicInfo(client.getNickname(), client.getSex(), client.getAge());
+            clientRepository.save(updatedClient);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean checkPasswdWithId(Integer id, String password) {
+        String realPassword = clientRepository.findPasswordById(id);
+        return realPassword != null && realPassword.equals(stringToMD5(password));
+    }
+
+    @Override
+    public Boolean updateClientPasswd(Integer id, String password) {
+        try {
+            ClientEntity updatedClient = clientRepository.findById(id).get();
+            updatedClient.setPassword(stringToMD5(password));
+            clientRepository.save(updatedClient);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

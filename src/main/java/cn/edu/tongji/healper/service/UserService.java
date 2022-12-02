@@ -3,7 +3,6 @@ package cn.edu.tongji.healper.service;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 
@@ -21,14 +20,18 @@ public interface UserService {
 
     ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex);
 
-    ClientEntity updateClientInfo(ClientEntity client);
+    Boolean updateClientInfo(ClientInfo client);
+
+    Boolean checkPasswdWithId(Integer id, String password);
+
+    Boolean updateClientPasswd(Integer id, String password);
 
     //consultant相关接口-----------------------------
     ConsultantEntity findConsultantEntityByUserPhone(String userPhone);
 
     ConsultantInfo findConsultantInfoById(Integer id);
 
-    List<ConsultantBasicInfo> findConsultantsByLabel(String label, Integer page, Integer size);
+    List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size);
 
 
     //其它类相关接口------------------------------

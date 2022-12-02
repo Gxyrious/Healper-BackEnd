@@ -98,6 +98,18 @@ public class ClientEntity implements User{
         this.profile = profile;
     }
 
+    public void setBasicInfo(String nickname, String sex, Integer age) {
+        if (nickname != null) {
+            this.setNickname(nickname);
+        }
+        if (sex != null) {
+            this.setSex(sex);
+        }
+        if (age != null) {
+            this.setAge(age);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

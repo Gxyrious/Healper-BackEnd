@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class HistoryStatusInDto {
+
     Integer historyId;
+
     String status;
 }

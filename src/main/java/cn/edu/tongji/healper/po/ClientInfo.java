@@ -12,7 +12,9 @@ public class ClientInfo {
     Integer age;
     String profile;
 
-    public ClientInfo(Integer id, String nickname, String sex, String userphone, Integer exConsultantId, Integer age, String profile) {
+    public ClientInfo(Integer id, String nickname, String sex,
+                      String userphone, Integer exConsultantId,
+                      Integer age, String profile) {
         this.id = id;
         this.nickname = nickname;
         this.sex = sex;

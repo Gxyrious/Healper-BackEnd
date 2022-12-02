@@ -35,8 +35,7 @@ public interface ConsultHistoryRepository extends
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value =
-            "update consult_history as ch set ch.status = ?2 where ch.id = ?1"
-    )
+            "update consult_history as ch set ch.status = ?2 where ch.id = ?1")
     Integer updateHistoryStatusById(Integer historyId, String status);
 
 

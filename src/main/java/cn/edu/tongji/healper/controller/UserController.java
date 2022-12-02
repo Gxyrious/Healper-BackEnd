@@ -6,12 +6,11 @@ import cn.edu.tongji.healper.indto.RegisterInfoInDto;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 
-import cn.edu.tongji.healper.indto.UserInDto;
+import cn.edu.tongji.healper.indto.UpdatePasswdInDto;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
 import cn.edu.tongji.healper.po.ClientInfo;
-import cn.edu.tongji.healper.po.ConsultantBasicInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.SMSUtils;
@@ -35,7 +34,7 @@ public class UserController {
     private UserService userService;
 
     // 登录
-    @PostMapping(value = "/login")
+    @PostMapping(value = "login")
     public ResponseEntity login(@RequestBody LoginInfoInDto loginInfoInDto) {
         User user = userService.findUserByPhone(loginInfoInDto.getUserPhone());
         if (user == null) {
@@ -56,37 +55,25 @@ public class UserController {
         }
     }
 
-    // 根据手机号查找个人信息
-//    @GetMapping(value = "/info")
-//    public ResponseEntity getInfoByUserPhone(@RequestParam String userphone) {
-//        ClientEntity client = userService.findClientEntityByUserPhone(userphone);
-//        if (client != null) { //先查询是否为来访者
-//            return ResponseEntity.ok(client);
-//        } else { //再查询是否为咨询师
-//            ConsultantEntity consultant = userService.findConsultantEntityByUserPhone(userphone);
-//            if (consultant != null) {
-//                return ResponseEntity.ok(consultant);
-//            } else {
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone not found!");
-//            }
-//        }
-//    }
-
-    @GetMapping(value = "/info")
+    @GetMapping(value = "info")
     public ResponseEntity getInfoByUserId(@RequestParam Integer id, @RequestParam UserType userType) {
         if (userType == UserType.client) {
             ClientInfo clientInfo = userService.findClientInfoById(id);
-            if (clientInfo != null) return ResponseEntity.ok(clientInfo);
+            if (clientInfo != null) {
+                return ResponseEntity.ok(clientInfo);
+            }
         } else if (userType == UserType.consultant) {
             ConsultantInfo consultantInfo = userService.findConsultantInfoById(id);
-            if (consultantInfo != null) return ResponseEntity.ok(consultantInfo);
+            if (consultantInfo != null) {
+                return ResponseEntity.ok(consultantInfo);
+            }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Person does not exist");
     }
 
 
     //注册功能，判断手机号是否重复，并将密码md5加密后存储用户信息
-    @PostMapping(value = "/register")
+    @PostMapping(value = "register")
     public ResponseEntity register(@RequestBody RegisterInfoInDto registerInfoInDto) {
         User user = userService.findUserByPhone(registerInfoInDto.getUserPhone());
         if (user != null) {
@@ -107,14 +94,30 @@ public class UserController {
     }
 
     //修改用户信息
-    @PostMapping(value = "/info")
-    public ResponseEntity change(@RequestBody ClientEntity client) {
-        userService.updateClientInfo(client);
-        return ResponseEntity.ok("change success!");
+    @PutMapping(value = "info")
+    public ResponseEntity updateClientBasicInfo(@RequestBody ClientInfo client) {
+        if (userService.updateClientInfo(client)) {
+            return ResponseEntity.ok("Update succeeded!");
+        } else {
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to update!");
+        }
+    }
+
+    @PutMapping(value = "passwd")
+    public ResponseEntity updateClientPasswd(@RequestBody UpdatePasswdInDto inDto) {
+        if (userService.checkPasswdWithId(inDto.getId(), inDto.getOldPasswd())) {
+            if (userService.updateClientPasswd(inDto.getId(), inDto.getNewPasswd())) {
+                return ResponseEntity.ok("Password updated!");
+            } else {
+                return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to update!");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Old password wrong!");
+        }
     }
 
     // 发送手机短信验证码
-    @PostMapping("/sendMsg")
+    @PostMapping("sendMsg")
     public ResponseEntity sendMsg(@RequestBody LoginInfoInDto loginInfoInDto, HttpSession session) {
         //获取手机号
         String phone = loginInfoInDto.getUserPhone();
@@ -133,13 +136,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("短信发送失败");
     }
 
-    @GetMapping("/consultants")
+    @GetMapping("consultants")
     public ResponseEntity getConsultants(
             @RequestParam Integer page,
             @RequestParam Integer size,
             @RequestParam String label
     ) {
-        List<ConsultantBasicInfo> consultants = userService.findConsultantsByLabel(label, page, size);
+        List<ConsultantInfo> consultants = userService.findConsultantsByLabel(label, page, size);
         if (consultants.size() != 0) {
             return ResponseEntity.ok(consultants);
         } else {

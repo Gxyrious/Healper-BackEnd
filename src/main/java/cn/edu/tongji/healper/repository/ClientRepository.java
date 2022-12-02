@@ -16,4 +16,7 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer> {
             " from ClientEntity client where client.id=?1")
     ClientInfo findClientInfoById(@Param("id") Integer id);
 
+    @Query(value = "select client.password from ClientEntity client where client.id = ?1")
+    String findPasswordById(@Param("id") Integer id);
+
 }
