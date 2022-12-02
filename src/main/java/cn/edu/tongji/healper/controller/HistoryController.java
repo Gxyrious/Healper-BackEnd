@@ -80,7 +80,7 @@ public class HistoryController {
 
     @GetMapping(value = "/archive/sum")
     public ResponseEntity<Integer> getAllArchiveNumByClientId(@RequestParam Integer clientId) {
-        Integer archivesNum = historyService.getAllArchive(clientId).size();
+        Integer archivesNum = historyService.getAllArchive(clientId);
         return ResponseEntity.ok(archivesNum);
     }
 

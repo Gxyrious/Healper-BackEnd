@@ -3,12 +3,14 @@ package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
+import cn.edu.tongji.healper.outdto.ScaleRecordDto;
 import cn.edu.tongji.healper.service.ScaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -17,11 +19,20 @@ public class ScaleController {
     @Autowired
     private ScaleService scaleService;
 
-    //查询测评记录
+    //分页查询测评记录
     @GetMapping(value = "/getRecord")
-    public ResponseEntity getScaleRecord(@RequestParam int clientId) {
-        List<ScaleRecordEntity> scaleRecordEntities = scaleService.findScaleRecordEntitiesByClientId(clientId);
-        return ResponseEntity.ok(scaleRecordEntities);
+    public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
+                                         @RequestParam Integer page,
+                                         @RequestParam Integer size) {
+        List<ScaleRecordDto> scaleRecordDtos = scaleService.findScaleRecordDtoByClientId(clientId, page - 1, size);
+        return ResponseEntity.ok(scaleRecordDtos);
+    }
+
+    //查询测评记录总数
+    @GetMapping(value = "/sum")
+    public ResponseEntity getScaleRecordNum(@RequestParam Integer clientId) {
+        Integer sum = scaleService.countScaleRecordEntitiesByClientId(clientId);
+        return sum != null ? ResponseEntity.ok(sum) : ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Id doesn't exist!");
     }
 
     //增加/修改测评记录

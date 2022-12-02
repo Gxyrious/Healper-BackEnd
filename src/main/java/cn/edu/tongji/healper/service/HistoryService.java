@@ -15,7 +15,7 @@ public interface HistoryService {
 
     Boolean updateHistoryStatusById(Integer historyId, String status);
 
-    List<Archive> getAllArchive(Integer clientId);
+    Integer getAllArchive(Integer clientId);
 
     List<Archive> getSomeArchive(Integer clientId, Integer page, Integer size);
 
