@@ -3,6 +3,7 @@ package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
+import cn.edu.tongji.healper.outdto.ScaleRecordDto;
 import cn.edu.tongji.healper.service.ScaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class ScaleController {
     public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
                                          @RequestParam Integer page,
                                          @RequestParam Integer size) {
-        List<ScaleRecordEntity> scaleRecordEntities = scaleService.findScaleRecordEntitiesByClientId(clientId, page - 1, size);
-        return ResponseEntity.ok(scaleRecordEntities);
+        List<ScaleRecordDto> scaleRecordDtos = scaleService.findScaleRecordDtoByClientId(clientId, page - 1, size);
+        return ResponseEntity.ok(scaleRecordDtos);
     }
 
     //查询测评记录总数
