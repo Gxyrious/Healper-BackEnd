@@ -19,8 +19,10 @@ public class ScaleController {
 
     //查询测评记录
     @GetMapping(value = "/getRecord")
-    public ResponseEntity getScaleRecord(@RequestParam int clientId) {
-        List<ScaleRecordEntity> scaleRecordEntities = scaleService.findScaleRecordEntitiesByClientId(clientId);
+    public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
+                                         @RequestParam Integer page,
+                                         @RequestParam Integer size) {
+        List<ScaleRecordEntity> scaleRecordEntities = scaleService.findScaleRecordEntitiesByClientId(clientId, page - 1, size);
         return ResponseEntity.ok(scaleRecordEntities);
     }
 

@@ -22,8 +22,9 @@ public class ScaleServiceImpl implements ScaleService {
     private PsychologyScaleRepository psychologyScaleRepository;
 
     @Override
-    public List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId) {
-        return scaleRecordRepository.findScaleRecordEntitiesByClientId(clientId);
+    public List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return scaleRecordRepository.findScaleRecordEntitiesByClientId(clientId, pageable);
     }
 
     @Override

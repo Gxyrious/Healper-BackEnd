@@ -6,7 +6,7 @@ import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import java.util.List;
 
 public interface ScaleService {
-    List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId);
+    List<ScaleRecordEntity> findScaleRecordEntitiesByClientId(Integer clientId, Integer page, Integer size);
 
     void deleteScaleRecord(Integer id);
 
