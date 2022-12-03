@@ -7,14 +7,15 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 
 import cn.edu.tongji.healper.indto.UpdatePasswdInDto;
+import cn.edu.tongji.healper.indto.UploadImageInDto;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.service.UserService;
+import cn.edu.tongji.healper.util.OSSUtils;
 import cn.edu.tongji.healper.util.SMSUtils;
-import cn.edu.tongji.healper.util.ValidateCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.io.InputStream;
 import java.util.List;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
@@ -123,7 +125,7 @@ public class UserController {
         String phone = loginInfoInDto.getUserPhone();
         if (phone != null && phone.length() > 0) {
             //看个人需求自行编写，已生成随机的4位验证码为例
-            String code = ValidateCodeUtils.generateValidateCode(4).toString();
+            String code = SMSUtils.getCode(4);
 //            log.info("code={}", code);
 
             //调用阿里云提供的短信服务API完成发送短信
@@ -134,6 +136,34 @@ public class UserController {
             return ResponseEntity.ok("短信发送成功");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("短信发送失败");
+    }
+
+    @PostMapping("uploadImage")
+    public ResponseEntity uploadImage(@RequestBody UploadImageInDto inDto) {
+        try {
+            String imageBase64 = inDto.getBase64();
+
+            String imageType = imageBase64
+                    .split("/", 3)[1]
+                    .split(";", 2)[0];
+            String imageName = inDto.getUserType().toString()
+                    + "-" + inDto.getId()
+                    + "." + imageType;
+
+            byte[] imageBytes = OSSUtils.base64ToBytes(imageBase64.split("base64,")[1]);
+            InputStream inputStream = OSSUtils.bytesToInputStream(imageBytes);
+            String url = OSSUtils.uploadStream(inputStream, imageName);
+
+            ClientInfo clientInfo = userService.findClientInfoById(inDto.getId());
+            clientInfo.setProfile(url);
+            userService.updateClientInfo(clientInfo);
+
+            return ResponseEntity.ok(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+
     }
 
     @GetMapping("consultants")

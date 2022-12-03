@@ -3,6 +3,7 @@ package cn.edu.tongji.healper.service.Impl;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
+import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService {
         try {
             ClientEntity updatedClient = clientRepository.findById(client.getId()).get();
             updatedClient.setBasicInfo(client.getNickname(), client.getSex(), client.getAge());
+            updatedClient.setProfile(client.getProfile());
             clientRepository.save(updatedClient);
             return true;
         } catch (Exception e) {

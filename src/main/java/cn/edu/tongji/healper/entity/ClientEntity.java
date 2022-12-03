@@ -95,7 +95,9 @@ public class ClientEntity implements User{
     }
 
     public void setProfile(String profile) {
-        this.profile = profile;
+        if (profile != null) {
+            this.profile = profile;
+        }
     }
 
     public void setBasicInfo(String nickname, String sex, Integer age) {

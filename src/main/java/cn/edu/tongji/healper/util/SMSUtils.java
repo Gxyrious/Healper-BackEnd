@@ -7,6 +7,10 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * 短信发送工具类
  */
@@ -34,6 +38,16 @@ public class SMSUtils {
         }catch (ClientException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getCode(int length) {
+        Random random = new Random();
+        List<Character> code = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            String s = String.valueOf(random.nextInt(9));
+            code.add(s.charAt(0));
+        }
+        return String.valueOf(code);
     }
 
 }
