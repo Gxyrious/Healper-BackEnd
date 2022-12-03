@@ -62,7 +62,6 @@ public class WebSocketServer {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        // 从Client接收消息
         JSONObject jsonMessage = JSON.parseObject(message);
         System.out.println(jsonMessage);
         for (WebSocketServer item: webSocketServerSet) {

@@ -3,6 +3,7 @@ package cn.edu.tongji.healper.service;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
+import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 
@@ -21,6 +22,8 @@ public interface UserService {
     ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex);
 
     Boolean updateClientInfo(ClientInfo client);
+
+
 
     Boolean checkPasswdWithId(Integer id, String password);
 
