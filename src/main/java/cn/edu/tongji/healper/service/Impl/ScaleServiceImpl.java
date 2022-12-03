@@ -3,6 +3,7 @@ package cn.edu.tongji.healper.service.Impl;
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import cn.edu.tongji.healper.outdto.ScaleRecordDto;
+import cn.edu.tongji.healper.po.ScaleRecordInfo;
 import cn.edu.tongji.healper.repository.PsychologyScaleRepository;
 import cn.edu.tongji.healper.repository.ScaleRecordRepository;
 import cn.edu.tongji.healper.service.ScaleService;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,9 +29,14 @@ public class ScaleServiceImpl implements ScaleService {
         return scaleRecordRepository.countScaleRecordEntitiesByClientId(clientId);
     }
     @Override
-    public List<ScaleRecordDto> findScaleRecordDtoByClientId(Integer clientId, Integer page, Integer size) {
+    public List<ScaleRecordInfo> findScaleRecordInfoByClientId(Integer clientId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return scaleRecordRepository.findScaleRecordDtoByClientId(clientId, pageable);
+        return scaleRecordRepository.findScaleRecordInfoByClientId(clientId, pageable);
+    }
+
+    @Override
+    public ScaleRecordEntity updateScaleRecord(ScaleRecordEntity scaleRecordEntity){
+        return scaleRecordRepository.save(scaleRecordEntity);
     }
 
     @Override

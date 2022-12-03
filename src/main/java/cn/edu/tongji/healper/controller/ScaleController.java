@@ -4,7 +4,9 @@ package cn.edu.tongji.healper.controller;
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import cn.edu.tongji.healper.outdto.ScaleRecordDto;
+import cn.edu.tongji.healper.po.ScaleRecordInfo;
 import cn.edu.tongji.healper.service.ScaleService;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "api/scale")
@@ -24,8 +27,8 @@ public class ScaleController {
     public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
                                          @RequestParam Integer page,
                                          @RequestParam Integer size) {
-        List<ScaleRecordDto> scaleRecordDtos = scaleService.findScaleRecordDtoByClientId(clientId, page - 1, size);
-        return ResponseEntity.ok(scaleRecordDtos);
+        List<ScaleRecordInfo> scaleRecordInfos = scaleService.findScaleRecordInfoByClientId(clientId, page - 1, size);
+        return ResponseEntity.ok(scaleRecordInfos);
     }
 
     //查询测评记录总数
@@ -38,7 +41,7 @@ public class ScaleController {
     //增加/修改测评记录
     @PostMapping(value = "/update")
     public ResponseEntity updateScaleRecord(@RequestBody ScaleRecordEntity scaleRecordEntity) {
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok(scaleService.updateScaleRecord(scaleRecordEntity));
     }
 
     //删除测评记录

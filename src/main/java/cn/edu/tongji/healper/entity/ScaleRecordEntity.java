@@ -23,32 +23,8 @@ public class ScaleRecordEntity {
     @Column(name = "scale_id")
     private int scaleId;
     @Basic
-    @Column(name = "result_somatization")
-    private double resultSomatization;
-    @Basic
-    @Column(name = "result_force")
-    private double resultForce;
-    @Basic
-    @Column(name = "result_sensitive")
-    private double resultSensitive;
-    @Basic
-    @Column(name = "result_depress")
-    private double resultDepress;
-    @Basic
-    @Column(name = "result_anxious")
-    private double resultAnxious;
-    @Basic
-    @Column(name = "result_hostile")
-    private double resultHostile;
-    @Basic
-    @Column(name = "result_terror")
-    private double resultTerror;
-    @Basic
-    @Column(name = "result_paranoia")
-    private double resultParanoia;
-    @Basic
-    @Column(name = "result_psychopathic")
-    private double resultPsychopathic;
+    @Column(name = "record")
+    private String record;
 
     public int getId() {
         return id;
@@ -90,76 +66,12 @@ public class ScaleRecordEntity {
         this.scaleId = scaleId;
     }
 
-    public double getResultSomatization() {
-        return resultSomatization;
+    public String getRecord() {
+        return record;
     }
 
-    public void setResultSomatization(double resultSomatization) {
-        this.resultSomatization = resultSomatization;
-    }
-
-    public double getResultForce() {
-        return resultForce;
-    }
-
-    public void setResultForce(double resultForce) {
-        this.resultForce = resultForce;
-    }
-
-    public double getResultSensitive() {
-        return resultSensitive;
-    }
-
-    public void setResultSensitive(double resultSensitive) {
-        this.resultSensitive = resultSensitive;
-    }
-
-    public double getResultDepress() {
-        return resultDepress;
-    }
-
-    public void setResultDepress(double resultDepress) {
-        this.resultDepress = resultDepress;
-    }
-
-    public double getResultAnxious() {
-        return resultAnxious;
-    }
-
-    public void setResultAnxious(double resultAnxious) {
-        this.resultAnxious = resultAnxious;
-    }
-
-    public double getResultHostile() {
-        return resultHostile;
-    }
-
-    public void setResultHostile(double resultHostile) {
-        this.resultHostile = resultHostile;
-    }
-
-    public double getResultTerror() {
-        return resultTerror;
-    }
-
-    public void setResultTerror(double resultTerror) {
-        this.resultTerror = resultTerror;
-    }
-
-    public double getResultParanoia() {
-        return resultParanoia;
-    }
-
-    public void setResultParanoia(double resultParanoia) {
-        this.resultParanoia = resultParanoia;
-    }
-
-    public double getResultPsychopathic() {
-        return resultPsychopathic;
-    }
-
-    public void setResultPsychopathic(double resultPsychopathic) {
-        this.resultPsychopathic = resultPsychopathic;
+    public void setRecord(String record) {
+        this.record = record;
     }
 
     @Override
@@ -167,11 +79,11 @@ public class ScaleRecordEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScaleRecordEntity that = (ScaleRecordEntity) o;
-        return id == that.id && clientId == that.clientId && endTime == that.endTime && isHidden == that.isHidden && scaleId == that.scaleId && Double.compare(that.resultSomatization, resultSomatization) == 0 && Double.compare(that.resultForce, resultForce) == 0 && Double.compare(that.resultSensitive, resultSensitive) == 0 && Double.compare(that.resultDepress, resultDepress) == 0 && Double.compare(that.resultAnxious, resultAnxious) == 0 && Double.compare(that.resultHostile, resultHostile) == 0 && Double.compare(that.resultTerror, resultTerror) == 0 && Double.compare(that.resultParanoia, resultParanoia) == 0 && Double.compare(that.resultPsychopathic, resultPsychopathic) == 0;
+        return id == that.id && clientId == that.clientId && endTime == that.endTime && isHidden == that.isHidden && scaleId == that.scaleId && Objects.equals(record, that.record);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, clientId, endTime, isHidden, scaleId, resultSomatization, resultForce, resultSensitive, resultDepress, resultAnxious, resultHostile, resultTerror, resultParanoia, resultPsychopathic);
+        return Objects.hash(id, clientId, endTime, isHidden, scaleId, record);
     }
 }
