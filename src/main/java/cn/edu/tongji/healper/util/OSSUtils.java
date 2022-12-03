@@ -2,7 +2,7 @@ package cn.edu.tongji.healper.util;
 
 import cn.edu.tongji.healper.config.OSSConfiguration;
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.model.PutObjectResult;
+import org.bouncycastle.util.encoders.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,11 +18,11 @@ public class OSSUtils {
         return "https://" + OSSConfiguration.getBucketName() + '.' + OSSConfiguration.getEndpoint() + '/' + filename;
     }
 
-    public static byte[] string2bytes(String str) {
-        return str.getBytes();
+    public static byte[] base64ToBytes(String str) {
+        return Base64.decode(str);
     }
 
-    public static InputStream bytes2InputStream(byte[] bytes) {
+    public static InputStream bytesToInputStream(byte[] bytes) {
         return new ByteArrayInputStream(bytes);
     }
 

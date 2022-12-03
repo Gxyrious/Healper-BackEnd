@@ -150,8 +150,8 @@ public class UserController {
                     + "-" + inDto.getId()
                     + "." + imageType;
 
-            byte[] imageBytes = OSSUtils.string2bytes(imageBase64.split("base64,")[1]);
-            InputStream inputStream = OSSUtils.bytes2InputStream(imageBytes);
+            byte[] imageBytes = OSSUtils.base64ToBytes(imageBase64.split("base64,")[1]);
+            InputStream inputStream = OSSUtils.bytesToInputStream(imageBytes);
             String url = OSSUtils.uploadStream(inputStream, imageName);
 
             ClientInfo clientInfo = userService.findClientInfoById(inDto.getId());
