@@ -1,64 +1,96 @@
 package cn.edu.tongji.healper.component;
 
+import cn.edu.tongji.healper.entity.ChatMessageEntity;
 import cn.edu.tongji.healper.entity.ClientEntity;
-import cn.edu.tongji.healper.entity.ClientEntity;
-import cn.edu.tongji.healper.repository.ClientRepository;
-import cn.hutool.json.JSONObject;
+import cn.edu.tongji.healper.entity.ConsultantEntity;
+import cn.edu.tongji.healper.entity.User;
+import cn.edu.tongji.healper.service.ChatService;
+import cn.edu.tongji.healper.service.Impl.ChatServiceImpl;
+import cn.edu.tongji.healper.service.Impl.UserServiceImpl;
+import cn.edu.tongji.healper.service.UserService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
+@RestController
+@ServerEndpoint(value = "/websocket/{userphone}")
 @Component
-@ServerEndpoint("/websocket/{token}")
 public class WebSocketServer {
 
-    private ClientEntity clientEntity;
+    private String userphone;
 
-    private static ConcurrentHashMap<String, WebSocketServer> users = new ConcurrentHashMap<>();
+    private static CopyOnWriteArraySet<WebSocketServer> webSocketServerSet = new CopyOnWriteArraySet<>();
 
     private Session session = null;
 
-    private static ClientRepository clientRepository;
+    private static UserService userService;
 
-    // 注入数据库服务
+    private static ChatService chatService;
+
     @Autowired
-    public void setClientRepository(ClientRepository clientRepository) {
-        WebSocketServer.clientRepository = clientRepository;
+    public void setUserService(UserService userService) {
+        WebSocketServer.userService = userService;
     }
+
+    @Autowired
+    public void setChatService(ChatService chatService) {
+        WebSocketServer.chatService = chatService;
+    }
+
     @OnOpen
-    public void onOpen(Session session, @PathParam("token") String token) {
+    public void onOpen(Session session, @PathParam("userphone") String userphone) {
         // 建立连接
         this.session = session;
-        System.out.println("connected");
-        clientEntity = WebSocketServer.clientRepository.findClientEntityByUserphone(token);
-        System.out.println(clientEntity.getNickname());
-        users.put(token, this);
-        sendMessage("测试一下");
+        webSocketServerSet.add(this);
+        this.userphone = userphone;
+//        this.sendMessage("测试一下");
     }
 
     @OnClose
     public void onClose() {
         // 关闭链接
-        System.out.println("disconnected");
-        if (this.clientEntity != null) {
-            users.remove(this.clientEntity.getUserphone());
-        }
+        webSocketServerSet.remove(this);
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
         // 从Client接收消息
-        System.out.println(message);
-        if (message.equals("online")) {
-            sendMessage(searchOnline().toString());
+        JSONObject jsonMessage = JSON.parseObject(message);
+        System.out.println(jsonMessage);
+        for (WebSocketServer item: webSocketServerSet) {
+            try {
+                String toUserphone = jsonMessage.getString("toUserphone");
+                if (item.userphone.equals(toUserphone)) {
+                    String fromUserphone = this.userphone;
+                    User fromUser = userService.findUserByPhone(fromUserphone);
+                    User toUser = userService.findUserByPhone(toUserphone);
+                    Integer clientId, consultantId;
+                    if (fromUser.getClass() == ClientEntity.class && toUser.getClass() == ConsultantEntity.class) {
+                        clientId = fromUser.getId();
+                        consultantId = toUser.getId();
+                    } else if (fromUser.getClass() == ConsultantEntity.class && toUser.getClass() == ClientEntity.class) {
+                        consultantId = fromUser.getId();
+                        clientId = toUser.getId();
+                    } else {
+                        throw new RuntimeException("Userphone error!");
+                    }
+                    ChatMessageEntity chatMessage = chatService.addChatMessage(
+                            clientId, consultantId,
+                            jsonMessage.getString("content")
+                    );
+                    item.sendMessage(fromUser.getId(), toUser.getId(), chatMessage);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,21 +99,15 @@ public class WebSocketServer {
         error.printStackTrace();
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(Integer fromId, Integer toId, ChatMessageEntity messageEntity) throws IOException{
         synchronized (this.session) {
-            try {
-                this.session.getBasicRemote().sendText(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            JSONObject message = new JSONObject();
+            message.put("fromId", fromId);
+            message.put("toId", toId);
+            message.put("createTime", messageEntity.getCreateTime());
+            message.put("content", messageEntity.getContent());
+            this.session.getBasicRemote().sendText(message.toJSONString());
         }
     }
 
-    public Map<String, String> searchOnline() {
-        Map<String, String> msg = new HashMap<>();
-        users.forEach((key, value) -> {
-            msg.put(key, key);
-        });
-        return msg;
-    }
 }
