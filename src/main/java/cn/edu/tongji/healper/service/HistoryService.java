@@ -10,12 +10,11 @@ public interface HistoryService {
 
     Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense);
 
-
     String findQrCodeByHistoryId(Integer historyId);
 
     Boolean updateHistoryStatusById(Integer historyId, String status);
 
-    Integer getArchiveNumByClientId(Integer clientId);
+    Integer findArchiveNumByClientId(Integer clientId);
 
     List<ConsultOrder> findConsultOrdersByClientId(Integer clientId, Integer page, Integer size);
 

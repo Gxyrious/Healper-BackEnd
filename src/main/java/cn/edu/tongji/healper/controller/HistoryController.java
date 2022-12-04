@@ -117,7 +117,7 @@ public class HistoryController {
     @GetMapping(value = "archive/sum")
     public ResponseEntity getArchiveNumByClientId(@RequestParam Integer clientId) {
         try {
-            Integer num = historyService.getArchiveNumByClientId(clientId);
+            Integer num = historyService.findArchiveNumByClientId(clientId);
             return ResponseEntity.ok(num);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);

@@ -20,7 +20,7 @@ public interface ConsultantRepository extends
                 "consultant.qrCodeLink, consultant.realname, consultant.sex, consultant.userphone, " +
                 "consultant.age, consultant.expense, consultant.label, consultant.profile) " +
             "from ConsultantEntity consultant where consultant.label like %?1%")
-    List<ConsultantInfo> findConsultantEntitiesByLabel(String label, Pageable pageable);
+    List<ConsultantInfo> findConsultantsByLabel(String label, Pageable pageable);
 
     @Query(value = "select new cn.edu.tongji.healper.po.ConsultantInfo" +
                 "(consultant.id, consultant.qrCodeLink, consultant.realname, consultant.sex," +

@@ -8,6 +8,7 @@ import cn.edu.tongji.healper.entity.ConsultantEntity;
 
 import cn.edu.tongji.healper.indto.UpdatePasswdInDto;
 import cn.edu.tongji.healper.indto.UploadImageInDto;
+import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
@@ -166,17 +168,35 @@ public class UserController {
 
     }
 
-    @GetMapping("consultants")
-    public ResponseEntity getConsultants(
+    @GetMapping("consultants/label")
+    public ResponseEntity findConsultantsWithLabel(
             @RequestParam Integer page,
             @RequestParam Integer size,
             @RequestParam String label
     ) {
-        List<ConsultantInfo> consultants = userService.findConsultantsByLabel(label, page, size);
-        if (consultants.size() != 0) {
+        try {
+            List<ConsultantInfo> consultants = userService.findConsultantsByLabel(label, page, size);
             return ResponseEntity.ok(consultants);
-        } else {
-            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("No %s consultants found!".formatted(label));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No %s consultants found!".formatted(label));
+
+        }
+    }
+
+    @GetMapping("consultants/client")
+    public ResponseEntity findConsultantsWithClient(
+            @RequestParam Integer clientId,
+            @RequestParam Integer page,
+            @RequestParam Integer size,
+            @RequestBody Map<String, String> map
+    ) {
+        try {
+            String label = map.get("label");
+            List<ConsultantInfoWithClient> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
+            return ResponseEntity.ok(consultants);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+
         }
     }
 }

@@ -1,12 +1,14 @@
 package cn.edu.tongji.healper.service.Impl;
 
 import cn.edu.tongji.healper.entity.ClientEntity;
+import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.outdto.UserType;
+import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
+import cn.edu.tongji.healper.repository.ConsultHistoryRepository;
 import cn.edu.tongji.healper.repository.ConsultantRepository;
 import cn.edu.tongji.healper.service.UserService;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
@@ -28,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private ConsultantRepository consultantRepository;
+
+    @Resource
+    private ConsultHistoryRepository historyRepository;
 
     @Override
     public ClientEntity findClientEntityByUserPhone(String userPhone) {
@@ -54,8 +60,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page - 1, size, Sort.Direction.ASC, "id");
-        return consultantRepository.findConsultantEntitiesByLabel(label, pageRequest);
+        return consultantRepository.findConsultantsByLabel(label, pageRequest);
     }
+
+    @Override
+    public List<ConsultantInfoWithClient> findConsultantsWithClient(
+            Integer clientId, String label, Integer page, Integer size
+    ) {
+        Pageable pageRequest = PageRequest.of(page - 1, size, Sort.Direction.ASC, "id");
+        List<ConsultantInfo> consultants = consultantRepository.findConsultantsByLabel(label, pageRequest);
+        List<ConsultantInfoWithClient> consultantsWithClient = new ArrayList<>();
+        for (ConsultantInfo consultant : consultants) {
+            ConsultantInfoWithClient newConsultantInfo = new ConsultantInfoWithClient();
+            newConsultantInfo.setInfo(consultant);
+            ConsultHistoryEntity entity = historyRepository
+                    .findFirstByClientIdAndConsultantId(clientId, consultant.getId());
+            if (entity != null) {
+                newConsultantInfo.setIsAppointed(Boolean.TRUE);
+            } else {
+                newConsultantInfo.setIsAppointed(Boolean.FALSE);
+            }
+            consultantsWithClient.add(newConsultantInfo);
+        }
+        return consultantsWithClient;
+    }
+
 
 
     @Override

@@ -47,7 +47,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Integer getArchiveNumByClientId(Integer clientId) {
+    public Integer findArchiveNumByClientId(Integer clientId) {
         return historyRepository.getArchiveNumByClientId(clientId);
     }
 
