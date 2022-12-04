@@ -27,7 +27,7 @@ public class ScaleController {
     public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
                                          @RequestParam Integer page,
                                          @RequestParam Integer size) {
-        List<ScaleRecordInfo> scaleRecordInfos = scaleService.findScaleRecordInfoByClientId(clientId, page - 1, size);
+        List<ScaleRecordInfo> scaleRecordInfos = scaleService.findScaleRecordInfoByClientId(clientId, page, size);
         return ResponseEntity.ok(scaleRecordInfos);
     }
 

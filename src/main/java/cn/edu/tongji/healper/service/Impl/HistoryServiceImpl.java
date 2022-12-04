@@ -31,7 +31,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public List<ConsultOrder> findConsultOrdersByClientId(Integer clientId, Integer page, Integer size) {
-        Pageable pageRequest = PageRequest.of(page, size);
+        Pageable pageRequest = PageRequest.of(page - 1, size);
         return historyRepository.findConsultOrder(clientId, pageRequest);
     }
 

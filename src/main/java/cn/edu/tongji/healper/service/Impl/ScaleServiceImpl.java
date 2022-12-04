@@ -30,7 +30,7 @@ public class ScaleServiceImpl implements ScaleService {
     }
     @Override
     public List<ScaleRecordInfo> findScaleRecordInfoByClientId(Integer clientId, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         return scaleRecordRepository.findScaleRecordInfoByClientId(clientId, pageable);
     }
 
@@ -46,7 +46,7 @@ public class ScaleServiceImpl implements ScaleService {
 
     @Override
     public List<PsychologyScaleEntity> findScaleNames(Integer page, Integer size) {
-        Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
+        Pageable pageRequest = PageRequest.of(page - 1, size, Sort.Direction.ASC, "id");
         return psychologyScaleRepository.findScales(pageRequest);
     }
 

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size) {
-        Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
+        Pageable pageRequest = PageRequest.of(page - 1, size, Sort.Direction.ASC, "id");
         return consultantRepository.findConsultantEntitiesByLabel(label, pageRequest);
     }
 
