@@ -1,5 +1,7 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
+import cn.edu.tongji.healper.indto.ConsultRecordInDto;
 import cn.edu.tongji.healper.indto.HistoryStatusInDto;
 import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.po.ConsultOrder;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "api/history")
@@ -22,14 +23,43 @@ public class HistoryController {
 
     // 示例3，添加一条咨询记录，包含clientId, consultantId和花费
     @PostMapping(value = "add")
-    public ResponseEntity<String> addHistory(@RequestBody Map<String, Object> map) {
-        Integer clientId = Integer.parseInt(map.get("clientId").toString());
-        Integer consultantId = Integer.parseInt(map.get("consultantId").toString());
-        Integer expense = Integer.parseInt(map.get("expense").toString());
-        if (historyService.addConsultHistory(clientId, consultantId, expense)) {
+    public ResponseEntity<String> addHistory(@RequestBody ConsultRecordInDto inDto) {
+        
+        if (historyService.addConsultHistory(
+                inDto.getClientId(),
+                inDto.getConsultantId(),
+                inDto.getExpense()
+        )) {
             return ResponseEntity.ok("添加成功！");
         } else {
             return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+        }
+    }
+
+    @GetMapping(value = "archives")
+    public ResponseEntity getArchivesByClientId(
+            @RequestParam Integer clientId,
+            @RequestParam Integer page,
+            @RequestParam Integer size) {
+        try {
+            List<Archive> archives = historyService.findArchiveByClientId(clientId, page, size);
+            return ResponseEntity.ok(archives);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
+
+    @GetMapping(value = "records")
+    public ResponseEntity getConsultRecordsByClientId(
+            @RequestParam Integer clientId,
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
+        try {
+            List<ConsultHistoryEntity> records = historyService.findRecordsByClientId(clientId, page, size);
+            return ResponseEntity.ok(records);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
 
@@ -39,11 +69,11 @@ public class HistoryController {
             @RequestParam Integer page,
             @RequestParam Integer size
     ) {
-        List<ConsultOrder> orders = historyService.findConsultOrdersByClientId(clientId, page, size);
-        if (orders.size() != 0) {
+        try {
+            List<ConsultOrder> orders = historyService.findConsultOrdersByClientId(clientId, page, size);
             return ResponseEntity.ok(orders);
-        } else {
-            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("No Order found!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
 
@@ -74,26 +104,40 @@ public class HistoryController {
                 return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("HistoryId not found!");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f', 'c)");
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f', 'c')");
         }
     }
 
-    @GetMapping(value = "/archive/sum")
-    public ResponseEntity<Integer> getAllArchiveNumByClientId(@RequestParam Integer clientId) {
-        Integer archivesNum = historyService.getAllArchive(clientId);
-        return ResponseEntity.ok(archivesNum);
+    @GetMapping(value = "archive/sum")
+    public ResponseEntity getArchiveNumByClientId(@RequestParam Integer clientId) {
+        try {
+            Integer num = historyService.getArchiveNumByClientId(clientId);
+            return ResponseEntity.ok(num);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
     }
 
-    @GetMapping(value = "/archive/getSome")
-    public ResponseEntity getSomeArchiveByClientId(
-            @RequestParam Integer clientId,
-            @RequestParam Integer page,
-            @RequestParam Integer size) {
-        List<Archive> archives = historyService.getSomeArchive(clientId, page - 1, size);
-        if (archives != null && archives.size() > 0) {
-            return ResponseEntity.ok(archives);
+    @GetMapping(value = "order/sum")
+    public ResponseEntity getOrderNumByClientId(@RequestParam Integer clientId) {
+        try {
+            Integer num = historyService.getOrderNumByClientId(clientId);
+            return ResponseEntity.ok(num);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
-        return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("No Archives found!");
     }
+
+    @GetMapping(value = "record/sum")
+    public ResponseEntity getRecordNumByClientId(@RequestParam Integer clientId) {
+        try {
+            Integer num = historyService.getRecordNumByClientId(clientId);
+            return ResponseEntity.ok(num);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
+
+
 
 }

@@ -19,7 +19,7 @@ public class HistoryServiceImpl implements HistoryService {
     ConsultHistoryRepository historyRepository;
 
     @Override
-    public boolean addConsultHistory(int clientId, int consultantId, int expense) {
+    public Boolean addConsultHistory(Integer clientId, Integer consultantId, Integer expense) {
         ConsultHistoryEntity history = new ConsultHistoryEntity();
         history.setClientId(clientId);
         history.setConsultantId(consultantId);
@@ -47,18 +47,34 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Integer getAllArchive(Integer clientId) {
-        return historyRepository.getAllArchive(clientId);
+    public Integer getArchiveNumByClientId(Integer clientId) {
+        return historyRepository.getArchiveNumByClientId(clientId);
     }
 
     @Override
-    public List<Archive> getSomeArchive(Integer clientId, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return historyRepository.getSomeArchive(clientId, pageable);
+    public List<Archive> findArchiveByClientId(Integer clientId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return historyRepository.getArchivesByClientId(clientId, pageable);
     }
 
     @Override
     public Boolean endConsultation(Integer orderId, Integer endTime) {
         return null;
+    }
+
+    @Override
+    public Integer getOrderNumByClientId(Integer clientId) {
+        return historyRepository.findOrderNumByClientId(clientId);
+    }
+
+    @Override
+    public Integer getRecordNumByClientId(Integer clientId) {
+        return historyRepository.findConsultRecordNumByClientId(clientId);
+    }
+
+    @Override
+    public List<ConsultHistoryEntity> findRecordsByClientId(Integer clientId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return historyRepository.findConsultHistoryEntitiesByClientId(clientId, pageable);
     }
 }

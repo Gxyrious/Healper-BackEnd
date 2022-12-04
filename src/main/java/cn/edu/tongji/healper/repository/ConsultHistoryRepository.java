@@ -22,7 +22,7 @@ public interface ConsultHistoryRepository extends
             "che.id, che.startTime, che.endTime, " +
             "che.consultantId, ce.realname, che.expense, che.status" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
-            "where che.consultantId = ce.id and che.clientId = ?1"
+            "where che.consultantId = ce.id and che.clientId = ?1 and che.status <> 'c'"
     )
     List<ConsultOrder> findConsultOrder(Integer clientId, Pageable pageable);
 
@@ -39,14 +39,22 @@ public interface ConsultHistoryRepository extends
     Integer updateHistoryStatusById(Integer historyId, String status);
 
 
-    @Query(value = "select count(a.id) from ConsultHistoryEntity a where a.clientId=?1")
-    Integer getAllArchive(@Param("id") Integer id);
-
     @Query(value = "select new cn.edu.tongji.healper.outdto.Archive" +
-            "(a.consultantId,a.endTime,a.expense,a.startTime,a.advice,a.summary,s.realname) " +
+            "(a.consultantId, a.endTime, a.expense, a.startTime, a.advice, a.summary, s.realname) " +
             "from ConsultHistoryEntity a inner join ConsultantEntity s " +
             "on a.consultantId=s.id where a.clientId=?1 and a.status='f' order by a.endTime desc")
-    List<Archive> getSomeArchive(@Param("id") Integer id, Pageable pageable);
+    List<Archive> getArchivesByClientId(@Param("id") Integer id, Pageable pageable);
 
     ConsultHistoryEntity getConsultHistoryEntityById(Integer historyId);
+
+    List<ConsultHistoryEntity> findConsultHistoryEntitiesByClientId(Integer clientId, Pageable pageable);
+
+    @Query(value = "select count(a.id) from ConsultHistoryEntity a where a.clientId=?1 and a.status = 'f'")
+    Integer getArchiveNumByClientId(@Param("id") Integer id);
+
+    @Query(value = "select count(_order.id) from ConsultHistoryEntity _order where _order.clientId = ?1 and _order.status <> 'c'")
+    Integer findOrderNumByClientId(Integer clientId);
+
+    @Query(value = "select count(record.id) from ConsultHistoryEntity record where record.clientId = ?1")
+    Integer findConsultRecordNumByClientId(Integer clientId);
 }
