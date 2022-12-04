@@ -4,7 +4,6 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
-import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 
@@ -22,8 +21,9 @@ public interface UserService {
 
     ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex);
 
-    Boolean updateClientInfo(ClientInfo client);
+    void updateClientInfo(ClientInfo client);
 
+    void updateConsultantInfo(ConsultantInfo consultant);
 
 
     Boolean checkPasswdWithId(Integer id, String password);
@@ -38,6 +38,7 @@ public interface UserService {
     List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size);
 
     List<ConsultantInfoWithClient> findConsultantsWithClient(Integer clientId, String label, Integer page, Integer size);
+
 
 
     //其它类相关接口------------------------------

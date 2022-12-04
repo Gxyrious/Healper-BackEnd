@@ -155,4 +155,22 @@ public class ConsultantEntity implements User{
         result = 31 * result + (profile != null ? profile.hashCode() : 0);
         return result;
     }
+
+    public void setBasicInfo(String realname, String sex, Integer age, String profile, Short expense) {
+        if (realname != null) {
+            this.setRealname(realname);
+        }
+        if (sex != null) {
+            this.setSex(sex);
+        }
+        if (age != null) {
+            this.setAge(age);
+        }
+        if (profile != null) {
+            this.setPassword(profile);
+        }
+        if (expense != null) {
+            this.setExpense(expense);
+        }
+    }
 }

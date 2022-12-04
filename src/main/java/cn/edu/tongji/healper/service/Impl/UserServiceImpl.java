@@ -98,16 +98,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updateClientInfo(ClientInfo client) {
-        try {
-            ClientEntity updatedClient = clientRepository.findById(client.getId()).get();
-            updatedClient.setBasicInfo(client.getNickname(), client.getSex(), client.getAge());
-            updatedClient.setProfile(client.getProfile());
-            clientRepository.save(updatedClient);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void updateClientInfo(ClientInfo client) {
+        ClientEntity updatedClient = clientRepository.findById(client.getId()).get();
+        updatedClient.setBasicInfo(client.getNickname(), client.getSex(), client.getAge(), client.getProfile());
+        clientRepository.save(updatedClient);
+    }
+
+    @Override
+    public void updateConsultantInfo(ConsultantInfo consultant) {
+        ConsultantEntity updatedConsultant = consultantRepository.findById(consultant.getId()).get();
+        updatedConsultant.setBasicInfo(consultant.getRealname(), consultant.getSex(), consultant.getAge(), consultant.getProfile(), consultant.getExpense());
+        consultantRepository.save(updatedConsultant);
     }
 
     @Override

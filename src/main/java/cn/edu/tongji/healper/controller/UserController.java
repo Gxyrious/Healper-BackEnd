@@ -100,10 +100,11 @@ public class UserController {
     //修改用户信息
     @PutMapping(value = "info")
     public ResponseEntity updateClientBasicInfo(@RequestBody ClientInfo client) {
-        if (userService.updateClientInfo(client)) {
-            return ResponseEntity.ok("Update succeeded!");
-        } else {
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to update!");
+        try {
+            userService.updateClientInfo(client);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("e");
         }
     }
 
@@ -165,7 +166,6 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
-
     }
 
     @GetMapping("consultants/label")
@@ -199,5 +199,30 @@ public class UserController {
 
         }
     }
+
+    @PutMapping("consultant/info")
+    public ResponseEntity updateConsultantLabel(@RequestBody ConsultantInfo consultant) {
+        try {
+            // 需要修改一下来访者改信息的api
+            userService.updateConsultantInfo(consultant);
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+    @PutMapping("consultant/label")
+    public ResponseEntity updateConsultantLabel(@RequestBody String label) {
+        // 怎么修改咨询师标签？
+        try {
+
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+
+
 }
 

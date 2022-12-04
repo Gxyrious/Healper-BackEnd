@@ -100,7 +100,7 @@ public class ClientEntity implements User{
         }
     }
 
-    public void setBasicInfo(String nickname, String sex, Integer age) {
+    public void setBasicInfo(String nickname, String sex, Integer age, String profile) {
         if (nickname != null) {
             this.setNickname(nickname);
         }
@@ -109,6 +109,9 @@ public class ClientEntity implements User{
         }
         if (age != null) {
             this.setAge(age);
+        }
+        if (profile != null) {
+            this.setProfile(profile);
         }
     }
 
