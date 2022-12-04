@@ -5,15 +5,15 @@ import lombok.Data;
 @Data
 public class Archive {
     Integer consultantId;
-    Integer endTime;
+    Long endTime;
     Integer expense;
-    Integer startTime;
+    Long startTime;
     String advice;
     String summary;
     String consultantRealName;
 
-    public Archive(Integer consultantId, Integer endTime, Integer expense,
-                   Integer startTime, String advice,
+    public Archive(Integer consultantId, Long endTime, Integer expense,
+                   Long startTime, String advice,
                    String summary, String consultantRealName) {
         this.consultantId = consultantId;
         this.endTime = endTime;

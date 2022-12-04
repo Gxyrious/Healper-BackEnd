@@ -10,9 +10,9 @@ public class ConsultOrder implements Serializable {
 
     private int id;
 
-    private Integer startTime;
+    private Long startTime;
 
-    private Integer endTime;
+    private Long endTime;
 
     private int consultantId;
 
@@ -23,7 +23,7 @@ public class ConsultOrder implements Serializable {
     private String status;
 
     public ConsultOrder(int id,
-                        Integer startTime, Integer endTime,
+                        Long startTime, Long endTime,
                         int consultantId, String realname,
                         int expense, String status) {
         this.id = id;

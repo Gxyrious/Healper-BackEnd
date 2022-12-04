@@ -19,14 +19,14 @@ public class HistoryServiceImpl implements HistoryService {
     ConsultHistoryRepository historyRepository;
 
     @Override
-    public Boolean addConsultHistory(Integer clientId, Integer consultantId, Integer expense) {
+    public Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense) {
         ConsultHistoryEntity history = new ConsultHistoryEntity();
         history.setClientId(clientId);
         history.setConsultantId(consultantId);
         history.setExpense(expense);
         history.setStatus("w"); // 状态：等待中
-        historyRepository.save(history);
-        return true;
+        ConsultHistoryEntity consultHistoryEntity = historyRepository.save(history);
+        return consultHistoryEntity.getId();
     }
 
     @Override
@@ -70,6 +70,16 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public Integer getRecordNumByClientId(Integer clientId) {
         return historyRepository.findConsultRecordNumByClientId(clientId);
+    }
+
+    @Override
+    public List<ConsultOrder> findWaitingOrdersByClientId(Integer clientId) {
+        return historyRepository.findWaitingConsultOrders(clientId);
+    }
+
+    @Override
+    public void deleteOldWaitingOrdersByIds(List<Integer> ids) {
+        historyRepository.deleteAllById(ids);
     }
 
     @Override

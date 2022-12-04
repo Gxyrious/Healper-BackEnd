@@ -5,13 +5,13 @@ import lombok.Data;
 @Data
 public class ScaleRecordInfo {
     Integer scaleRecordId;
-    Integer endTime;
+    Long endTime;
     Byte isHidden;
     Integer scaleId;
     String record;
     String scaleName;
 
-    public ScaleRecordInfo(Integer scaleRecordId, Integer endTime, Byte isHidden, Integer scaleId, String record, String scaleName) {
+    public ScaleRecordInfo(Integer scaleRecordId, Long endTime, Byte isHidden, Integer scaleId, String record, String scaleName) {
         this.scaleRecordId = scaleRecordId;
         this.endTime = endTime;
         this.isHidden = isHidden;

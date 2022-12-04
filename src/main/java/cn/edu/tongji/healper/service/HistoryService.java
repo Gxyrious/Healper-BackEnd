@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface HistoryService {
 
-    Boolean addConsultHistory(Integer clientId, Integer consultantId, Integer expense);
+    Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense);
 
 
     String findQrCodeByHistoryId(Integer historyId);
@@ -21,6 +21,8 @@ public interface HistoryService {
 
     List<Archive> findArchiveByClientId(Integer clientId, Integer page, Integer size);
 
+    void deleteOldWaitingOrdersByIds(List<Integer> ids);
+
     List<ConsultHistoryEntity> findRecordsByClientId(Integer clientId, Integer page, Integer size);
 
     Boolean endConsultation(Integer orderId, Integer endTime);
@@ -28,5 +30,7 @@ public interface HistoryService {
     Integer getOrderNumByClientId(Integer clientId);
 
     Integer getRecordNumByClientId(Integer clientId);
+
+    List<ConsultOrder> findWaitingOrdersByClientId(Integer clientId);
 
 }

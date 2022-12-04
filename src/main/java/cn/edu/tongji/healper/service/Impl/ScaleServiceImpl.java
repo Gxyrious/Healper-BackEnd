@@ -2,7 +2,6 @@ package cn.edu.tongji.healper.service.Impl;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
-import cn.edu.tongji.healper.outdto.ScaleRecordDto;
 import cn.edu.tongji.healper.po.ScaleRecordInfo;
 import cn.edu.tongji.healper.repository.PsychologyScaleRepository;
 import cn.edu.tongji.healper.repository.ScaleRecordRepository;

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -23,16 +24,21 @@ public class HistoryController {
 
     // 示例3，添加一条咨询记录，包含clientId, consultantId和花费
     @PostMapping(value = "add")
-    public ResponseEntity<String> addHistory(@RequestBody ConsultRecordInDto inDto) {
-        
-        if (historyService.addConsultHistory(
-                inDto.getClientId(),
-                inDto.getConsultantId(),
-                inDto.getExpense()
-        )) {
-            return ResponseEntity.ok("添加成功！");
-        } else {
-            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+    public ResponseEntity addHistory(@RequestBody ConsultRecordInDto inDto) {
+        try {
+            List<ConsultOrder> waitingOrders = historyService.findWaitingOrdersByClientId(inDto.getClientId());
+            if (waitingOrders.isEmpty()) {
+                Integer historyId = historyService.addConsultHistory(
+                        inDto.getClientId(),
+                        inDto.getConsultantId(),
+                        inDto.getExpense()
+                );
+                return ResponseEntity.ok(historyId);
+            } else {
+                return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(waitingOrders);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
 
@@ -138,6 +144,28 @@ public class HistoryController {
         }
     }
 
-
+    @GetMapping(value = "order/waiting")
+    public ResponseEntity getWaitingConsultOrder(@RequestParam Integer clientId) {
+        try {
+            List<ConsultOrder> waitingOrders = historyService.findWaitingOrdersByClientId(clientId);
+            if (waitingOrders.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } else {
+                if (waitingOrders.size() > 1) {
+                    // delete the other waiting orders
+                    List<Integer> ids = new ArrayList<>();
+                    for (int i = 1; i < waitingOrders.size(); i++) {
+                        ids.add(waitingOrders.get(i).getId());
+                    }
+                    historyService.deleteOldWaitingOrdersByIds(ids);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                } else {
+                    return ResponseEntity.ok(waitingOrders.get(0));
+                }
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
 
 }

@@ -5,10 +5,7 @@ import cn.edu.tongji.healper.service.ConsultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "api/consult")
@@ -19,7 +16,7 @@ public class ConsultController {
 
     @PutMapping(value = "start")
     public ResponseEntity startConsultation(@RequestBody ConsultTimeInDto inDto) {
-        Integer startTime = inDto.getTime();
+        Long startTime = inDto.getTime();
         if (startTime >= System.currentTimeMillis()) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Time error!");
         } else if (consultService.startConsultation(inDto.getOrderId(), startTime)) {
@@ -31,13 +28,22 @@ public class ConsultController {
 
     @PutMapping(value = "end")
     public ResponseEntity endConsultation(@RequestBody ConsultTimeInDto inDto) {
-        Integer endTime = inDto.getTime();
+        Long endTime = inDto.getTime();
         if (endTime >= System.currentTimeMillis()) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Time error!");
         } else if (consultService.endConsultation(inDto.getOrderId(), endTime)) {
             return ResponseEntity.ok("Consultation ended!");
         } else {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to end!");
+        }
+    }
+
+    @GetMapping(value = "appointed")
+    public ResponseEntity getAppointedConsultation(@RequestParam Integer clientId) {
+        try {
+            return ResponseEntity.ok("");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
 }

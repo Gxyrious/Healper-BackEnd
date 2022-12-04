@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class ConsultTimeInDto {
+
     Integer orderId;
-    Integer time;
+
+    Long time;
 }

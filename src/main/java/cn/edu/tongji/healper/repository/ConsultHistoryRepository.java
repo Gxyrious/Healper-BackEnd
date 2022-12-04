@@ -57,4 +57,13 @@ public interface ConsultHistoryRepository extends
 
     @Query(value = "select count(record.id) from ConsultHistoryEntity record where record.clientId = ?1")
     Integer findConsultRecordNumByClientId(Integer clientId);
+
+    @Query("select new " +
+            "cn.edu.tongji.healper.po.ConsultOrder(" +
+            "che.id, che.startTime, che.endTime, " +
+            "che.consultantId, ce.realname, che.expense, che.status" +
+            ") from ConsultHistoryEntity che, ConsultantEntity ce " +
+            "where che.consultantId = ce.id and che.clientId = ?1 and che.status = 'w'"
+    )
+    List<ConsultOrder> findWaitingConsultOrders(Integer clientId);
 }

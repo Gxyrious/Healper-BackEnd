@@ -13,7 +13,7 @@ public class ConsultServiceImpl implements ConsultService {
     private ConsultHistoryRepository historyRepository;
 
     @Override
-    public Boolean startConsultation(Integer orderId, Integer startTime) {
+    public Boolean startConsultation(Integer orderId, Long startTime) {
         ConsultHistoryEntity order = historyRepository.getConsultHistoryEntityById(orderId);
         order.setStartTime(startTime);
         try {
@@ -25,7 +25,7 @@ public class ConsultServiceImpl implements ConsultService {
     }
 
     @Override
-    public Boolean endConsultation(Integer orderId, Integer endTime) {
+    public Boolean endConsultation(Integer orderId, Long endTime) {
         ConsultHistoryEntity order = historyRepository.getConsultHistoryEntityById(orderId);
         order.setEndTime(endTime);
         try {
