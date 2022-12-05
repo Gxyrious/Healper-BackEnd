@@ -141,7 +141,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("短信发送失败");
     }
 
-    @PostMapping("uploadImage")
+    @PostMapping("uploadProfile")
     public ResponseEntity uploadImage(@RequestBody UploadImageInDto inDto) {
         try {
             String imageBase64 = inDto.getBase64();
@@ -158,9 +158,17 @@ public class UserController {
             String url = OSSUtils.uploadStream(inputStream, imageName);
 
             // update to database
-            ClientInfo clientInfo = userService.findClientInfoById(inDto.getId());
-            clientInfo.setProfile(url);
-            userService.updateClientInfo(clientInfo);
+            if (inDto.getUserType() == UserType.client) {
+                ClientInfo clientInfo = userService.findClientInfoById(inDto.getId());
+                clientInfo.setProfile(url);
+                userService.updateClientInfo(clientInfo);
+            } else if (inDto.getUserType() == UserType.consultant) {
+                ConsultantInfo consultantInfo = userService.findConsultantInfoById(inDto.getId());
+                consultantInfo.setProfile(url);
+                userService.updateConsultantInfo(consultantInfo);
+            } else {
+                throw new RuntimeException("UserType error!");
+            }
 
             return ResponseEntity.ok(url);
         } catch (Exception e) {
