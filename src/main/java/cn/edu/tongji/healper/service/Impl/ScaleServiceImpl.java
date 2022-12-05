@@ -70,8 +70,6 @@ public class ScaleServiceImpl implements ScaleService {
         } else {
             String json = records.get(0).getRecord();
             JSONArray factors = JSONObject.parseArray(json);
-            System.out.println(factors.size());
-            System.out.println(factors.toJSONString());
             for (Object obj : factors) {
                 String factor = ((JSONObject) obj).get("factor").toString();
                 JSONObject factorRecords = new JSONObject();

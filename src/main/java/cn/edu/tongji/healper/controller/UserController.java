@@ -22,8 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +34,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SMSUtils smsService;
 
     // 登录
     @PostMapping(value = "login")
@@ -79,21 +80,30 @@ public class UserController {
     //注册功能，判断手机号是否重复，并将密码md5加密后存储用户信息
     @PostMapping(value = "register")
     public ResponseEntity register(@RequestBody RegisterInfoInDto registerInfoInDto) {
-        User user = userService.findUserByPhone(registerInfoInDto.getUserPhone());
-        if (user != null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone already exists!");
-        } else {
-            ClientEntity newClient = userService.addClientInfo(
-                    registerInfoInDto.getNickname(),
-                    registerInfoInDto.getPassword(),
-                    registerInfoInDto.getUserPhone(),
-                    registerInfoInDto.getSex()
-            );
-            if (newClient != null) {
-                return ResponseEntity.ok(newClient.getId());
+        try {
+            String userphone = registerInfoInDto.getUserPhone();
+            User user = userService.findUserByPhone(userphone);
+            if (user != null) {
+                throw new RuntimeException("Phone already exists!");
             } else {
-                return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout!");
+                if (smsService.checkCaptcha(userphone, registerInfoInDto.getCode())) {
+                    ClientEntity newClient = userService.addClientInfo(
+                            registerInfoInDto.getNickname(),
+                            registerInfoInDto.getPassword(),
+                            registerInfoInDto.getUserPhone(),
+                            registerInfoInDto.getSex()
+                    );
+                    if (newClient != null) {
+                        return ResponseEntity.ok(newClient.getId());
+                    } else {
+                        throw new RuntimeException("Failed to register!");
+                    }
+                } else {
+                    throw new RuntimeException("Captcha incorrect!");
+                }
             }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
 
@@ -124,12 +134,16 @@ public class UserController {
 
     // 发送手机短信验证码
     @PostMapping("sendMsg")
-    public ResponseEntity sendMsg(@RequestBody LoginInfoInDto loginInfoInDto, HttpSession session) {
+    public ResponseEntity sendMsg(@RequestBody LoginInfoInDto loginInfoInDto) {
         //获取手机号
         try {
             String userphone = loginInfoInDto.getUserPhone();
-            String code = SMSUtils.sendMessage(userphone);
-            return ResponseEntity.ok(code);
+            if (userService.findUserByPhone(userphone) != null) {
+                throw new RuntimeException("Phone already exists!");
+            } else {
+                String code = smsService.sendMessage(userphone);
+                return ResponseEntity.ok(code);
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
