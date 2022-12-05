@@ -112,6 +112,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateConsultantQrCode(Integer id, String url) {
+        ConsultantEntity updatedConsultant = consultantRepository.findById(id).get();
+        updatedConsultant.setQrCodeLink(url);
+        consultantRepository.save(updatedConsultant);
+    }
+
+    @Override
     public Boolean checkPasswdWithId(Integer id, String password) {
         String realPassword = clientRepository.findPasswordById(id);
         return realPassword != null && realPassword.equals(stringToMD5(password));

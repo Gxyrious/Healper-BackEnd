@@ -167,7 +167,7 @@ public class ConsultantEntity implements User{
             this.setAge(age);
         }
         if (profile != null) {
-            this.setPassword(profile);
+            this.setProfile(profile);
         }
         if (expense != null) {
             this.setExpense(expense);

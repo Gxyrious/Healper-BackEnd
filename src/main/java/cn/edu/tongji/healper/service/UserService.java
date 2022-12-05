@@ -26,6 +26,8 @@ public interface UserService {
     void updateConsultantInfo(ConsultantInfo consultant);
 
 
+    void updateConsultantQrCode(Integer id, String url);
+
     Boolean checkPasswdWithId(Integer id, String password);
 
     Boolean updateClientPasswd(Integer id, String password);

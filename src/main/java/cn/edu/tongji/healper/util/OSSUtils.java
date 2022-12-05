@@ -18,12 +18,25 @@ public class OSSUtils {
         return "https://" + OSSConfiguration.getBucketName() + '.' + OSSConfiguration.getEndpoint() + '/' + filename;
     }
 
-    public static byte[] base64ToBytes(String str) {
-        return Base64.decode(str);
+    public static InputStream base64ToInputStream(String base64) {
+        return OSSUtils.bytesToInputStream(OSSUtils.base64ToBytes(OSSUtils.getSourceFromBase64(base64)));
+    }
+
+    public static byte[] base64ToBytes(String base64) {
+        return Base64.decode(base64);
     }
 
     public static InputStream bytesToInputStream(byte[] bytes) {
         return new ByteArrayInputStream(bytes);
     }
 
+    public static String getImageTypeFromBase64(String imageBase64) {
+        return imageBase64
+                .split("/", 3)[1]
+                .split(";", 2)[0];
+    }
+
+    public static String getSourceFromBase64(String imageBase64) {
+        return imageBase64.split("base64,")[1];
+    }
 }

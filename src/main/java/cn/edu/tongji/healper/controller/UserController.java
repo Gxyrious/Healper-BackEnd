@@ -146,17 +146,18 @@ public class UserController {
         try {
             String imageBase64 = inDto.getBase64();
 
-            String imageType = imageBase64
-                    .split("/", 3)[1]
-                    .split(";", 2)[0];
+            // get image stream
+            InputStream inputStream = OSSUtils.base64ToInputStream(imageBase64);
+
+            // get image name
             String imageName = inDto.getUserType().toString()
                     + "-" + inDto.getId()
-                    + "." + imageType;
+                    + "." + OSSUtils.getImageTypeFromBase64(imageBase64);
 
-            byte[] imageBytes = OSSUtils.base64ToBytes(imageBase64.split("base64,")[1]);
-            InputStream inputStream = OSSUtils.bytesToInputStream(imageBytes);
+            // upload with stream and name
             String url = OSSUtils.uploadStream(inputStream, imageName);
 
+            // update to database
             ClientInfo clientInfo = userService.findClientInfoById(inDto.getId());
             clientInfo.setProfile(url);
             userService.updateClientInfo(clientInfo);
@@ -164,6 +165,26 @@ public class UserController {
             return ResponseEntity.ok(url);
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
+
+    @PostMapping(value = "uploadQrCode")
+    public ResponseEntity uploadConsultantQrCode(@RequestBody UploadImageInDto inDto) {
+        try {
+            String imageBase64 = inDto.getBase64();
+
+            InputStream inputStream = OSSUtils.base64ToInputStream(imageBase64);
+
+            String imageName = "QrCode-" + inDto.getId() + "." + OSSUtils.getImageTypeFromBase64(imageBase64);
+
+            String url = OSSUtils.uploadStream(inputStream, imageName);
+
+            userService.updateConsultantQrCode(inDto.getId(), url);
+
+            return ResponseEntity.ok(url);
+
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
