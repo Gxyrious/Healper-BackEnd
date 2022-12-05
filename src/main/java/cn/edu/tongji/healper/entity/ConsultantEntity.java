@@ -156,7 +156,7 @@ public class ConsultantEntity implements User{
         return result;
     }
 
-    public void setBasicInfo(String realname, String sex, Integer age, String profile, Short expense) {
+    public void setBasicInfo(String realname, String sex, Integer age, String profile, Short expense, String label) {
         if (realname != null) {
             this.setRealname(realname);
         }
@@ -171,6 +171,9 @@ public class ConsultantEntity implements User{
         }
         if (expense != null) {
             this.setExpense(expense);
+        }
+        if (label != null) {
+            this.setLabel(label);
         }
     }
 }

@@ -106,7 +106,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateConsultantInfo(ConsultantInfo consultant) {
         ConsultantEntity updatedConsultant = consultantRepository.findById(consultant.getId()).get();
-        updatedConsultant.setBasicInfo(consultant.getRealname(), consultant.getSex(), consultant.getAge(), consultant.getProfile(), consultant.getExpense());
+        updatedConsultant.setBasicInfo(
+                consultant.getRealname(), consultant.getSex(), consultant.getAge(),
+                consultant.getProfile(), consultant.getExpense(), consultant.getLabel()
+        );
         consultantRepository.save(updatedConsultant);
     }
 

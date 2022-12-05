@@ -32,7 +32,6 @@ public class SMSUtils {
     }
 
     public static String sendMessage(String userphone) throws Exception {
-//        Client client = createClient("LTAI5t7NbLDsTrMUG23uRMor", "T6BuuyKj8FiRiD9HnSBMiEebtNpRiK");
         Client smsClient = SMSConfiguration.getSMSClient();
         String code = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
         SendSmsRequest sendSmsRequest = SMSConfiguration.getRequestWithPhone(userphone)
@@ -41,7 +40,7 @@ public class SMSUtils {
         if ("OK".equals(sendSmsResponse.body.code)) {
             return code;
         } else {
-            throw new RuntimeException("Failed to send!");
+            throw new RuntimeException(sendSmsResponse.body.getMessage());
         }
     }
 

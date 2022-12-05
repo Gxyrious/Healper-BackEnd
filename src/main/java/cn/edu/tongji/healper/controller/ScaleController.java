@@ -5,15 +5,12 @@ import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import cn.edu.tongji.healper.po.ScaleRecordInfo;
 import cn.edu.tongji.healper.service.ScaleService;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "api/scale")
@@ -35,6 +32,16 @@ public class ScaleController {
         try {
             ScaleRecordInfo recordInfo = scaleService.findScaleRecordInfoById(recordId);
             return ResponseEntity.ok(recordInfo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
+
+    @GetMapping(value = "/jsonRecords")
+    public ResponseEntity getTotalScaleByClientId(@RequestParam Integer clientId) {
+        try {
+            String json = scaleService.getJsonScaleByClientId(clientId);
+            return ResponseEntity.ok(json);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
@@ -79,5 +86,6 @@ public class ScaleController {
         PsychologyScaleEntity scale = scaleService.findSingleScale(scaleId);
         return scale != null ? ResponseEntity.ok(scale) : ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Index doesn't exist!");
     }
+
 
 }
