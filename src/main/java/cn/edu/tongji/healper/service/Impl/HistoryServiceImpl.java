@@ -89,6 +89,14 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
+    public void writeClientArchive(Integer historyId, String adviceURL, String summaryURL) {
+        ConsultHistoryEntity historyEntity = historyRepository.findById(historyId).get();
+        historyEntity.setAdvice(adviceURL);
+        historyEntity.setAdvice(summaryURL);
+        historyRepository.save(historyEntity);
+    }
+
+    @Override
     public void deleteOldWaitingOrdersByIds(List<Integer> ids) {
         historyRepository.deleteAllById(ids);
     }

@@ -36,4 +36,5 @@ public interface HistoryService {
 
     List<ConsultOrder> findWaitingOrdersByClientId(Integer clientId);
 
+    void writeClientArchive(Integer historyId, String adviceURL, String summaryURL);
 }

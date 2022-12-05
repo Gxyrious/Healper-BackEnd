@@ -1,9 +1,12 @@
 package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
+import cn.edu.tongji.healper.indto.ArchiveInDto;
 import cn.edu.tongji.healper.indto.ConsultRecordInDto;
 import cn.edu.tongji.healper.indto.HistoryStatusInDto;
 import cn.edu.tongji.healper.outdto.Archive;
+import cn.edu.tongji.healper.util.OSSUtils;
+
 import cn.edu.tongji.healper.po.ConsultOrder;
 import cn.edu.tongji.healper.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -189,6 +194,32 @@ public class HistoryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
+    }
+
+    @PostMapping(value = "archive")
+    public ResponseEntity writeClientArchive(@RequestBody ArchiveInDto inDto) {
+        try {
+            Integer historyId = inDto.getId();
+            String aBase64 = inDto.getAdviceBase64();
+            String sBase64 = inDto.getSummaryBase64();
+
+            InputStream aStream = OSSUtils.base64ToInputStream(aBase64);
+            InputStream sStream = OSSUtils.base64ToInputStream(sBase64);
+
+            String adviceName = "advice-" + historyId + ".html";
+            String summaryName = "summary-" + historyId + ".html";
+
+            String adviceURL = OSSUtils.uploadStream(aStream, adviceName);
+            String summaryURL = OSSUtils.uploadStream(sStream, summaryName);
+            historyService.writeClientArchive(historyId, adviceURL, summaryURL);
+            HashMap<String, String> urls = new HashMap<>();
+            urls.put("adviceURL", adviceURL);
+            urls.put("summaryURL", summaryURL);
+            return ResponseEntity.ok(urls);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+
     }
 
 }
