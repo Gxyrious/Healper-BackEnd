@@ -18,6 +18,8 @@ public interface HistoryService {
 
     List<ConsultOrder> findConsultOrdersByClientId(Integer clientId, Integer page, Integer size);
 
+    List<ConsultOrder> findConsultOrdersByConsultantId(Integer constantId, Integer page, Integer size);
+
     List<Archive> findArchiveByClientId(Integer clientId, Integer page, Integer size);
 
     void deleteOldWaitingOrdersByIds(List<Integer> ids);
@@ -27,6 +29,8 @@ public interface HistoryService {
     Boolean endConsultation(Integer orderId, Integer endTime);
 
     Integer getOrderNumByClientId(Integer clientId);
+
+    Integer getOrderNumByConsultantId(Integer consultantId);
 
     Integer getRecordNumByClientId(Integer clientId);
 

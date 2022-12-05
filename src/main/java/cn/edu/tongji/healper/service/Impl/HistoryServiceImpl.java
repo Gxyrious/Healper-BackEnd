@@ -32,7 +32,13 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<ConsultOrder> findConsultOrdersByClientId(Integer clientId, Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page - 1, size);
-        return historyRepository.findConsultOrder(clientId, pageRequest);
+        return historyRepository.findConsultOrderByClientId(clientId, pageRequest);
+    }
+
+    @Override
+    public List<ConsultOrder> findConsultOrdersByConsultantId(Integer constantId, Integer page, Integer size) {
+        Pageable pageRequest = PageRequest.of(page - 1, size);
+        return historyRepository.findConsultOrderByConsultantId(constantId, pageRequest);
     }
 
     @Override
@@ -65,6 +71,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public Integer getOrderNumByClientId(Integer clientId) {
         return historyRepository.findOrderNumByClientId(clientId);
+    }
+
+    @Override
+    public Integer getOrderNumByConsultantId(Integer consultantId) {
+        return historyRepository.findOrderNumByConsultantId(consultantId);
     }
 
     @Override

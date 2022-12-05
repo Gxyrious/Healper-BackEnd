@@ -24,7 +24,16 @@ public interface ConsultHistoryRepository extends
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
             "where che.consultantId = ce.id and che.clientId = ?1 and che.status <> 'c'"
     )
-    List<ConsultOrder> findConsultOrder(Integer clientId, Pageable pageable);
+    List<ConsultOrder> findConsultOrderByClientId(Integer clientId, Pageable pageable);
+
+    @Query("select new " +
+            "cn.edu.tongji.healper.po.ConsultOrder(" +
+            "che.id, che.startTime, che.endTime, " +
+            "che.consultantId, ce.nickname, che.expense, che.status" +
+            ") from ConsultHistoryEntity che, ClientEntity ce " +
+            "where che.consultantId = ?1 and che.consultantId = ce.id"
+    )
+    List<ConsultOrder> findConsultOrderByConsultantId(Integer consultantId, Pageable pageable);
 
     @Query("select ce.qrCodeLink " +
             "from ConsultHistoryEntity che, ConsultantEntity ce " +
@@ -55,6 +64,9 @@ public interface ConsultHistoryRepository extends
     @Query(value = "select count(_order.id) from ConsultHistoryEntity _order where _order.clientId = ?1 and _order.status <> 'c'")
     Integer findOrderNumByClientId(Integer clientId);
 
+    @Query(value = "select count(_order.id) from ConsultHistoryEntity _order where _order.consultantId = ?1")
+    Integer findOrderNumByConsultantId(Integer consultantId);
+
     @Query(value = "select count(record.id) from ConsultHistoryEntity record where record.clientId = ?1")
     Integer findConsultRecordNumByClientId(Integer clientId);
 
@@ -69,4 +81,5 @@ public interface ConsultHistoryRepository extends
 
     @Query(value = "select che from ConsultHistoryEntity che where che.clientId = ?1 and che.consultantId = ?2 and che.status = 'w'")
     ConsultHistoryEntity findFirstByClientIdAndConsultantId(Integer clientId, Integer consultantId);
+
 }

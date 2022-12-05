@@ -168,4 +168,27 @@ public class HistoryController {
         }
     }
 
+    @GetMapping(value = "consultant")
+    public ResponseEntity getConsultantHistory(
+            @RequestParam Integer consultantId,
+            @RequestParam Integer page,
+            @RequestParam Integer size) {
+        try {
+            List<ConsultOrder> orders = historyService.findConsultOrdersByConsultantId(consultantId, page, size);
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
+
+    @GetMapping(value = "consultant/sum")
+    public ResponseEntity getConsultantHistoryNum(@RequestParam Integer consultantId) {
+        try {
+            Integer num = historyService.getOrderNumByConsultantId(consultantId);
+            return ResponseEntity.ok(num);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
+
 }
