@@ -22,12 +22,22 @@ public class ScaleController {
     private ScaleService scaleService;
 
     //分页查询测评记录
-    @GetMapping(value = "/getRecord")
+    @GetMapping(value = "/records")
     public ResponseEntity getScaleRecord(@RequestParam Integer clientId,
                                          @RequestParam Integer page,
                                          @RequestParam Integer size) {
         List<ScaleRecordInfo> scaleRecordInfos = scaleService.findScaleRecordInfoByClientId(clientId, page, size);
         return ResponseEntity.ok(scaleRecordInfos);
+    }
+
+    @GetMapping(value = "/record")
+    public ResponseEntity getSingleRecordById(@RequestParam Integer recordId) {
+        try {
+            ScaleRecordInfo recordInfo = scaleService.findScaleRecordInfoById(recordId);
+            return ResponseEntity.ok(recordInfo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
     }
 
     //查询测评记录总数

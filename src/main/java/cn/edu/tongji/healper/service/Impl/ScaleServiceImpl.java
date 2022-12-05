@@ -54,4 +54,9 @@ public class ScaleServiceImpl implements ScaleService {
         return psychologyScaleRepository.findPsychologyScaleEntityById(scaleId);
     }
 
+    @Override
+    public ScaleRecordInfo findScaleRecordInfoById(Integer recordId) {
+        return scaleRecordRepository.findScaleRecordInfoById(recordId);
+    }
+
 }

@@ -1,5 +1,6 @@
 package cn.edu.tongji.healper.po;
 
+import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import lombok.Data;
 
 @Data
@@ -19,4 +20,5 @@ public class ScaleRecordInfo {
         this.record = record;
         this.scaleName = scaleName;
     }
+
 }

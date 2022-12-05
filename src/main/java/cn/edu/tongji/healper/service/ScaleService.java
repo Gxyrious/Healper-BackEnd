@@ -18,4 +18,5 @@ public interface ScaleService {
 
     PsychologyScaleEntity findSingleScale(Integer scaleId);
 
+    ScaleRecordInfo findScaleRecordInfoById(Integer recordId);
 }
