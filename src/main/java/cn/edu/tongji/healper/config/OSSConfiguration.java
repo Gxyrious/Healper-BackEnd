@@ -2,18 +2,12 @@ package cn.edu.tongji.healper.config;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.model.ObjectMetadata;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.UUID;
 
 @Configuration
 @Component
@@ -33,22 +27,22 @@ public class OSSConfiguration {
     @Getter
     private static String bucketName;
 
-    @Value("${aliyun.endpoint}")
+    @Value("${aliyun.oss.endPoint}")
     public void setEndpoint(String endpoint) {
         OSSConfiguration.endpoint = endpoint;
     }
 
-    @Value("${aliyun.accessKeyId}")
+    @Value("${aliyun.oss.accessKeyId}")
     public void setAccessKeyId(String accessKeyId) {
         OSSConfiguration.accessKeyId = accessKeyId;
     }
 
-    @Value("${aliyun.accessKeySecret}")
+    @Value("${aliyun.oss.accessKeySecret}")
     public void setAccessKeySecret(String accessKeySecret) {
         OSSConfiguration.accessKeySecret = accessKeySecret;
     }
 
-    @Value("${aliyun.bucketName}")
+    @Value("${aliyun.oss.bucketName}")
     public void setBucketName(String bucketName) {
         OSSConfiguration.bucketName = bucketName;
     }

@@ -5,6 +5,7 @@ import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
+import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
@@ -85,8 +86,6 @@ public class UserServiceImpl implements UserService {
         return consultantsWithClient;
     }
 
-
-
     @Override
     public ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex) {
         ClientEntity newClient = new ClientEntity();
@@ -119,20 +118,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean checkPasswdWithId(Integer id, String password) {
-        String realPassword = clientRepository.findPasswordById(id);
+    public Boolean checkPasswdWithId(Integer id, UserType userType, String password) {
+        String realPassword;
+        if (userType == UserType.client) {
+            realPassword = clientRepository.findPasswordById(id);
+        } else if (userType == UserType.consultant) {
+            realPassword = consultantRepository.findPasswordById(id);
+        } else {
+            throw new RuntimeException("UserType error!");
+        }
         return realPassword != null && realPassword.equals(stringToMD5(password));
     }
 
     @Override
-    public Boolean updateClientPasswd(Integer id, String password) {
-        try {
+    public void updateUserPasswd(Integer id, UserType userType, String password) {
+        if (userType == UserType.client) {
             ClientEntity updatedClient = clientRepository.findById(id).get();
             updatedClient.setPassword(stringToMD5(password));
             clientRepository.save(updatedClient);
-            return true;
-        } catch (Exception e) {
-            return false;
+        } else if (userType == UserType.consultant) {
+            ConsultantEntity updatedConsultant = consultantRepository.findById(id).get();
+            updatedConsultant.setPassword(stringToMD5(password));
+            consultantRepository.save(updatedConsultant);
+        } else {
+            throw new RuntimeException("UserType error!");
         }
     }
 

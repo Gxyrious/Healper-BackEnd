@@ -1,6 +1,5 @@
 package cn.edu.tongji.healper.po;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,19 +15,22 @@ public class ConsultOrder implements Serializable {
 
     private int consultantId;
 
+
+    private int clientId;
+
     private String realname;
 
     private int expense;
 
     private String status;
 
-    public ConsultOrder(int id,
-                        Long startTime, Long endTime,
-                        int consultantId, String realname,
-                        int expense, String status) {
+    public ConsultOrder(int id, Long startTime, Long endTime,
+                        int clientId, int consultantId,
+                        String realname, int expense, String status) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.clientId = clientId;
         this.consultantId = consultantId;
         this.realname = realname;
         this.expense = expense;

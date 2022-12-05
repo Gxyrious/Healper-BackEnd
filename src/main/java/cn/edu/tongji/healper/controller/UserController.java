@@ -110,14 +110,15 @@ public class UserController {
 
     @PutMapping(value = "passwd")
     public ResponseEntity updateClientPasswd(@RequestBody UpdatePasswdInDto inDto) {
-        if (userService.checkPasswdWithId(inDto.getId(), inDto.getOldPasswd())) {
-            if (userService.updateClientPasswd(inDto.getId(), inDto.getNewPasswd())) {
+        try {
+            if (userService.checkPasswdWithId(inDto.getId(), inDto.getUserType(), inDto.getOldPasswd())) {
+                userService.updateUserPasswd(inDto.getId(), inDto.getUserType(), inDto.getNewPasswd());
                 return ResponseEntity.ok("Password updated!");
             } else {
-                return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to update!");
+                return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Old password wrong!");
             }
-        } else {
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Old password wrong!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
 
@@ -125,20 +126,13 @@ public class UserController {
     @PostMapping("sendMsg")
     public ResponseEntity sendMsg(@RequestBody LoginInfoInDto loginInfoInDto, HttpSession session) {
         //获取手机号
-        String phone = loginInfoInDto.getUserPhone();
-        if (phone != null && phone.length() > 0) {
-            //看个人需求自行编写，已生成随机的4位验证码为例
-            String code = SMSUtils.getCode(4);
-//            log.info("code={}", code);
-
-            //调用阿里云提供的短信服务API完成发送短信
-            SMSUtils.sendMessage("阿里云短信测试", "SMS_154950909", phone, code);
-
-            //需要将生成的验证码保存到Session
-            session.setAttribute(phone, code);
-            return ResponseEntity.ok("短信发送成功");
+        try {
+            String userphone = loginInfoInDto.getUserPhone();
+            String code = SMSUtils.sendMessage(userphone);
+            return ResponseEntity.ok(code);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("短信发送失败");
     }
 
     @PostMapping("uploadProfile")

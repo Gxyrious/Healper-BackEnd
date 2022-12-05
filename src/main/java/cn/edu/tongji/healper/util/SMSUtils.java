@@ -1,12 +1,13 @@
 package cn.edu.tongji.healper.util;
 
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.profile.DefaultProfile;
+import cn.edu.tongji.healper.config.SMSConfiguration;
+import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.aliyun.dysmsapi20170525.Client;
+import com.aliyun.teaopenapi.models.Config;
+import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,28 +16,32 @@ import java.util.Random;
  * 短信发送工具类
  */
 public class SMSUtils {
-    /**
-     * 发送短信
-     * @param signName 签名
-     * @param templateCode 模板
-     * @param phoneNumbers 手机号
-     * @param param 参数
-     */
-    public static void sendMessage(String signName, String templateCode,String phoneNumbers,String param){
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5tFDToDqmsCDbuZcbbac", "ScOXonQDUWptOuNPVybcl2MXiqCNUX");
-        IAcsClient client = new DefaultAcsClient(profile);
 
-        SendSmsRequest request = new SendSmsRequest();
-        request.setSysRegionId("cn-hangzhou");
-        request.setPhoneNumbers(phoneNumbers);
-        request.setSignName(signName);
-        request.setTemplateCode(templateCode);
-        request.setTemplateParam("{\"code\":\""+param+"\"}");
-        try {
-            SendSmsResponse response = client.getAcsResponse(request);
-            System.out.println("短信发送成功");
-        }catch (ClientException e) {
-            e.printStackTrace();
+    @Resource
+    private RedisTemplate<String, String> redisTemplate;
+
+    private static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
+        Config config = new Config()
+                // 您的AccessKey ID
+                .setAccessKeyId(accessKeyId)
+                // 您的AccessKey Secret
+                .setAccessKeySecret(accessKeySecret);
+        // 访问的域名
+        config.endpoint = "dysmsapi.aliyuncs.com";
+        return new com.aliyun.dysmsapi20170525.Client(config);
+    }
+
+    public static String sendMessage(String userphone) throws Exception {
+//        Client client = createClient("LTAI5t7NbLDsTrMUG23uRMor", "T6BuuyKj8FiRiD9HnSBMiEebtNpRiK");
+        Client smsClient = SMSConfiguration.getSMSClient();
+        String code = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
+        SendSmsRequest sendSmsRequest = SMSConfiguration.getRequestWithPhone(userphone)
+                .setTemplateParam("{\"code\":" + code + "}");
+        SendSmsResponse sendSmsResponse = smsClient.sendSms(sendSmsRequest);
+        if ("OK".equals(sendSmsResponse.body.code)) {
+            return code;
+        } else {
+            throw new RuntimeException("Failed to send!");
         }
     }
 

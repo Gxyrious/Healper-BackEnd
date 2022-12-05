@@ -27,4 +27,8 @@ public interface ConsultantRepository extends
                 "consultant.userphone, consultant.age, consultant.expense, consultant.label, consultant.profile)" +
             " from ConsultantEntity consultant where consultant.id=?1")
     ConsultantInfo findConsultantInfoById(@Param("id") Integer id);
+
+    @Query(value = "select consultant.password from ConsultantEntity consultant where consultant.id = ?1")
+    String findPasswordById(@Param("id") Integer id);
+
 }

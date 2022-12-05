@@ -4,6 +4,7 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
+import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.po.ClientInfo;
 import cn.edu.tongji.healper.po.ConsultantInfo;
 
@@ -13,6 +14,9 @@ public interface UserService {
 
     //公共接口------------------------------
     User findUserByPhone(String phone);
+
+    void updateUserPasswd(Integer id, UserType userType, String password);
+
 
     //client相关接口------------------------------
     ClientEntity findClientEntityByUserPhone(String userPhone);
@@ -28,9 +32,8 @@ public interface UserService {
 
     void updateConsultantQrCode(Integer id, String url);
 
-    Boolean checkPasswdWithId(Integer id, String password);
+    Boolean checkPasswdWithId(Integer id, UserType userType, String password);
 
-    Boolean updateClientPasswd(Integer id, String password);
 
     //consultant相关接口-----------------------------
     ConsultantEntity findConsultantEntityByUserPhone(String userPhone);
@@ -40,6 +43,7 @@ public interface UserService {
     List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size);
 
     List<ConsultantInfoWithClient> findConsultantsWithClient(Integer clientId, String label, Integer page, Integer size);
+
 
 
 

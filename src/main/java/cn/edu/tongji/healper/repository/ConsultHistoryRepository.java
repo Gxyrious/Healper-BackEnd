@@ -20,7 +20,7 @@ public interface ConsultHistoryRepository extends
     @Query("select new " +
             "cn.edu.tongji.healper.po.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
-            "che.consultantId, ce.realname, che.expense, che.status" +
+            "che.clientId, che.consultantId, ce.realname, che.expense, che.status" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
             "where che.consultantId = ce.id and che.clientId = ?1 and che.status <> 'c'"
     )
@@ -29,7 +29,7 @@ public interface ConsultHistoryRepository extends
     @Query("select new " +
             "cn.edu.tongji.healper.po.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
-            "che.consultantId, ce.nickname, che.expense, che.status" +
+            "che.clientId, che.consultantId, ce.nickname, che.expense, che.status" +
             ") from ConsultHistoryEntity che, ClientEntity ce " +
             "where che.consultantId = ?1 and che.consultantId = ce.id"
     )
@@ -73,7 +73,7 @@ public interface ConsultHistoryRepository extends
     @Query("select new " +
             "cn.edu.tongji.healper.po.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
-            "che.consultantId, ce.realname, che.expense, che.status" +
+            "che.clientId, che.consultantId, ce.realname, che.expense, che.status" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
             "where che.consultantId = ce.id and che.clientId = ?1 and che.status = 'w'"
     )
