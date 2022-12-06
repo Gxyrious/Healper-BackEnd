@@ -49,7 +49,7 @@ public interface ConsultHistoryRepository extends
 
 
     @Query(value = "select new cn.edu.tongji.healper.outdto.Archive" +
-            "(a.consultantId, a.endTime, a.expense, a.startTime, a.advice, a.summary, s.realname) " +
+            "(a.id, a.consultantId, a.endTime, a.expense, a.startTime, a.advice, a.summary, s.realname) " +
             "from ConsultHistoryEntity a inner join ConsultantEntity s " +
             "on a.consultantId=s.id where a.clientId=?1 and a.status='f' order by a.endTime desc")
     List<Archive> getArchivesByClientId(@Param("id") Integer id, Pageable pageable);
