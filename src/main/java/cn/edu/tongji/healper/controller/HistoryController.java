@@ -105,6 +105,7 @@ public class HistoryController {
         statusSet.add('w'); // 等候中
         statusSet.add('p'); // 待付款
         statusSet.add('f'); // 已完成
+        statusSet.add('s'); // 已开始
         statusSet.add('c'); // 已取消
         if (status.length() == 1 && statusSet.contains(status.charAt(0))) {
             // 数据无误
@@ -115,7 +116,7 @@ public class HistoryController {
                 return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("HistoryId not found!");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f', 'c')");
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Data 'status' isn't one of ('w', 'p', 'f', 'c', 's')");
         }
     }
 
