@@ -22,7 +22,7 @@ public interface ConsultHistoryRepository extends
             "che.id, che.startTime, che.endTime, " +
             "che.clientId, che.consultantId, ce.realname, che.expense, che.status" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
-            "where che.consultantId = ce.id and che.clientId = ?1 and che.status <> 'c'"
+            "where che.consultantId = ce.id and che.clientId = ?1"
     )
     List<ConsultOrder> findConsultOrderByClientId(Integer clientId, Pageable pageable);
 
@@ -61,7 +61,7 @@ public interface ConsultHistoryRepository extends
     @Query(value = "select count(a.id) from ConsultHistoryEntity a where a.clientId=?1 and a.status = 'f'")
     Integer getArchiveNumByClientId(@Param("id") Integer id);
 
-    @Query(value = "select count(_order.id) from ConsultHistoryEntity _order where _order.clientId = ?1 and _order.status <> 'c'")
+    @Query(value = "select count(_order.id) from ConsultHistoryEntity _order where _order.clientId = ?1")
     Integer findOrderNumByClientId(Integer clientId);
 
     @Query(value = "select count(_order.id) from ConsultHistoryEntity _order where _order.consultantId = ?1")
