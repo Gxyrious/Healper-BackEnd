@@ -216,7 +216,6 @@ public class UserController {
             return ResponseEntity.ok(consultants);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No %s consultants found!".formatted(label));
-
         }
     }
 
@@ -225,10 +224,10 @@ public class UserController {
             @RequestParam Integer clientId,
             @RequestParam Integer page,
             @RequestParam Integer size,
-            @RequestBody Map<String, String> map
+            @RequestParam String label
     ) {
         try {
-            String label = map.get("label");
+//            String label = map.get("label");
             List<ConsultantInfoWithClient> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
             return ResponseEntity.ok(consultants);
         } catch (Exception e) {
