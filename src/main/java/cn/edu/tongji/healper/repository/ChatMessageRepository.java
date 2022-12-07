@@ -11,6 +11,6 @@ public interface ChatMessageRepository extends
         JpaRepository<ChatMessageEntity, Integer>,
         JpaSpecificationExecutor<ChatMessageEntity> {
     List<ChatMessageEntity> findChatMessageEntitiesByClientIdAndConsultantId(
-            Integer clientId, Integer consultantId, Pageable pageable
+            Integer clientId, Integer consultantId
     );
 }

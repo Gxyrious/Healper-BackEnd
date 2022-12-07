@@ -21,6 +21,9 @@ public class ChatMessageEntity {
     @Basic
     @Column(name = "content", nullable = true, length = 1024)
     private String content;
+    @Basic
+    @Column(name = "sender", nullable = true, length = 1)
+    private String sender;
 
     public int getId() {
         return id;
@@ -86,5 +89,13 @@ public class ChatMessageEntity {
         result = 31 * result + (int) (createTime ^ (createTime >>> 32));
         result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

@@ -4,6 +4,7 @@ import cn.edu.tongji.healper.entity.ChatMessageEntity;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
+import cn.edu.tongji.healper.outdto.UserType;
 import cn.edu.tongji.healper.service.ChatService;
 import cn.edu.tongji.healper.service.UserService;
 import com.alibaba.fastjson.JSON;
@@ -70,18 +71,22 @@ public class WebSocketServer {
                     User fromUser = userService.findUserByPhone(fromUserphone);
                     User toUser = userService.findUserByPhone(toUserphone);
                     Integer clientId, consultantId;
+                    UserType sender;
                     if (fromUser.getClass() == ClientEntity.class && toUser.getClass() == ConsultantEntity.class) {
                         clientId = fromUser.getId();
+                        sender = UserType.client;
                         consultantId = toUser.getId();
                     } else if (fromUser.getClass() == ConsultantEntity.class && toUser.getClass() == ClientEntity.class) {
                         consultantId = fromUser.getId();
+                        sender = UserType.consultant;
                         clientId = toUser.getId();
                     } else {
                         throw new RuntimeException("Userphone error!");
                     }
                     ChatMessageEntity chatMessage = chatService.addChatMessage(
                             clientId, consultantId,
-                            jsonMessage.getString("content")
+                            jsonMessage.getString("content"),
+                            sender
                     );
                     item.sendMessage(fromUser.getId(), toUser.getId(), chatMessage);
                 }

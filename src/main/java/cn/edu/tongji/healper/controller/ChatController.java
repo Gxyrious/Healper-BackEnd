@@ -32,4 +32,15 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
+
+    @GetMapping(value = "record")
+    public ResponseEntity getChatRecord(@RequestParam Integer msgId) {
+        try {
+            ChatMessageEntity messages = chatService.findMessageById(msgId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
+        }
+    }
 }
