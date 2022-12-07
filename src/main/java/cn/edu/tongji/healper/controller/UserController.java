@@ -246,16 +246,5 @@ public class UserController {
         }
     }
 
-    @PutMapping("consultant/label")
-    public ResponseEntity updateConsultantLabel(@RequestBody String label) {
-        // 怎么修改咨询师标签？
-        try {
-
-            return ResponseEntity.ok("ok");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
-    }
-
 }
 
