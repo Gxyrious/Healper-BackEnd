@@ -204,8 +204,8 @@ public class HistoryController {
             String aBase64 = inDto.getAdviceBase64();
             String sBase64 = inDto.getSummaryBase64();
 
-            InputStream aStream = OSSUtils.base64ToInputStream(aBase64);
-            InputStream sStream = OSSUtils.base64ToInputStream(sBase64);
+            InputStream aStream = OSSUtils.bytesToInputStream(aBase64.getBytes());
+            InputStream sStream = OSSUtils.bytesToInputStream(sBase64.getBytes());
 
             String adviceName = "advice-" + historyId + ".html";
             String summaryName = "summary-" + historyId + ".html";

@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
