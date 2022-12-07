@@ -92,12 +92,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex) {
+    public ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex, Integer age) {
         ClientEntity newClient = new ClientEntity();
         newClient.setNickname(nickname);
         newClient.setPassword(stringToMD5(password));//密码进行md5加密
         newClient.setSex(sex);
         newClient.setUserphone(userPhone);
+        newClient.setAge(age);
         return clientRepository.saveAndFlush(newClient);
     }
 

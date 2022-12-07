@@ -23,7 +23,7 @@ public interface UserService {
 
     ClientInfo findClientInfoById(Integer id);
 
-    ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex);
+    ClientEntity addClientInfo(String nickname, String password, String userPhone, String sex, Integer age);
 
     void updateClientInfo(ClientInfo client);
 

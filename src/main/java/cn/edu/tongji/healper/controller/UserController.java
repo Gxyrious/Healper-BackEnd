@@ -90,7 +90,8 @@ public class UserController {
                             registerInfoInDto.getNickname(),
                             registerInfoInDto.getPassword(),
                             registerInfoInDto.getUserPhone(),
-                            registerInfoInDto.getSex()
+                            registerInfoInDto.getSex(),
+                            registerInfoInDto.getAge()
                     );
                     if (newClient != null) {
                         return ResponseEntity.ok(newClient.getId());

@@ -13,6 +13,8 @@ public class RegisterInfoInDto {
 
     String sex;
 
+    Integer age;
+
     String code;
 
 }
