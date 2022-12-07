@@ -1,4 +1,4 @@
-package cn.edu.tongji.healper.component;
+package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.entity.ChatMessageEntity;
 import cn.edu.tongji.healper.entity.ClientEntity;
