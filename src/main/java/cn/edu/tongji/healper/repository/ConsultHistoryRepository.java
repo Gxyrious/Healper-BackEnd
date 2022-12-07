@@ -75,7 +75,7 @@ public interface ConsultHistoryRepository extends
             "che.id, che.startTime, che.endTime, " +
             "che.clientId, che.consultantId, ce.realname, che.expense, che.status" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
-            "where che.consultantId = ce.id and che.clientId = ?1 and che.status = 'w'"
+            "where che.consultantId = ce.id and che.clientId = ?1 and (che.status = 'w' or che.status = 's' or che.status = 'p')"
     )
     List<ConsultOrder> findWaitingConsultOrders(Integer clientId);
 
