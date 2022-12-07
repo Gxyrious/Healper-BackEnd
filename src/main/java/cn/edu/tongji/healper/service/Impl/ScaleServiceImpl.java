@@ -1,4 +1,4 @@
-package cn.edu.tongji.healper.service.Impl;
+package cn.edu.tongji.healper.service.impl;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;

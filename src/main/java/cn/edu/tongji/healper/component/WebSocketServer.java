@@ -5,8 +5,6 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.service.ChatService;
-import cn.edu.tongji.healper.service.Impl.ChatServiceImpl;
-import cn.edu.tongji.healper.service.Impl.UserServiceImpl;
 import cn.edu.tongji.healper.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
