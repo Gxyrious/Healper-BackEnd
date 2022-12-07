@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
             if (entity == null) {
                 newConsultantInfo.setStatus("0");
             } else {
+                newConsultantInfo.setHistoryId(entity.getId());
                 if ("p".equals(entity.getStatus())) {
                     newConsultantInfo.setStatus("1");
                 } else {

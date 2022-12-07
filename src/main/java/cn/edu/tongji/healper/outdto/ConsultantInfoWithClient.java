@@ -10,4 +10,6 @@ public class ConsultantInfoWithClient {
 
     String status;
 
+    Integer historyId;
+
 }
