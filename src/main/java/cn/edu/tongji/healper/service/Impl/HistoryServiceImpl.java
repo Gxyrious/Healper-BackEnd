@@ -24,7 +24,7 @@ public class HistoryServiceImpl implements HistoryService {
         history.setClientId(clientId);
         history.setConsultantId(consultantId);
         history.setExpense(expense);
-        history.setStatus("w"); // 状态：等待中
+        history.setStatus("p"); // 状态：待付款
         ConsultHistoryEntity consultHistoryEntity = historyRepository.save(history);
         return consultHistoryEntity.getId();
     }
