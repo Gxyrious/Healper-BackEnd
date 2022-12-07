@@ -76,10 +76,14 @@ public class UserServiceImpl implements UserService {
             newConsultantInfo.setInfo(consultant);
             ConsultHistoryEntity entity = historyRepository
                     .findFirstByClientIdAndConsultantId(clientId, consultant.getId());
-            if (entity != null) {
-                newConsultantInfo.setIsAppointed(Boolean.TRUE);
+            if (entity == null) {
+                newConsultantInfo.setStatus("0");
             } else {
-                newConsultantInfo.setIsAppointed(Boolean.FALSE);
+                if ("p".equals(entity.getStatus())) {
+                    newConsultantInfo.setStatus("1");
+                } else {
+                    newConsultantInfo.setStatus("2");
+                }
             }
             consultantsWithClient.add(newConsultantInfo);
         }

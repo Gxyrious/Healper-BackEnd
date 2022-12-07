@@ -79,7 +79,7 @@ public interface ConsultHistoryRepository extends
     )
     List<ConsultOrder> findWaitingConsultOrders(Integer clientId);
 
-    @Query(value = "select che from ConsultHistoryEntity che where che.clientId = ?1 and che.consultantId = ?2 and che.status = 'w'")
+    @Query(value = "select che from ConsultHistoryEntity che where che.clientId = ?1 and che.consultantId = ?2 and (che.status = 'w' or che.status = 'p' or che.status = 's')")
     ConsultHistoryEntity findFirstByClientIdAndConsultantId(Integer clientId, Integer consultantId);
 
 }

@@ -8,6 +8,6 @@ public class ConsultantInfoWithClient {
 
     ConsultantInfo info;
 
-    Boolean isAppointed;
+    String status;
 
 }
