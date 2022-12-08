@@ -24,16 +24,25 @@ public class ConsultOrder implements Serializable {
 
     private String status;
 
+
+    private String clientSex;
+
+
+    private Integer clientAge;
+
+
     public ConsultOrder(int id, Long startTime, Long endTime,
-                        int clientId, int consultantId,
-                        String realname, int expense, String status) {
+                        int consultantId, int clientId, String realname,
+                        int expense, String status, String clientSex, Integer clientAge) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.clientId = clientId;
         this.consultantId = consultantId;
+        this.clientId = clientId;
         this.realname = realname;
         this.expense = expense;
         this.status = status;
+        this.clientSex = clientSex;
+        this.clientAge = clientAge;
     }
 }

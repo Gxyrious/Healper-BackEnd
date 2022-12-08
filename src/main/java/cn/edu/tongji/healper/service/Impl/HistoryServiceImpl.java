@@ -92,7 +92,7 @@ public class HistoryServiceImpl implements HistoryService {
     public void writeClientArchive(Integer historyId, String adviceURL, String summaryURL) {
         ConsultHistoryEntity historyEntity = historyRepository.findById(historyId).get();
         historyEntity.setAdvice(adviceURL);
-        historyEntity.setAdvice(summaryURL);
+        historyEntity.setSummary(summaryURL);
         historyRepository.save(historyEntity);
     }
 

@@ -17,9 +17,7 @@ public class ConsultController {
     @PutMapping(value = "start")
     public ResponseEntity startConsultation(@RequestBody ConsultTimeInDto inDto) {
         Long startTime = inDto.getTime();
-        if (startTime >= System.currentTimeMillis()) {
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Time error!");
-        } else if (consultService.startConsultation(inDto.getOrderId(), startTime)) {
+        if (consultService.startConsultation(inDto.getOrderId(), startTime)) {
             return ResponseEntity.ok("Consultation started!");
         } else {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to start!");
@@ -29,9 +27,7 @@ public class ConsultController {
     @PutMapping(value = "end")
     public ResponseEntity endConsultation(@RequestBody ConsultTimeInDto inDto) {
         Long endTime = inDto.getTime();
-        if (endTime >= System.currentTimeMillis()) {
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Time error!");
-        } else if (consultService.endConsultation(inDto.getOrderId(), endTime)) {
+        if (consultService.endConsultation(inDto.getOrderId(), endTime)) {
             return ResponseEntity.ok("Consultation ended!");
         } else {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("Failed to end!");
