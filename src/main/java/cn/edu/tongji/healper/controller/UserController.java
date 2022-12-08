@@ -1,5 +1,7 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.indto.LoginInfoInDto;
 import cn.edu.tongji.healper.indto.RegisterInfoInDto;
@@ -52,6 +54,9 @@ public class UserController {
                 } else if (user.getClass() == ConsultantEntity.class) {
                     outDto.setUserType(UserType.consultant);
                 }
+                StpUtil.login(loginInfoInDto.getUserPhone());
+                outDto.setTokenName(StpUtil.getTokenName());
+                outDto.setTokenValue(StpUtil.getTokenValue());
                 return ResponseEntity.ok(outDto);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password error!");
@@ -59,8 +64,23 @@ public class UserController {
         }
     }
 
+    @SaCheckLogin
+    @RequestMapping(value = "logout")
+    public ResponseEntity logout() {
+        // 测试url: http://localhost:8081/api/user/logout
+        try {
+            StpUtil.logout();
+            return ResponseEntity.ok("Logged out!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body("Logout failed!");
+        }
+
+    }
+
+    @SaCheckLogin
     @GetMapping(value = "info")
     public ResponseEntity getInfoByUserId(@RequestParam Integer id, @RequestParam UserType userType) {
+        // 测试url：http://localhost:8081/api/user/info?id=1&userType=client
         if (userType == UserType.client) {
             ClientInfo clientInfo = userService.findClientInfoById(id);
             if (clientInfo != null) {
@@ -108,6 +128,7 @@ public class UserController {
     }
 
     //修改用户信息
+    @SaCheckLogin
     @PutMapping(value = "info")
     public ResponseEntity updateClientBasicInfo(@RequestBody ClientInfo client) {
         try {
@@ -118,6 +139,7 @@ public class UserController {
         }
     }
 
+    @SaCheckLogin
     @PutMapping(value = "passwd")
     public ResponseEntity updateClientPasswd(@RequestBody UpdatePasswdInDto inDto) {
         try {
@@ -149,6 +171,7 @@ public class UserController {
         }
     }
 
+    @SaCheckLogin
     @PostMapping("uploadProfile")
     public ResponseEntity uploadImage(@RequestBody UploadImageInDto inDto) {
         try {
@@ -185,6 +208,7 @@ public class UserController {
         }
     }
 
+    @SaCheckLogin
     @PostMapping(value = "uploadQrCode")
     public ResponseEntity uploadConsultantQrCode(@RequestBody UploadImageInDto inDto) {
         try {
@@ -205,6 +229,7 @@ public class UserController {
         }
     }
 
+    @SaCheckLogin
     @GetMapping("consultants/label")
     public ResponseEntity findConsultantsWithLabel(
             @RequestParam Integer page,
@@ -219,6 +244,7 @@ public class UserController {
         }
     }
 
+    @SaCheckLogin
     @GetMapping("consultants/client")
     public ResponseEntity findConsultantsWithClient(
             @RequestParam Integer clientId,
@@ -226,16 +252,17 @@ public class UserController {
             @RequestParam Integer size,
             @RequestParam String label
     ) {
+        // 测试url: http://localhost:8081/api/user/consultants/client?clientId=1&page=1&size=10&label=
         try {
 //            String label = map.get("label");
             List<ConsultantStatus> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
             return ResponseEntity.ok(consultants);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-
         }
     }
 
+    @SaCheckLogin
     @PutMapping("consultant/info")
     public ResponseEntity updateConsultantLabel(@RequestBody ConsultantInfo consultant) {
         try {

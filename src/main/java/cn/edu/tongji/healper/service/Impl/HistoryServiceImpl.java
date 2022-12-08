@@ -4,7 +4,9 @@ import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.outdto.ConsultOrder;
 import cn.edu.tongji.healper.repository.ConsultHistoryRepository;
+import cn.edu.tongji.healper.service.ConsultService;
 import cn.edu.tongji.healper.service.HistoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,12 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Resource
     ConsultHistoryRepository historyRepository;
+
+    @Resource
+    ConsultHistoryRepository consultHistoryRepository;
+
+    @Autowired
+    ConsultService consultService;
 
     @Override
     public Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense) {
@@ -49,6 +57,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public Boolean updateHistoryStatusById(Integer historyId, String status) {
         Integer updatedNumber = historyRepository.updateHistoryStatusById(historyId, String.valueOf(status));
+        if ("s".equals(status)) {
+            consultService.startConsultation(historyId, System.currentTimeMillis() / 1000);
+        } else if ("f".equals(status)) {
+            consultService.endConsultation(historyId, System.currentTimeMillis() / 1000);
+        }
         return updatedNumber.equals(1);
     }
 

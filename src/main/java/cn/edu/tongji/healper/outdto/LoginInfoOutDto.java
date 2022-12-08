@@ -8,4 +8,8 @@ public class LoginInfoOutDto {
     User user;
 
     UserType userType;
+
+    String tokenName;
+
+    String tokenValue;
 }
