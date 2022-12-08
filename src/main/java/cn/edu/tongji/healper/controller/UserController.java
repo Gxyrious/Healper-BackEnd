@@ -29,6 +29,7 @@ import java.util.List;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
+@SaCheckLogin
 @RestController
 @RequestMapping(value = "api/user")
 public class UserController {
@@ -64,7 +65,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @RequestMapping(value = "logout")
     public ResponseEntity logout() {
         // 测试url: http://localhost:8081/api/user/logout
@@ -77,7 +77,6 @@ public class UserController {
 
     }
 
-    @SaCheckLogin
     @GetMapping(value = "info")
     public ResponseEntity getInfoByUserId(@RequestParam Integer id, @RequestParam UserType userType) {
         // 测试url：http://localhost:8081/api/user/info?id=1&userType=client
@@ -128,7 +127,6 @@ public class UserController {
     }
 
     //修改用户信息
-    @SaCheckLogin
     @PutMapping(value = "info")
     public ResponseEntity updateClientBasicInfo(@RequestBody ClientInfo client) {
         try {
@@ -139,7 +137,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @PutMapping(value = "passwd")
     public ResponseEntity updateClientPasswd(@RequestBody UpdatePasswdInDto inDto) {
         try {
@@ -171,7 +168,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @PostMapping("uploadProfile")
     public ResponseEntity uploadImage(@RequestBody UploadImageInDto inDto) {
         try {
@@ -208,7 +204,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @PostMapping(value = "uploadQrCode")
     public ResponseEntity uploadConsultantQrCode(@RequestBody UploadImageInDto inDto) {
         try {
@@ -229,7 +224,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @GetMapping("consultants/label")
     public ResponseEntity findConsultantsWithLabel(
             @RequestParam Integer page,
@@ -244,7 +238,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @GetMapping("consultants/client")
     public ResponseEntity findConsultantsWithClient(
             @RequestParam Integer clientId,
@@ -262,7 +255,6 @@ public class UserController {
         }
     }
 
-    @SaCheckLogin
     @PutMapping("consultant/info")
     public ResponseEntity updateConsultantLabel(@RequestBody ConsultantInfo consultant) {
         try {

@@ -1,10 +1,13 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.indto.ArchiveInDto;
 import cn.edu.tongji.healper.indto.ConsultRecordInDto;
 import cn.edu.tongji.healper.indto.HistoryStatusInDto;
 import cn.edu.tongji.healper.outdto.Archive;
+import cn.edu.tongji.healper.outdto.ConsultantInfo;
+import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.OSSUtils;
 
 import cn.edu.tongji.healper.outdto.ConsultOrder;
@@ -15,11 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
+@SaCheckLogin
 @RestController
 @RequestMapping(value = "api/history")
 public class HistoryController {
@@ -27,7 +28,9 @@ public class HistoryController {
     @Autowired
     private HistoryService historyService;
 
-    // 示例3，添加一条咨询记录，包含clientId, consultantId和花费
+    @Autowired
+    private UserService userService;
+
     @PostMapping(value = "add")
     public ResponseEntity addHistory(@RequestBody ConsultRecordInDto inDto) {
         try {
@@ -46,6 +49,7 @@ public class HistoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
+
 
     @GetMapping(value = "archives")
     public ResponseEntity getArchivesByClientId(
@@ -166,7 +170,12 @@ public class HistoryController {
                     historyService.deleteOldWaitingOrdersByIds(ids);
                     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
                 } else {
-                    return ResponseEntity.ok(waitingOrders.get(0));
+                    ConsultOrder order = waitingOrders.get(0);
+                    ConsultantInfo consultantInfo = userService.findConsultantInfoById(order.getConsultantId());
+                    order.setConsultantLabel(consultantInfo.getLabel());
+                    order.setConsultantAge(consultantInfo.getAge());
+                    order.setConsultantProfile(consultantInfo.getProfile());
+                    return ResponseEntity.ok(order);
                 }
             }
         } catch (Exception e) {

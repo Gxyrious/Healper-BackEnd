@@ -1,5 +1,6 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.edu.tongji.healper.entity.ChatMessageEntity;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
@@ -22,6 +23,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @RestController
 @ServerEndpoint(value = "/websocket/{userphone}")
 @Component
+@SaCheckLogin
 public class WebSocketServer {
 
     private String userphone;

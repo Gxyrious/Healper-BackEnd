@@ -1,6 +1,7 @@
 package cn.edu.tongji.healper.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
 import cn.edu.tongji.healper.outdto.ScaleInfo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SaCheckLogin
 @RestController
 @RequestMapping(value = "api/scale")
 public class ScaleController {

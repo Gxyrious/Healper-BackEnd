@@ -1,5 +1,6 @@
 package cn.edu.tongji.healper.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.edu.tongji.healper.entity.ChatMessageEntity;
 import cn.edu.tongji.healper.indto.ConsultTimeInDto;
 import cn.edu.tongji.healper.service.ConsultService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SaCheckLogin
 @RestController
 @RequestMapping(value = "api/consult")
 public class ConsultController {
@@ -60,6 +62,7 @@ public class ConsultController {
             return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(e);
         }
     }
+
 
     @GetMapping(value = "record")
     public ResponseEntity getChatRecord(@RequestParam Integer msgId) {
