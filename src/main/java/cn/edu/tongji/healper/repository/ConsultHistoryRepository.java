@@ -20,7 +20,7 @@ public interface ConsultHistoryRepository extends
     @Query("select new " +
             "cn.edu.tongji.healper.outdto.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
-            "che.clientId, che.consultantId, ce.realname, che.expense, che.status, ce.sex, ce.age" +
+            "che.consultantId, che.clientId, ce.realname, che.expense, che.status, ce.sex, ce.age" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
             "where che.consultantId = ce.id and che.clientId = ?1"
     )
@@ -29,10 +29,10 @@ public interface ConsultHistoryRepository extends
     @Query("select new " +
             "cn.edu.tongji.healper.outdto.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
-            "che.clientId, che.consultantId, ce.nickname, che.expense, che.status, " +
+            "che.consultantId, che.clientId, ce.nickname, che.expense, che.status, " +
             "ce.sex, ce.age" +
             ") from ConsultHistoryEntity che, ClientEntity ce " +
-            "where che.consultantId = ?1 and che.consultantId = ce.id"
+            "where che.consultantId = ?1 and che.clientId = ce.id"
     )
     List<ConsultOrder> findConsultOrderByConsultantId(Integer consultantId, Pageable pageable);
 
