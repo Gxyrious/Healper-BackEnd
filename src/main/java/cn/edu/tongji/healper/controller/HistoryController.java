@@ -7,7 +7,7 @@ import cn.edu.tongji.healper.indto.HistoryStatusInDto;
 import cn.edu.tongji.healper.outdto.Archive;
 import cn.edu.tongji.healper.util.OSSUtils;
 
-import cn.edu.tongji.healper.po.ConsultOrder;
+import cn.edu.tongji.healper.outdto.ConsultOrder;
 import cn.edu.tongji.healper.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

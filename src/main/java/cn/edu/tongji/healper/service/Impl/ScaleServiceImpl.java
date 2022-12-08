@@ -2,9 +2,9 @@ package cn.edu.tongji.healper.service.impl;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
-import cn.edu.tongji.healper.outdto.BasicScale;
-import cn.edu.tongji.healper.po.ScaleRecordInfo;
-import cn.edu.tongji.healper.repository.PsychologyScaleRepository;
+import cn.edu.tongji.healper.outdto.ScaleInfo;
+import cn.edu.tongji.healper.outdto.ScaleRecordInfo;
+import cn.edu.tongji.healper.repository.PsyScaleRepository;
 import cn.edu.tongji.healper.repository.ScaleRecordRepository;
 import cn.edu.tongji.healper.service.ScaleService;
 import com.alibaba.fastjson.JSONArray;
@@ -23,7 +23,7 @@ public class ScaleServiceImpl implements ScaleService {
     private ScaleRecordRepository scaleRecordRepository;
 
     @Resource
-    private PsychologyScaleRepository psychologyScaleRepository;
+    private PsyScaleRepository psychologyScaleRepository;
 
     @Override
     public Integer countScaleRecordEntitiesByClientId(Integer clientId){
@@ -46,7 +46,7 @@ public class ScaleServiceImpl implements ScaleService {
     }
 
     @Override
-    public List<BasicScale> findBasicScales(Integer page, Integer size) {
+    public List<ScaleInfo> findBasicScales(Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page - 1, size, Sort.Direction.ASC, "id");
         return psychologyScaleRepository.findScales(pageRequest);
     }

@@ -3,8 +3,8 @@ package cn.edu.tongji.healper.controller;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
-import cn.edu.tongji.healper.outdto.BasicScale;
-import cn.edu.tongji.healper.po.ScaleRecordInfo;
+import cn.edu.tongji.healper.outdto.ScaleInfo;
+import cn.edu.tongji.healper.outdto.ScaleRecordInfo;
 import cn.edu.tongji.healper.service.ScaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,7 +74,7 @@ public class ScaleController {
 
     @GetMapping(value = "/names")
     public ResponseEntity getPsychologyScales(@RequestParam Integer page, @RequestParam Integer size) {
-        List<BasicScale> names = scaleService.findBasicScales(page, size);
+        List<ScaleInfo> names = scaleService.findBasicScales(page, size);
         if (names != null) {
             return ResponseEntity.ok(names);
         } else {

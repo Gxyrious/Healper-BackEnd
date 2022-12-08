@@ -2,7 +2,7 @@ package cn.edu.tongji.healper.repository;
 
 import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.outdto.Archive;
-import cn.edu.tongji.healper.po.ConsultOrder;
+import cn.edu.tongji.healper.outdto.ConsultOrder;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +18,7 @@ public interface ConsultHistoryRepository extends
         JpaSpecificationExecutor<ConsultHistoryEntity> {
 
     @Query("select new " +
-            "cn.edu.tongji.healper.po.ConsultOrder(" +
+            "cn.edu.tongji.healper.outdto.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
             "che.clientId, che.consultantId, ce.realname, che.expense, che.status, ce.sex, ce.age" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
@@ -27,7 +27,7 @@ public interface ConsultHistoryRepository extends
     List<ConsultOrder> findConsultOrderByClientId(Integer clientId, Pageable pageable);
 
     @Query("select new " +
-            "cn.edu.tongji.healper.po.ConsultOrder(" +
+            "cn.edu.tongji.healper.outdto.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
             "che.clientId, che.consultantId, ce.nickname, che.expense, che.status, " +
             "ce.sex, ce.age" +
@@ -72,7 +72,7 @@ public interface ConsultHistoryRepository extends
     Integer findConsultRecordNumByClientId(Integer clientId);
 
     @Query("select new " +
-            "cn.edu.tongji.healper.po.ConsultOrder(" +
+            "cn.edu.tongji.healper.outdto.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
             "che.clientId, che.consultantId, ce.realname, che.expense, che.status, ce.sex, ce.age" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +

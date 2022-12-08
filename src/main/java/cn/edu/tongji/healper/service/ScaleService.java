@@ -2,8 +2,8 @@ package cn.edu.tongji.healper.service;
 
 import cn.edu.tongji.healper.entity.PsychologyScaleEntity;
 import cn.edu.tongji.healper.entity.ScaleRecordEntity;
-import cn.edu.tongji.healper.outdto.BasicScale;
-import cn.edu.tongji.healper.po.ScaleRecordInfo;
+import cn.edu.tongji.healper.outdto.ScaleInfo;
+import cn.edu.tongji.healper.outdto.ScaleRecordInfo;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface ScaleService {
 
     ScaleRecordEntity updateScaleRecord(ScaleRecordEntity scaleRecordEntity);
 
-    List<BasicScale> findBasicScales(Integer page, Integer size);
+    List<ScaleInfo> findBasicScales(Integer page, Integer size);
 
     PsychologyScaleEntity findSingleScale(Integer scaleId);
 

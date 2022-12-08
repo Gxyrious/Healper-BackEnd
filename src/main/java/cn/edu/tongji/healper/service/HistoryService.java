@@ -2,7 +2,7 @@ package cn.edu.tongji.healper.service;
 
 import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.outdto.Archive;
-import cn.edu.tongji.healper.po.ConsultOrder;
+import cn.edu.tongji.healper.outdto.ConsultOrder;
 
 import java.util.List;
 

@@ -3,10 +3,10 @@ package cn.edu.tongji.healper.service;
 import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
+import cn.edu.tongji.healper.outdto.ConsultantStatus;
 import cn.edu.tongji.healper.outdto.UserType;
-import cn.edu.tongji.healper.po.ClientInfo;
-import cn.edu.tongji.healper.po.ConsultantInfo;
+import cn.edu.tongji.healper.outdto.ClientInfo;
+import cn.edu.tongji.healper.outdto.ConsultantInfo;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public interface UserService {
 
     List<ConsultantInfo> findConsultantsByLabel(String label, Integer page, Integer size);
 
-    List<ConsultantInfoWithClient> findConsultantsWithClient(Integer clientId, String label, Integer page, Integer size);
+    List<ConsultantStatus> findConsultantsWithClient(Integer clientId, String label, Integer page, Integer size);
 
 
 

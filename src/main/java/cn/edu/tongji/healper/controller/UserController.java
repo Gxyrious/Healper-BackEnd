@@ -8,12 +8,12 @@ import cn.edu.tongji.healper.entity.ConsultantEntity;
 
 import cn.edu.tongji.healper.indto.UpdatePasswdInDto;
 import cn.edu.tongji.healper.indto.UploadImageInDto;
-import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
+import cn.edu.tongji.healper.outdto.ConsultantStatus;
 import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
 import cn.edu.tongji.healper.outdto.UserType;
 
-import cn.edu.tongji.healper.po.ClientInfo;
-import cn.edu.tongji.healper.po.ConsultantInfo;
+import cn.edu.tongji.healper.outdto.ClientInfo;
+import cn.edu.tongji.healper.outdto.ConsultantInfo;
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.OSSUtils;
 import cn.edu.tongji.healper.util.SMSUtils;
@@ -228,7 +228,7 @@ public class UserController {
     ) {
         try {
 //            String label = map.get("label");
-            List<ConsultantInfoWithClient> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
+            List<ConsultantStatus> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
             return ResponseEntity.ok(consultants);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);

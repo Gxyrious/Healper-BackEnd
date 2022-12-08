@@ -5,7 +5,7 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
 import cn.edu.tongji.healper.outdto.UserType;
-import cn.edu.tongji.healper.service.ChatService;
+import cn.edu.tongji.healper.service.ConsultService;
 import cn.edu.tongji.healper.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -32,7 +32,7 @@ public class WebSocketServer {
 
     private static UserService userService;
 
-    private static ChatService chatService;
+    private static ConsultService consultService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -40,8 +40,8 @@ public class WebSocketServer {
     }
 
     @Autowired
-    public void setChatService(ChatService chatService) {
-        WebSocketServer.chatService = chatService;
+    public void setChatService(ConsultService consultService) {
+        WebSocketServer.consultService = consultService;
     }
 
     @OnOpen
@@ -83,7 +83,7 @@ public class WebSocketServer {
                     } else {
                         throw new RuntimeException("Userphone error!");
                     }
-                    ChatMessageEntity chatMessage = chatService.addChatMessage(
+                    ChatMessageEntity chatMessage = consultService.addChatMessage(
                             clientId, consultantId,
                             jsonMessage.getString("content"),
                             sender

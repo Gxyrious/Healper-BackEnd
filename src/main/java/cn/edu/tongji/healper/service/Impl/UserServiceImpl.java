@@ -4,10 +4,10 @@ import cn.edu.tongji.healper.entity.ClientEntity;
 import cn.edu.tongji.healper.entity.ConsultHistoryEntity;
 import cn.edu.tongji.healper.entity.ConsultantEntity;
 import cn.edu.tongji.healper.entity.User;
-import cn.edu.tongji.healper.outdto.ConsultantInfoWithClient;
+import cn.edu.tongji.healper.outdto.ConsultantStatus;
 import cn.edu.tongji.healper.outdto.UserType;
-import cn.edu.tongji.healper.po.ClientInfo;
-import cn.edu.tongji.healper.po.ConsultantInfo;
+import cn.edu.tongji.healper.outdto.ClientInfo;
+import cn.edu.tongji.healper.outdto.ConsultantInfo;
 import cn.edu.tongji.healper.repository.ClientRepository;
 import cn.edu.tongji.healper.repository.ConsultHistoryRepository;
 import cn.edu.tongji.healper.repository.ConsultantRepository;
@@ -65,14 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ConsultantInfoWithClient> findConsultantsWithClient(
+    public List<ConsultantStatus> findConsultantsWithClient(
             Integer clientId, String label, Integer page, Integer size
     ) {
         Pageable pageRequest = PageRequest.of(page - 1, size, Sort.Direction.ASC, "id");
         List<ConsultantInfo> consultants = consultantRepository.findConsultantsByLabel(label, pageRequest);
-        List<ConsultantInfoWithClient> consultantsWithClient = new ArrayList<>();
+        List<ConsultantStatus> consultantsWithClient = new ArrayList<>();
         for (ConsultantInfo consultant : consultants) {
-            ConsultantInfoWithClient newConsultantInfo = new ConsultantInfoWithClient();
+            ConsultantStatus newConsultantInfo = new ConsultantStatus();
             newConsultantInfo.setInfo(consultant);
             ConsultHistoryEntity entity = historyRepository
                     .findFirstByClientIdAndConsultantId(clientId, consultant.getId());
