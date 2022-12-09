@@ -175,6 +175,7 @@ public class HistoryController {
                     order.setConsultantLabel(consultantInfo.getLabel());
                     order.setConsultantAge(consultantInfo.getAge());
                     order.setConsultantProfile(consultantInfo.getProfile());
+                    order.setConsultantSex(consultantInfo.getSex());
                     return ResponseEntity.ok(order);
                 }
             }

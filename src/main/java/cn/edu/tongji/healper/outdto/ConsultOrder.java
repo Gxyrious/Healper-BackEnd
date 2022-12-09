@@ -37,6 +37,9 @@ public class ConsultOrder implements Serializable {
     private Integer consultantAge;
 
 
+    private String consultantSex;
+
+
     private String consultantProfile;
 
     public ConsultOrder(int id, Long startTime, Long endTime,

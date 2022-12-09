@@ -74,13 +74,13 @@ public interface ConsultHistoryRepository extends
     @Query("select new " +
             "cn.edu.tongji.healper.outdto.ConsultOrder(" +
             "che.id, che.startTime, che.endTime, " +
-            "che.clientId, che.consultantId, ce.realname, che.expense, che.status, ce.sex, ce.age" +
+            "che.consultantId, che.clientId, ce.realname, che.expense, che.status, ce.sex, ce.age" +
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
-            "where che.consultantId = ce.id and che.clientId = ?1 and (che.status = 'w' or che.status = 's' or che.status = 'p')"
+            "where che.consultantId = ce.id and che.clientId = ?1 and (che.status = 'w' or che.status = 's' or che.status = 'p') order by che.startTime desc"
     )
     List<ConsultOrder> findWaitingConsultOrders(Integer clientId);
 
-    @Query(value = "select che from ConsultHistoryEntity che where che.clientId = ?1 and che.consultantId = ?2 and (che.status = 'w' or che.status = 'p' or che.status = 's')")
+    @Query(value = "select che from ConsultHistoryEntity che where che.clientId = ?1 and che.consultantId = ?2 and (che.status = 'w' or che.status = 'p' or che.status = 's') order by che.startTime desc")
     ConsultHistoryEntity findFirstByClientIdAndConsultantId(Integer clientId, Integer consultantId);
 
 }
