@@ -24,6 +24,9 @@ public class PsychologyScaleEntity {
     @Basic
     @Column(name = "summary", nullable = true, length = 64)
     private String summary;
+    @Basic
+    @Column(name = "subjective", nullable = true, length = 64)
+    private String subjective;
 
     public int getId() {
         return id;
@@ -99,5 +102,13 @@ public class PsychologyScaleEntity {
         result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         return result;
+    }
+
+    public String getSubjective() {
+        return subjective;
+    }
+
+    public void setSubjective(String subjective) {
+        this.subjective = subjective;
     }
 }

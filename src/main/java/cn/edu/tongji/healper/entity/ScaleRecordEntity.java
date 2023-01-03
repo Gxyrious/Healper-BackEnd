@@ -24,6 +24,9 @@ public class ScaleRecordEntity {
     @Basic
     @Column(name = "record", nullable = false, length = -1)
     private String record;
+    @Basic
+    @Column(name = "subjective", nullable = true, length = -1)
+    private String subjective;
 
     public int getId() {
         return id;
@@ -99,5 +102,13 @@ public class ScaleRecordEntity {
         result = 31 * result + scaleId;
         result = 31 * result + (record != null ? record.hashCode() : 0);
         return result;
+    }
+
+    public String getSubjective() {
+        return subjective;
+    }
+
+    public void setSubjective(String subjective) {
+        this.subjective = subjective;
     }
 }
