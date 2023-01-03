@@ -15,7 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScaleServiceImpl implements ScaleService {
@@ -78,8 +80,7 @@ public class ScaleServiceImpl implements ScaleService {
                 factorRecords.put("detail", new JSONArray());
                 jsonResult.add(factorRecords);
             }
-            for (Integer i = 0; i < records.size(); i++) {
-                ScaleRecordInfo record = records.get(i);
+            for (ScaleRecordInfo record : records) {
                 Long endTime = record.getEndTime();
                 factors = JSONObject.parseArray(record.getRecord());
                 System.out.println(factors.size());
@@ -96,5 +97,28 @@ public class ScaleServiceImpl implements ScaleService {
             }
             return jsonResult.toJSONString();
         }
+    }
+
+    @Override
+    public Map findLabelsWithClient(Integer clientId) {
+        List<String> records = scaleRecordRepository.findClientLabelsPriority(clientId);
+        HashMap<String, Integer> factorValues = new HashMap<>();
+        for (Object obj: JSONObject.parseArray(records.get(0))) {
+            // obj: {"factor": "躯体化", "value": 3}
+            JSONObject map = (JSONObject) obj;
+            String factor = map.get("factor").toString();
+            factorValues.put(factor, 0);
+        }
+        for (String json: records) {
+            for (Object obj: JSONObject.parseArray(json)) {
+                // obj: {"factor": "躯体化", "value": 3}
+                JSONObject map = (JSONObject) obj;
+                String factor = map.get("factor").toString();
+                int value = Integer.parseInt(map.get("value").toString());
+                factorValues.put(factor, Integer.parseInt(factorValues.get(factor).toString()) + value);
+            }
+        }
+
+        return factorValues;
     }
 }

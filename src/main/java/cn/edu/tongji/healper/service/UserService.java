@@ -44,8 +44,6 @@ public interface UserService {
     List<ConsultantStatus> findConsultantsWithClient(Integer clientId, String label, Integer page, Integer size);
 
 
-
-
     //其它类相关接口------------------------------
 
 }

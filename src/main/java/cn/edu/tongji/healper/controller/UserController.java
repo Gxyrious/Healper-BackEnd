@@ -16,6 +16,7 @@ import cn.edu.tongji.healper.outdto.UserType;
 
 import cn.edu.tongji.healper.outdto.ClientInfo;
 import cn.edu.tongji.healper.outdto.ConsultantInfo;
+import cn.edu.tongji.healper.service.ScaleService;
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.OSSUtils;
 import cn.edu.tongji.healper.util.SMSUtils;
@@ -25,7 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
-import java.util.List;
+import java.util.*;
 
 import static cn.edu.tongji.healper.util.MD5Utils.stringToMD5;
 
@@ -38,6 +39,9 @@ public class UserController {
 
     @Autowired
     private SMSUtils smsService;
+
+    @Autowired
+    private ScaleService scaleService;
 
     // 登录
     @PostMapping(value = "login")
@@ -249,12 +253,15 @@ public class UserController {
     public ResponseEntity findConsultantsWithClient(
             @RequestParam Integer clientId,
             @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam String label
+            @RequestParam Integer size
     ) {
         // 测试url: http://localhost:8081/api/user/consultants/client?clientId=1&page=1&size=10&label=
         try {
-//            String label = map.get("label");
+            Map<String, Integer> labelValues = scaleService.findLabelsWithClient(clientId);
+            List<Map.Entry<String,Integer>> labels =
+                    new ArrayList<>(labelValues.entrySet());
+            labels.sort((o1, o2) -> (o2.getValue() - o1.getValue()));
+            String label = labelValues.isEmpty() ? "" : String.valueOf(labels.get(0).getKey());
             List<ConsultantStatus> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
             return ResponseEntity.ok(consultants);
         } catch (Exception e) {

@@ -24,7 +24,7 @@ public interface ConsultHistoryRepository extends
             ") from ConsultHistoryEntity che, ConsultantEntity ce " +
             "where che.consultantId = ce.id and che.clientId = ?1"
     )
-    List<ConsultOrder> findConsultOrderByClientId(Integer clientId, Pageable pageable);
+    List<ConsultOrder> findConsultOrderByClientId(Integer clientId);
 
     @Query("select new " +
             "cn.edu.tongji.healper.outdto.ConsultOrder(" +
@@ -32,9 +32,13 @@ public interface ConsultHistoryRepository extends
             "che.consultantId, che.clientId, ce.nickname, che.expense, che.status, " +
             "ce.sex, ce.age" +
             ") from ConsultHistoryEntity che, ClientEntity ce " +
-            "where che.consultantId = ?1 and che.clientId = ce.id"
+            "where che.consultantId = ?1 and che.clientId = ce.id" +
+            ""
     )
-    List<ConsultOrder> findConsultOrderByConsultantId(Integer consultantId, Pageable pageable);
+//    @Query(nativeQuery = true, value = "select " +
+//            "ch.id as id, ch.start_time as startTime, ch.end_time as endTime, ch.consultant_id as consultantId, ch.client_id as clientId, c.nickname as nickname, ch.expense as expense, ch.status as status " +
+//            "from consult_history as ch, client as c where ch.consultant_id = ?1 and ch.client_id = c.id")
+    List<ConsultOrder> findConsultOrderByConsultantId(Integer consultantId);
 
     @Query("select ce.qrCodeLink " +
             "from ConsultHistoryEntity che, ConsultantEntity ce " +
@@ -57,7 +61,7 @@ public interface ConsultHistoryRepository extends
 
     ConsultHistoryEntity getConsultHistoryEntityById(Integer historyId);
 
-    List<ConsultHistoryEntity> findConsultHistoryEntitiesByClientId(Integer clientId, Pageable pageable);
+    List<ConsultHistoryEntity> findConsultHistoryEntitiesByClientId(Integer clientId);
 
     @Query(value = "select count(a.id) from ConsultHistoryEntity a where a.clientId=?1 and a.status = 'f'")
     Integer getArchiveNumByClientId(@Param("id") Integer id);

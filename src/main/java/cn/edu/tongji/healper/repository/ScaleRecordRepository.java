@@ -22,4 +22,7 @@ public interface ScaleRecordRepository extends JpaRepository<ScaleRecordEntity, 
     ScaleRecordInfo findScaleRecordInfoById(Integer id);
 
     Integer countScaleRecordEntitiesByClientId(Integer clientId);
+
+    @Query(value = "select sre.record from ScaleRecordEntity sre where sre.clientId = ?1")
+    List<String> findClientLabelsPriority(Integer clientId);
 }

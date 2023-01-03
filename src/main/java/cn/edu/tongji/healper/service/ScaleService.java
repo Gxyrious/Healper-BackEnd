@@ -6,6 +6,7 @@ import cn.edu.tongji.healper.outdto.ScaleInfo;
 import cn.edu.tongji.healper.outdto.ScaleRecordInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ScaleService {
     List<ScaleRecordInfo> findScaleRecordInfoByClientId(Integer clientId, Integer page, Integer size);
@@ -22,4 +23,6 @@ public interface ScaleService {
     ScaleRecordInfo findScaleRecordInfoById(Integer recordId);
 
     String getJsonScaleByClientId(Integer clientId);
+
+    Map<String, Integer> findLabelsWithClient(Integer clientId);
 }

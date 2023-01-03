@@ -12,7 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.el.ValueExpression;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
@@ -26,6 +30,13 @@ public class HistoryServiceImpl implements HistoryService {
     @Autowired
     ConsultService consultService;
 
+    Map<String, Integer> statusPriority = Map.of(
+            "p", 1,
+            "w", 2,
+            "s", 3,
+            "f", 4,
+            "c", 5
+    );
     @Override
     public Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense) {
         ConsultHistoryEntity history = new ConsultHistoryEntity();
@@ -40,13 +51,60 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<ConsultOrder> findConsultOrdersByClientId(Integer clientId, Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page - 1, size);
-        return historyRepository.findConsultOrderByClientId(clientId, pageRequest);
+
+        List<ConsultOrder> orders = historyRepository.findConsultOrderByClientId(clientId);
+        orders.sort((o1, o2) -> {
+            if (statusPriority.containsKey(o1.getStatus()) && statusPriority.containsKey(o2.getStatus())) {
+                int re = statusPriority.get(o1.getStatus()).compareTo(statusPriority.get(o2.getStatus()));
+                if (re == 0) {
+                    if (o1.getStartTime() != null) {
+                        if (o2.getStartTime() == null) {
+                            return 1;
+                        } else {
+                            return o1.getStartTime().compareTo(o2.getStartTime());
+                        }
+                    }
+                }
+                return re;
+            } else {
+                throw new RuntimeException();
+            }
+        });
+
+        int endIndex = page * size;
+        if (endIndex > orders.size()) {
+            endIndex = orders.size();
+        }
+        return orders.subList((page - 1) * size, endIndex);
     }
 
     @Override
     public List<ConsultOrder> findConsultOrdersByConsultantId(Integer constantId, Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page - 1, size);
-        return historyRepository.findConsultOrderByConsultantId(constantId, pageRequest);
+        List<ConsultOrder> orders = historyRepository.findConsultOrderByConsultantId(constantId);
+        orders.sort((o1, o2) -> {
+            if (statusPriority.containsKey(o1.getStatus()) && statusPriority.containsKey(o2.getStatus())) {
+                int re = statusPriority.get(o1.getStatus()).compareTo(statusPriority.get(o2.getStatus()));
+                if (re == 0) {
+                    if (o1.getStartTime() != null) {
+                        if (o2.getStartTime() == null) {
+                            return 1;
+                        } else {
+                            return o1.getStartTime().compareTo(o2.getStartTime());
+                        }
+                    }
+                }
+                return re;
+            } else {
+                throw new RuntimeException();
+            }
+        });
+
+        int endIndex = page * size;
+        if (endIndex > orders.size()) {
+            endIndex = orders.size();
+        }
+        return orders.subList((page - 1) * size, endIndex);
     }
 
     @Override
@@ -117,6 +175,29 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<ConsultHistoryEntity> findRecordsByClientId(Integer clientId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        return historyRepository.findConsultHistoryEntitiesByClientId(clientId, pageable);
+
+        List<ConsultHistoryEntity> histories = historyRepository.findConsultHistoryEntitiesByClientId(clientId);
+        histories.sort((o1, o2) -> {
+            if (statusPriority.containsKey(o1.getStatus()) && statusPriority.containsKey(o2.getStatus())) {
+                int re = statusPriority.get(o1.getStatus()).compareTo(statusPriority.get(o2.getStatus()));
+                if (re == 0) {
+                    if (o1.getStartTime() != null) {
+                        if (o2.getStartTime() == null) {
+                            return 1;
+                        } else {
+                            return o1.getStartTime().compareTo(o2.getStartTime());
+                        }
+                    }
+                }
+                return re;
+            } else {
+                throw new RuntimeException();
+            }
+        });
+        int endIndex = page * size;
+        if (endIndex > histories.size()) {
+            endIndex = histories.size();
+        }
+        return histories.subList((page - 1) * size, endIndex);
     }
 }
