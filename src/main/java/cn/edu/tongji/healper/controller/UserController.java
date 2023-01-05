@@ -10,12 +10,8 @@ import cn.edu.tongji.healper.entity.ConsultantEntity;
 
 import cn.edu.tongji.healper.indto.UpdatePasswdInDto;
 import cn.edu.tongji.healper.indto.UploadImageInDto;
-import cn.edu.tongji.healper.outdto.ConsultantStatus;
-import cn.edu.tongji.healper.outdto.LoginInfoOutDto;
-import cn.edu.tongji.healper.outdto.UserType;
+import cn.edu.tongji.healper.outdto.*;
 
-import cn.edu.tongji.healper.outdto.ClientInfo;
-import cn.edu.tongji.healper.outdto.ConsultantInfo;
 import cn.edu.tongji.healper.service.ScaleService;
 import cn.edu.tongji.healper.service.UserService;
 import cn.edu.tongji.healper.util.OSSUtils;
@@ -264,6 +260,27 @@ public class UserController {
             String label = labelValues.isEmpty() ? "" : String.valueOf(labels.get(0).getKey());
             List<ConsultantStatus> consultants = userService.findConsultantsWithClient(clientId, label, page, size);
             return ResponseEntity.ok(consultants);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+    @SaCheckLogin
+    @GetMapping("client/info")
+    public ResponseEntity findClientInfo(@RequestParam Integer clientId) {
+        try {
+            ClientInfo clientInfo = userService.findClientInfoById(clientId);
+            Map<String, String> map = new HashMap<>();
+            map.put("nickname", clientInfo.getNickname());
+            map.put("sex", clientInfo.getSex());
+            map.put("age", clientInfo.getAge().toString());
+            List<ScaleRecordInfo> scaleRecords = scaleService.findScaleRecordInfoByClientId(clientId,1, 2);
+            if (scaleRecords.isEmpty()) {
+                map.put("scale", "");
+            } else {
+                map.put("scale", scaleRecords.get(0).getRecord());
+            }
+            return ResponseEntity.ok(map);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
