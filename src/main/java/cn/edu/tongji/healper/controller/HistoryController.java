@@ -39,7 +39,8 @@ public class HistoryController {
                 Integer historyId = historyService.addConsultHistory(
                         inDto.getClientId(),
                         inDto.getConsultantId(),
-                        inDto.getExpense()
+                        inDto.getExpense(),
+                        inDto.getStatus()
                 );
                 return ResponseEntity.ok(historyId);
             } else {

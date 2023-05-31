@@ -10,4 +10,6 @@ public class ConsultRecordInDto {
     Integer consultantId;
 
     Integer expense;
+
+    String status;
 }

@@ -38,12 +38,16 @@ public class HistoryServiceImpl implements HistoryService {
             "c", 5
     );
     @Override
-    public Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense) {
+    public Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense, String status) {
         ConsultHistoryEntity history = new ConsultHistoryEntity();
         history.setClientId(clientId);
         history.setConsultantId(consultantId);
         history.setExpense(expense);
-        history.setStatus("p"); // 状态：待付款
+        if (!"p".equals(status)) {
+            throw new RuntimeException("status must be p");
+        } else {
+            history.setStatus(status); // 状态：待付款
+        }
         ConsultHistoryEntity consultHistoryEntity = historyRepository.save(history);
         return consultHistoryEntity.getId();
     }

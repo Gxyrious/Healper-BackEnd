@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface HistoryService {
 
-    Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense);
+    Integer addConsultHistory(Integer clientId, Integer consultantId, Integer expense, String status);
 
     String findQrCodeByHistoryId(Integer historyId);
 
