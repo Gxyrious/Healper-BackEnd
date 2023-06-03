@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @SaCheckLogin
 @RestController
@@ -34,18 +35,29 @@ public class HistoryController {
     @PostMapping(value = "add")
     public ResponseEntity addHistory(@RequestBody ConsultRecordInDto inDto) {
         try {
-            List<ConsultOrder> waitingOrders = historyService.findWaitingOrdersByClientId(inDto.getClientId());
+            Pattern pattern = Pattern.compile("([1-9]\\d{2,3})(\\.(\\d){1,2})?");
+            System.out.println(pattern.matcher(inDto.getExpense()).matches());
+            if(!pattern.matcher(inDto.getExpense()).matches())
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("expense invalid");
+
+            Integer clientId = Integer.valueOf(inDto.getClientId());
+            Integer consultantId = Integer.valueOf(inDto.getConsultantId());
+            Double expense = Double.valueOf(inDto.getExpense());
+
+            List<ConsultOrder> waitingOrders = historyService.findWaitingOrdersByClientId(clientId);
             if (waitingOrders.isEmpty()) {
                 Integer historyId = historyService.addConsultHistory(
-                        inDto.getClientId(),
-                        inDto.getConsultantId(),
-                        inDto.getExpense(),
+                        clientId,
+                        consultantId,
+                        expense,
                         inDto.getStatus()
                 );
-                return ResponseEntity.ok(historyId);
+                return ResponseEntity.ok(Map.of(Integer.class.toString(), historyId));
             } else {
                 return ResponseEntity.status(HttpStatus.MULTIPLE_CHOICES).body(waitingOrders);
             }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Input format error");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }

@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class ConsultRecordInDto {
 
-    Integer clientId;
+    String clientId;  //数据库中为Integer
 
-    Integer consultantId;
+    String consultantId;  //数据库中为Integer
 
-    Integer expense;
+    String expense;  //数据库中为Integer
 
     String status;
 }

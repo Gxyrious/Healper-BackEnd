@@ -7,13 +7,13 @@ public class Archive {
     Integer id;
     Integer consultantId;
     Long endTime;
-    Integer expense;
+    Double expense;
     Long startTime;
     String advice;
     String summary;
     String consultantRealName;
 
-    public Archive(Integer id, Integer consultantId, Long endTime, Integer expense, Long startTime, String advice, String summary, String consultantRealName) {
+    public Archive(Integer id, Integer consultantId, Long endTime, Double expense, Long startTime, String advice, String summary, String consultantRealName) {
         this.id = id;
         this.consultantId = consultantId;
         this.endTime = endTime;

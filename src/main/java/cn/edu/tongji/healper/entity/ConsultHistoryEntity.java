@@ -1,37 +1,38 @@
 package cn.edu.tongji.healper.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "consult_history", schema = "healper", catalog = "")
 public class ConsultHistoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "client_id", nullable = false)
+    @Column(name = "client_id")
     private int clientId;
     @Basic
-    @Column(name = "consultant_id", nullable = false)
+    @Column(name = "consultant_id")
     private int consultantId;
     @Basic
-    @Column(name = "end_time", nullable = true)
+    @Column(name = "end_time")
     private Long endTime;
     @Basic
-    @Column(name = "expense", nullable = false)
-    private int expense;
+    @Column(name = "expense")
+    private double expense;
     @Basic
-    @Column(name = "start_time", nullable = true)
+    @Column(name = "start_time")
     private Long startTime;
     @Basic
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = "status")
     private String status;
     @Basic
-    @Column(name = "advice", nullable = true, length = 1024)
+    @Column(name = "advice")
     private String advice;
     @Basic
-    @Column(name = "summary", nullable = true, length = 1024)
+    @Column(name = "summary")
     private String summary;
 
     public int getId() {
@@ -66,11 +67,11 @@ public class ConsultHistoryEntity {
         this.endTime = endTime;
     }
 
-    public int getExpense() {
+    public double getExpense() {
         return expense;
     }
 
-    public void setExpense(int expense) {
+    public void setExpense(double expense) {
         this.expense = expense;
     }
 
@@ -110,33 +111,12 @@ public class ConsultHistoryEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ConsultHistoryEntity that = (ConsultHistoryEntity) o;
-
-        if (id != that.id) return false;
-        if (clientId != that.clientId) return false;
-        if (consultantId != that.consultantId) return false;
-        if (expense != that.expense) return false;
-        if (endTime != null ? !endTime.equals(that.endTime) : that.endTime != null) return false;
-        if (startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (advice != null ? !advice.equals(that.advice) : that.advice != null) return false;
-        if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
-
-        return true;
+        return id == that.id && clientId == that.clientId && consultantId == that.consultantId && Double.compare(that.expense, expense) == 0 && Objects.equals(endTime, that.endTime) && Objects.equals(startTime, that.startTime) && Objects.equals(status, that.status) && Objects.equals(advice, that.advice) && Objects.equals(summary, that.summary);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + clientId;
-        result = 31 * result + consultantId;
-        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
-        result = 31 * result + expense;
-        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (advice != null ? advice.hashCode() : 0);
-        result = 31 * result + (summary != null ? summary.hashCode() : 0);
-        return result;
+        return Objects.hash(id, clientId, consultantId, endTime, expense, startTime, status, advice, summary);
     }
 }

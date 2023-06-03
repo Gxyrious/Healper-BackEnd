@@ -10,5 +10,4 @@ public class ArchiveInDto {
     String adviceBase64;
 
     String summaryBase64;
-
 }

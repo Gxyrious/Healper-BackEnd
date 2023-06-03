@@ -20,7 +20,7 @@ public class ConsultOrder implements Serializable {
 
     private String realname;
 
-    private int expense;
+    private Double expense;
 
     private String status;
 
@@ -44,7 +44,7 @@ public class ConsultOrder implements Serializable {
 
     public ConsultOrder(int id, Long startTime, Long endTime,
                         int consultantId, int clientId, String realname,
-                        int expense, String status, String clientSex, Integer clientAge) {
+                        Double expense, String status, String clientSex, Integer clientAge) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -56,4 +56,18 @@ public class ConsultOrder implements Serializable {
         this.clientSex = clientSex;
         this.clientAge = clientAge;
     }
+//    public ConsultOrder(int id, Long startTime, Long endTime,
+//                        int consultantId, int clientId, String realname,
+//                        float expense, String status, String clientSex, Integer clientAge) {
+//        this.id = id;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.consultantId = consultantId;
+//        this.clientId = clientId;
+//        this.realname = realname;
+//        this.expense = expense;
+//        this.status = status;
+//        this.clientSex = clientSex;
+//        this.clientAge = clientAge;
+//    }
 }
